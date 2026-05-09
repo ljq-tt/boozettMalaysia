@@ -11,6 +11,26 @@ const CACHE_TTL_MS = 60 * 1000;
 let cache = null;
 let cacheExpiry = 0;
 
+/** TaTa often stores `/profile/...` paths; storefront origin must load images from API host. */
+function absolutizeImageUrl(apiBase, image) {
+  const s = String(image ?? '').trim();
+  if (!s) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (s.startsWith('//')) return `https:${s}`;
+  const base = String(apiBase ?? '').replace(/\/$/, '');
+  if (!base) return s;
+  return s.startsWith('/') ? `${base}${s}` : `${base}/${s}`;
+}
+
+function absolutizeCatalogImages(products, apiBase) {
+  if (!apiBase || !Array.isArray(products)) return products;
+  return products.map((p) =>
+    p && typeof p === 'object'
+      ? { ...p, image: absolutizeImageUrl(apiBase, p.image) }
+      : p,
+  );
+}
+
 const json = (statusCode, body, extraHeaders = {}) => ({
   statusCode,
   headers: {
@@ -153,13 +173,16 @@ exports.handler = async (event) => {
       if (!raw) {
         return json(502, { error: 'Invalid catalog response from TaTa backend' });
       }
-      products = raw
-        .filter((item) => item && item.priceId && item.id > 0)
-        .sort(
-          (a, b) =>
-            (a.sortOrder || 999) - (b.sortOrder || 999) ||
-            (a.id || 0) - (b.id || 0),
-        );
+      products = absolutizeCatalogImages(
+        raw
+          .filter((item) => item && item.priceId && item.id > 0)
+          .sort(
+            (a, b) =>
+              (a.sortOrder || 999) - (b.sortOrder || 999) ||
+              (a.id || 0) - (b.id || 0),
+          ),
+        apiBase,
+      );
     } else {
       products = await loadFromStripe();
     }

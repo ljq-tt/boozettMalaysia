@@ -1,10 +1,10 @@
-// MAISON HAN ¡ª Public product list (Cloudflare Pages Function).
+// MAISON HAN ?? Public product list (Cloudflare Pages Function).
 // Route: GET /list-products
 // Netlify backup: netlify/functions/list-products.js (kept; do not delete).
 // Stripe catalog uses REST + fetch only (no npm `stripe`) so Pages can bundle without `npm install`.
 //
 // Env (Cloudflare Pages -> Settings -> Variables):
-//   MAISON_HAN_API_BASE ¡ª TaTa backend origin (no trailing slash); GET {base}/storefront/products
+//   MAISON_HAN_API_BASE ?? TaTa backend origin (no trailing slash); GET {base}/storefront/products
 // If unset: STRIPE_SECRET_KEY required (Stripe catalog fallback, metadata.maison_han).
 
 import {
@@ -16,6 +16,26 @@ import {
 const CACHE_TTL_MS = 60 * 1000;
 let cache = null;
 let cacheExpiry = 0;
+
+/** TaTa often stores `/profile/...` paths; browser on Pages must load images from the API origin. */
+function absolutizeImageUrl(apiBase, image) {
+  const s = String(image ?? '').trim();
+  if (!s) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (s.startsWith('//')) return `https:${s}`;
+  const base = String(apiBase ?? '').replace(/\/$/, '');
+  if (!base) return s;
+  return s.startsWith('/') ? `${base}${s}` : `${base}/${s}`;
+}
+
+function absolutizeCatalogImages(products, apiBase) {
+  if (!apiBase || !Array.isArray(products)) return products;
+  return products.map((p) =>
+    p && typeof p === 'object'
+      ? { ...p, image: absolutizeImageUrl(apiBase, p.image) }
+      : p,
+  );
+}
 
 function jsonResponse(status, body, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
@@ -145,13 +165,16 @@ export async function onRequestGet(context) {
           error: 'Invalid catalog response from TaTa backend',
         });
       }
-      products = raw
-        .filter((item) => item && item.priceId && item.id > 0)
-        .sort(
-          (a, b) =>
-            (a.sortOrder || 999) - (b.sortOrder || 999) ||
-            (a.id || 0) - (b.id || 0),
-        );
+      products = absolutizeCatalogImages(
+        raw
+          .filter((item) => item && item.priceId && item.id > 0)
+          .sort(
+            (a, b) =>
+              (a.sortOrder || 999) - (b.sortOrder || 999) ||
+              (a.id || 0) - (b.id || 0),
+          ),
+        apiBase,
+      );
     } else {
       const secretKey = env.STRIPE_SECRET_KEY;
       if (!secretKey) {
