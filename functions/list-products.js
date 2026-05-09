@@ -1,12 +1,11 @@
-// MAISON HAN ?? Public product list (Cloudflare Pages Function).
+// MAISON HAN -- Public product list (Cloudflare Pages Function).
 // Route: GET /list-products
 // Netlify backup: netlify/functions/list-products.js (kept; do not delete).
-// Stripe catalog uses REST + fetch only (no npm `stripe`) so Pages can bundle without `npm install`.
 //
-// Env (Cloudflare Pages -> Settings -> Variables):
-//   MAISON_HAN_API_BASE ?? TaTa backend origin (no trailing slash); GET {base}/storefront/products
-// If unset: STRIPE_SECRET_KEY required (Stripe catalog fallback, metadata.maison_han).
-
+// Env:
+//   MAISON_HAN_API_BASE - TaTa API origin (no trailing slash); GET {base}/storefront/products
+//   PRODUCT_IMAGE_BASE - optional; prefix relative image URLs (/profile/...) when using Stripe-only catalog
+//   STRIPE_SECRET_KEY - required when MAISON_HAN_API_BASE is unset (Stripe catalog fallback).
 import {
   stripeProductsListPage,
   stripePricesForProduct,
@@ -35,6 +34,12 @@ function absolutizeCatalogImages(products, apiBase) {
       ? { ...p, image: absolutizeImageUrl(apiBase, p.image) }
       : p,
   );
+}
+
+/** Prefix relative `/profile/...` image paths without forcing TaTa catalog (Stripe-only setups). */
+function catalogImageBase(env) {
+  const b = env.PRODUCT_IMAGE_BASE || env.MAISON_HAN_API_BASE || '';
+  return String(b).trim().replace(/\/$/, '');
 }
 
 function jsonResponse(status, body, extraHeaders = {}) {
@@ -100,6 +105,18 @@ async function listAllActiveProducts(secretKey) {
   return all;
 }
 
+function stripeProductImage(p, meta) {
+  const fromStripe = p.images && p.images[0];
+  if (fromStripe) return fromStripe;
+  const m =
+    meta.image_url ||
+    meta.image ||
+    meta.cover_image ||
+    meta.photo_url ||
+    '';
+  return String(m || '').trim();
+}
+
 function transform(p, priceObj) {
   const meta = p.metadata || {};
   const legacyId = parseInt(meta.maison_han_id, 10);
@@ -112,7 +129,7 @@ function transform(p, priceObj) {
     catLabel: meta.cat_label || meta.cat || 'Spirits',
     bv: meta.bv || `bv-${(meta.cat || 'wine').toLowerCase()}`,
     bottle: meta.bottle || 'generic',
-    image: (p.images && p.images[0]) || '',
+    image: stripeProductImage(p, meta),
     name: meta.name_html || p.name,
     sub:
       meta.sub ||
@@ -165,16 +182,13 @@ export async function onRequestGet(context) {
           error: 'Invalid catalog response from TaTa backend',
         });
       }
-      products = absolutizeCatalogImages(
-        raw
-          .filter((item) => item && item.priceId && item.id > 0)
-          .sort(
-            (a, b) =>
-              (a.sortOrder || 999) - (b.sortOrder || 999) ||
-              (a.id || 0) - (b.id || 0),
-          ),
-        apiBase,
-      );
+      products = raw
+        .filter((item) => item && item.priceId && item.id > 0)
+        .sort(
+          (a, b) =>
+            (a.sortOrder || 999) - (b.sortOrder || 999) ||
+            (a.id || 0) - (b.id || 0),
+        );
     } else {
       const secretKey = env.STRIPE_SECRET_KEY;
       if (!secretKey) {
@@ -185,6 +199,8 @@ export async function onRequestGet(context) {
       }
       products = await loadFromStripe(secretKey);
     }
+
+    products = absolutizeCatalogImages(products, catalogImageBase(env));
 
     cache = products;
     cacheExpiry = Date.now() + CACHE_TTL_MS;

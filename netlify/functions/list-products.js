@@ -1,8 +1,8 @@
 // MAISON HAN — Public product list endpoint（Netlify 备用实现，勿删；主站可为 Cloudflare functions/list-products.js）
 // GET /.netlify/functions/list-products
 //
-// When MAISON_HAN_API_BASE is set (your TaTa backend origin, no trailing slash),
-// returns JSON from GET {MAISON_HAN_API_BASE}/storefront/products (same shape as before).
+// When MAISON_HAN_API_BASE is set, catalog comes from TaTa GET …/storefront/products.
+// PRODUCT_IMAGE_BASE is optional: prefix relative image URLs (also used when catalog is Stripe-only).
 // Otherwise falls back to Stripe (metadata.maison_han='true') for backward compatibility.
 
 const Stripe = require('stripe');
@@ -29,6 +29,11 @@ function absolutizeCatalogImages(products, apiBase) {
       ? { ...p, image: absolutizeImageUrl(apiBase, p.image) }
       : p,
   );
+}
+
+function catalogImageBase() {
+  const b = process.env.PRODUCT_IMAGE_BASE || process.env.MAISON_HAN_API_BASE || '';
+  return String(b).trim().replace(/\/$/, '');
 }
 
 const json = (statusCode, body, extraHeaders = {}) => ({
@@ -101,6 +106,18 @@ async function listAllActiveProducts(stripe) {
   return all;
 }
 
+function stripeProductImage(p, meta) {
+  const fromStripe = p.images && p.images[0];
+  if (fromStripe) return fromStripe;
+  const m =
+    meta.image_url ||
+    meta.image ||
+    meta.cover_image ||
+    meta.photo_url ||
+    '';
+  return String(m || '').trim();
+}
+
 function transform(p, priceObj) {
   const meta = p.metadata || {};
   const legacyId = parseInt(meta.maison_han_id, 10);
@@ -113,7 +130,7 @@ function transform(p, priceObj) {
     catLabel: meta.cat_label || meta.cat || 'Spirits',
     bv: meta.bv || `bv-${(meta.cat || 'wine').toLowerCase()}`,
     bottle: meta.bottle || 'generic',
-    image: (p.images && p.images[0]) || '',
+    image: stripeProductImage(p, meta),
     name: meta.name_html || p.name,
     sub:
       meta.sub ||
@@ -173,19 +190,18 @@ exports.handler = async (event) => {
       if (!raw) {
         return json(502, { error: 'Invalid catalog response from TaTa backend' });
       }
-      products = absolutizeCatalogImages(
-        raw
-          .filter((item) => item && item.priceId && item.id > 0)
-          .sort(
-            (a, b) =>
-              (a.sortOrder || 999) - (b.sortOrder || 999) ||
-              (a.id || 0) - (b.id || 0),
-          ),
-        apiBase,
-      );
+      products = raw
+        .filter((item) => item && item.priceId && item.id > 0)
+        .sort(
+          (a, b) =>
+            (a.sortOrder || 999) - (b.sortOrder || 999) ||
+            (a.id || 0) - (b.id || 0),
+        );
     } else {
       products = await loadFromStripe();
     }
+
+    products = absolutizeCatalogImages(products, catalogImageBase());
 
     cache = products;
     cacheExpiry = Date.now() + CACHE_TTL_MS;
