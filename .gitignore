@@ -1,0 +1,10 @@
+# npm dependencies ¡ª reinstall locally with: npm installnode_modules/
+
+# Wrangler / Cloudflare local artifacts
+.wrangler/
+.dev.vars
+.cf-fn-build-test/
+
+# Env secrets (never commit)
+.env
+.env.*

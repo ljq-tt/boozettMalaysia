@@ -1,0 +1,9 @@
+# Cloudflare Pages / Wrangler hints (optional).
+#
+# Functions under ./functions no longer import npm `stripe` (REST + fetch only),
+# so Cloudflare can bundle Pages Functions even when "build command" is empty.
+# Build command is optional; output directory in dashboard: .
+
+name = "maison-han"
+pages_build_output_dir = "."
+compatibility_date = "2024-11-01"

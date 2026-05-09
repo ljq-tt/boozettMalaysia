@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
+<title>Reservation paused · MAISON HAN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E0B08; --ink-3:#1F1813;
+  --bone:#E8DCC0; --bone-mute:rgba(232,220,192,.65); --bone-hair:rgba(232,220,192,.16);
+  --gold:#B89968;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Manrope","Cormorant Garamond",serif;
+  background:var(--ink); color:var(--bone);
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:48px 24px; font-weight:300; letter-spacing:.01em;
+  background-image:
+    radial-gradient(ellipse at top,rgba(184,153,104,.06),transparent 60%);
+}
+.card{
+  max-width:560px; width:100%;
+  border:1px solid var(--bone-hair);
+  background:linear-gradient(180deg,var(--ink-3),var(--ink));
+  padding:clamp(40px,6vw,72px) clamp(28px,5vw,56px);
+  text-align:center;
+}
+.eyebrow{
+  font-size:11px; font-weight:500; text-transform:uppercase;
+  letter-spacing:.32em; color:var(--gold); margin-bottom:28px;
+}
+.display{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:300; font-size:clamp(32px,4.5vw,46px);
+  line-height:1.05; letter-spacing:-.015em; margin-bottom:8px;
+}
+.display em{font-style:italic;font-weight:400;color:var(--gold)}
+.sub{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic; font-size:17px; color:var(--bone-mute);
+  margin-bottom:28px;
+}
+.rule{width:48px; height:1px; background:var(--gold); margin:0 auto 28px}
+.lead{font-size:14px; line-height:1.7; color:var(--bone); max-width:44ch; margin:0 auto 32px}
+.cta{
+  display:inline-block; padding:14px 32px;
+  border:1px solid var(--gold); color:var(--bone);
+  text-transform:uppercase; letter-spacing:.28em; font-size:11px; font-weight:500;
+  transition:background .25s ease,color .25s ease;
+}
+.cta:hover{background:var(--gold); color:var(--ink)}
+.foot{
+  margin-top:36px; padding-top:24px;
+  border-top:1px solid var(--bone-hair);
+  font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--bone-mute);
+}
+.foot em{font-family:"Cormorant Garamond",serif;font-style:italic;text-transform:none;letter-spacing:.02em;color:var(--gold)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">No charge made</div>
+    <h1 class="display">Your cellar <em>waits</em>.</h1>
+    <p class="sub">The bottles remain in your cart.</p>
+    <span class="rule"></span>
+    <p class="lead">
+      No payment was processed. Your selections are preserved — return whenever you wish to complete the reservation.
+    </p>
+    <a class="cta" href="/">Back to the shelves</a>
+    <div class="foot"><em>Maison Han</em> · A House of Rare Pours</div>
+  </div>
+</body>
+</html>

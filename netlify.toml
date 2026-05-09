@@ -1,0 +1,39 @@
+# MAISON HAN — Netlify configuration（保留备用，勿删）
+# 当前前台可主用 Cloudflare Pages（仓库根目录 functions/）；若日后重新接 Netlify，
+# 直接连此仓库即可，netlify/functions/ 与下方 [[redirects]] 仍有效。
+#
+# Static HTML at the root, one Function under netlify/functions/.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Bundle function dependencies (esbuild) so a clean drag-and-drop deploy
+# pulls in `stripe` from package.json automatically.
+[functions]
+  node_bundler = "esbuild"
+
+# Pretty URL: /api/checkout → the function. (Optional. The function is also
+# always reachable at /.netlify/functions/create-checkout-session.)
+[[redirects]]
+  from = "/api/checkout"
+  to = "/.netlify/functions/create-checkout-session"
+  status = 200
+
+# Same paths as Cloudflare Pages Functions (`/list-products`, `/create-checkout-session`)
+# so one index.html works on both hosts.
+[[redirects]]
+  from = "/list-products"
+  to = "/.netlify/functions/list-products"
+  status = 200
+
+[[redirects]]
+  from = "/create-checkout-session"
+  to = "/.netlify/functions/create-checkout-session"
+  status = 200
+
+# Cache product images aggressively. Bust by renaming files when you replace them.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
