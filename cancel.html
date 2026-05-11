@@ -4,63 +4,121 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="robots" content="noindex"/>
+<meta name="theme-color" content="#2c080d"/>
 <title>Reservation paused · MAISON HAN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0E0B08; --ink-3:#1F1813;
-  --bone:#E8DCC0; --bone-mute:rgba(232,220,192,.65); --bone-hair:rgba(232,220,192,.16);
-  --gold:#B89968;
+  --age-burgundy:#591018;
+  --age-burgundy-deep:#2c080d;
+  --age-highlight:rgba(254,246,238,.94);
+  --age-muted:rgba(254,246,238,.76);
+  --age-soft:rgba(254,246,238,.52);
+  --age-wire:rgba(184,153,104,.42);
+  --gold:#A07845;
+  --gold-deep:#7E5F38;
+  --ink:#0E0B08;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:"Manrope","Cormorant Garamond",serif;
-  background:var(--ink); color:var(--bone);
-  min-height:100vh; display:flex; align-items:center; justify-content:center;
-  padding:48px 24px; font-weight:300; letter-spacing:.01em;
+  position:relative;
+  font-family:"Manrope",system-ui,sans-serif;
+  color:var(--age-highlight);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(24px,5vw,56px) clamp(18px,4vw,32px);
+  font-weight:400;
+  letter-spacing:.02em;
+  background:
+    radial-gradient(120% 80% at 50% -10%,rgba(184,153,104,.14),transparent 55%),
+    radial-gradient(80% 50% at 100% 100%,rgba(110,16,25,.65),transparent 60%),
+    linear-gradient(168deg,var(--age-burgundy-deep) 0%,var(--age-burgundy) 38%,#3e0a10 100%);
+  background-color:var(--age-burgundy-deep);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;
+  opacity:.065;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.09;
   background-image:
-    radial-gradient(ellipse at top,rgba(184,153,104,.06),transparent 60%);
+    radial-gradient(ellipse 90% 40% at 15% 20%,transparent 50%,rgba(184,153,104,.22) 51%,transparent 53%),
+    radial-gradient(ellipse 70% 55% at 85% 30%,transparent 62%,rgba(254,246,238,.06) 63%,transparent 65%);
 }
 .card{
-  max-width:560px; width:100%;
-  border:1px solid var(--bone-hair);
-  background:linear-gradient(180deg,var(--ink-3),var(--ink));
-  padding:clamp(40px,6vw,72px) clamp(28px,5vw,56px);
+  position:relative;z-index:2;
+  max-width:520px;width:100%;
+  border:1px solid var(--age-wire);
+  border-radius:2px;
+  background:rgba(14,11,8,.42);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 28px 90px rgba(0,0,0,.4);
+  padding:clamp(38px,7vw,68px) clamp(24px,5vw,44px);
   text-align:center;
 }
 .eyebrow{
-  font-size:11px; font-weight:500; text-transform:uppercase;
-  letter-spacing:.32em; color:var(--gold); margin-bottom:28px;
+  font-size:10px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.36em;color:var(--age-soft);
+  margin-bottom:clamp(22px,4vw,32px);
 }
 .display{
   font-family:"Cormorant Garamond",serif;
-  font-weight:300; font-size:clamp(32px,4.5vw,46px);
-  line-height:1.05; letter-spacing:-.015em; margin-bottom:8px;
+  font-weight:400;font-style:italic;
+  font-size:clamp(34px,5vw,48px);
+  line-height:1.08;letter-spacing:.06em;
+  margin-bottom:10px;
+  color:var(--age-highlight);
 }
-.display em{font-style:italic;font-weight:400;color:var(--gold)}
+.display em{font-style:italic;font-weight:400;color:rgba(184,153,104,.95)}
 .sub{
-  font-family:"Cormorant Garamond",serif;
-  font-style:italic; font-size:17px; color:var(--bone-mute);
-  margin-bottom:28px;
+  font-family:"Manrope",sans-serif;
+  font-size:13px;font-weight:300;
+  letter-spacing:.06em;
+  color:var(--age-muted);
+  margin-bottom:clamp(22px,4vw,30px);
 }
-.rule{width:48px; height:1px; background:var(--gold); margin:0 auto 28px}
-.lead{font-size:14px; line-height:1.7; color:var(--bone); max-width:44ch; margin:0 auto 32px}
+.rule{
+  width:40px;height:1px;
+  background:rgba(184,153,104,.55);
+  margin:0 auto clamp(22px,4vw,30px);
+}
+.lead{
+  font-size:14px;line-height:1.72;
+  color:var(--age-muted);
+  max-width:42ch;margin:0 auto clamp(28px,5vw,36px);
+  font-weight:300;
+}
 .cta{
-  display:inline-block; padding:14px 32px;
-  border:1px solid var(--gold); color:var(--bone);
-  text-transform:uppercase; letter-spacing:.28em; font-size:11px; font-weight:500;
-  transition:background .25s ease,color .25s ease;
+  display:inline-block;padding:13px 32px;
+  background:var(--gold);
+  color:var(--ink)!important;border:1px solid var(--gold);
+  text-transform:uppercase;letter-spacing:.24em;font-size:10px;font-weight:600;
+  transition:filter .22s ease,transform .22s ease,box-shadow .22s ease;
+  text-decoration:none;font-family:"Manrope",sans-serif;
+  box-shadow:0 12px 40px rgba(160,120,69,.35);
 }
-.cta:hover{background:var(--gold); color:var(--ink)}
+.cta:hover{
+  filter:brightness(1.07);
+  transform:translateY(-1px);
+  box-shadow:0 14px 48px rgba(160,120,69,.42);
+}
 .foot{
-  margin-top:36px; padding-top:24px;
-  border-top:1px solid var(--bone-hair);
-  font-size:11px; letter-spacing:.18em; text-transform:uppercase;
-  color:var(--bone-mute);
+  margin-top:clamp(28px,5vw,40px);padding-top:22px;
+  border-top:1px solid rgba(184,153,104,.22);
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--age-soft);
 }
-.foot em{font-family:"Cormorant Garamond",serif;font-style:italic;text-transform:none;letter-spacing:.02em;color:var(--gold)}
+.foot em{
+  font-family:"Cormorant Garamond",serif;font-style:italic;text-transform:none;
+  letter-spacing:.12em;color:var(--age-highlight);
+}
 </style>
 </head>
 <body>

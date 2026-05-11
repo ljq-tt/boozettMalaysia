@@ -227,7 +227,7 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 }
 .age-gate::after{
   content:"";position:absolute;inset:0;
-  opacity:.095;
+  opacity:.09;
   background-image:
     radial-gradient(ellipse 90% 40% at 15% 20%,transparent 50%,rgba(184,153,104,.25) 51%,transparent 53%),
     radial-gradient(ellipse 70% 55% at 85% 30%,transparent 62%,rgba(254,246,238,.06) 63%,transparent 65%),
@@ -237,9 +237,17 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 .age-gate__bg{display:none;}
 .age-gate__card{
   position:relative;z-index:2;
-  max-width:480px;width:100%;
+  max-width:520px;width:100%;
   text-align:center;
-  padding:clamp(26px,4vw,48px) clamp(16px,3vw,32px);
+  padding:clamp(32px,5vw,56px) clamp(22px,4vw,40px);
+  border:1px solid var(--age-wire);
+  border-radius:2px;
+  background:rgba(14,11,8,.42);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:
+    0 28px 90px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(254,246,238,.06);
 }
 .age-gate__location{
   font-family:"Manrope",sans-serif;
@@ -304,7 +312,7 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   padding:0 8px;
 }
 .age-gate__remember input[type="checkbox"]{
-  accent-color:#B89968;width:16px;height:16px;margin:0;flex-shrink:0;cursor:pointer;
+  accent-color:var(--gold);width:16px;height:16px;margin:0;flex-shrink:0;cursor:pointer;
 }
 .age-gate__disclaimer{
   font-family:"Manrope",sans-serif;
@@ -328,11 +336,27 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 .age-gate__error:not(:empty){display:block;}
 .age-gate__btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .age-gate__btns .btn{
-  min-width:min(148px,44vw);border-radius:2px;background:transparent;border:1px solid rgba(254,246,238,.46);
-  letter-spacing:.22em;
+  min-width:min(148px,44vw);border-radius:2px;background:transparent;
+  border:1px solid rgba(254,246,238,.42);
+  letter-spacing:.22em;color:var(--age-muted)!important;font-weight:600;font-size:10px;padding:13px 24px;
 }
-.age-gate__btns .btn--solid{background:var(--gold);color:#0E0B08;border-color:var(--gold);}
-.age-gate__btns .btn--solid:not(.age-continue-wait):hover{background:#c5a879;color:#0E0B08;border-color:#c5a879;}
+.age-gate__btns .btn:not(.btn--solid):hover{
+  background:rgba(254,246,238,.07)!important;
+  color:var(--age-highlight)!important;
+  border-color:rgba(254,246,238,.62)!important;
+  transform:translateY(-1px);box-shadow:0 10px 40px rgba(0,0,0,.22);
+}
+.age-gate__btns .btn--solid{background:var(--gold);color:#0E0B08!important;border-color:var(--gold);}
+.age-gate__btns .btn--solid:not(.age-continue-wait):hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+  color:#0E0B08!important;border-color:var(--gold)!important;background:var(--gold)!important;
+  box-shadow:0 14px 48px rgba(160,120,69,.45);
+}
+.age-gate__btns .btn--solid.age-continue-wait:hover{
+  transform:none!important;filter:none!important;
+  box-shadow:none!important;color:#0E0B08!important;
+}
 .age-gate__btns .btn--solid:disabled,
 .age-gate__btns .btn--solid.age-continue-wait{
   opacity:.38;cursor:not-allowed;color:#0E0B08;background:rgba(184,153,104,.42);border-color:transparent;
@@ -340,7 +364,7 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 .age-gate__btns .btn--solid.age-continue-wait:active{transform:none}
 .age-gate__btns #ageContinue > span{display:inline-block;pointer-events:none}
 .age-gate__btns #ageContinue{position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(254,246,238,.22)}
-.age-gate__btns #ageDecline:hover{color:var(--age-highlight);border-color:var(--age-highlight);}
+.age-gate__btns #ageDecline:hover{color:var(--age-highlight)!important;border-color:rgba(254,246,238,.72)!important;}
 .age-gate__legal{
   font-family:"Manrope",sans-serif;
   font-size:9px;letter-spacing:.16em;text-transform:uppercase;
@@ -400,9 +424,11 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   box-shadow:0 12px 40px rgba(41,36,36,.035);
 }
 .nav__inner{
-  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
   align-items:center;
-  padding:24px 0;gap:clamp(16px,2vw,24px);
+  gap:10px clamp(14px,2vw,22px);
+  padding:clamp(14px,2vw,20px) 0;
 }
 .nav__start{
   display:flex;
@@ -411,7 +437,7 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   min-width:0;
 }
 .nav__menu-btn{
-  display:none;
+  display:flex;
   align-items:center;
   justify-content:center;
   width:44px;
@@ -448,14 +474,16 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 .logo{
   font-family:"Cormorant Garamond",serif;
   font-weight:400;
-  font-size:26px;
-  letter-spacing:.32em;
+  font-size:clamp(20px,3.6vw,26px);
+  letter-spacing:.28em;
   color:var(--bone);
   text-transform:uppercase;
   text-align:center;
   display:flex;align-items:center;justify-content:center;gap:12px;
+  justify-self:center;
   position:relative;z-index:2;flex-shrink:0;
-  max-width:100%;
+  max-width:100%;min-width:0;
+  padding-inline:clamp(4px,1.2vw,12px);
 }
 .logo__mark{
   font-family:"Shippori Mincho",serif;
@@ -475,21 +503,6 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
 }
 .logo{padding-left:0}
 .logo span:last-child{margin-left:14px}
-.nav__links{
-  list-style:none;
-  display:flex;flex-wrap:wrap;
-  align-content:center;
-  gap:clamp(12px,1.6vw,26px);
-  row-gap:8px;
-  font-family:"Manrope",sans-serif;
-  font-size:10px;font-weight:500;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--bone-mute);
-  max-width:100%;
-}
-.nav__links li{position:relative}
-.nav__links a{transition:color .4s ease;padding:6px 0}
-.nav__links a:hover{color:var(--bone)}
 .nav__cta{
   display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;row-gap:6px;
   gap:clamp(14px,1.8vw,22px);
@@ -1894,25 +1907,9 @@ body.nav-mob-open{overflow:hidden}
 /* ================================================================
    RESPONSIVE
    ================================================================ */
-@media (max-width:1280px){
-  html[data-lang="en"] .nav__inner{
-    grid-template-columns:auto minmax(0,1fr) auto;
-    gap:10px 16px;padding:18px 0;
-  }
-  html[data-lang="en"] .nav__menu-btn{display:flex}
-  html[data-lang="en"] .nav__links{display:none}
-  html[data-lang="en"] .logo{
-    justify-self:center;
-    min-width:0;
-    letter-spacing:.28em;
-    font-size:clamp(20px,3.8vw,26px);
-    padding-inline:clamp(4px,1.5vw,12px);
-  }
-}
+/* Drawer holds all locales’ link labels — no horizontal row vs centred wordmark overlap */
+
 @media(max-width:980px){
-  .nav__inner{grid-template-columns:auto 1fr auto;gap:12px}
-  .nav__menu-btn{display:flex}
-  .nav__links{display:none}
   .grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
   .section-head{grid-template-columns:1fr;gap:24px}
   .provenance__inner{grid-template-columns:1fr;gap:48px}
@@ -2017,15 +2014,6 @@ body.nav-mob-open{overflow:hidden}
       <button type="button" class="nav__menu-btn" id="navMenuOpen" aria-expanded="false" aria-controls="navMobilePanel">
         <span class="nav__burger" aria-hidden="true"><span></span><span></span><span></span></span>
       </button>
-      <ul class="nav__links">
-        <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
-        <li><a href="#discover" data-i18n="nav.discover">Discover</a></li>
-        <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
-        <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
-        <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
-        <li><a href="#journal" data-i18n="nav.journal">Journal</a></li>
-        <li><a href="account.html">Account</a></li>
-      </ul>
     </div>
     <a href="#" class="logo">
       <span class="logo__mark cjk">漢</span>
