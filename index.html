@@ -1925,10 +1925,10 @@ body.nav-mob-open{overflow:hidden}
     <p class="age-gate__sub" id="ageTaglineDesc" data-i18n="age.sub">This house serves only those of legal drinking age in their country of residence.</p>
     <p class="age-gate__year-prompt" data-i18n="age.yearPrompt">Please enter your year of birth:</p>
     <div class="age-gate__digits" role="group" aria-label="Year of birth">
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" enterkeyhint="next" data-yi="0" id="ageD0" aria-label="Birth year digit 1" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" enterkeyhint="next" data-yi="1" id="ageD1" aria-label="Birth year digit 2" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" enterkeyhint="next" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" autocapitalize="off" enterkeyhint="done" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="0" id="ageD0" aria-label="Birth year digit 1" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="1" id="ageD1" aria-label="Birth year digit 2" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
     </div>
     <label class="age-gate__remember"><input type="checkbox" id="ageRemember" /> <span data-i18n="age.remember">Remember this device</span></label>
     <p class="age-gate__disclaimer"><span data-i18n="age.disclaimer"></span></p>
@@ -3159,109 +3159,133 @@ document.addEventListener("DOMContentLoaded",()=>{
     updateAgeContinueBtn();
     requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus({preventScroll:true});});
   }
-  function digitCharFromKeyboardEvent(e){
-    if(typeof e.key==="string"&&e.key.length===1&&/^[0-9]$/.test(e.key)){return e.key;}
+  /** Single digit 0–9 from keydown (desktop + most mobile); null if not a number key. */
+  function ageDigitFromKeyEvent(e){
+    const k=e.key;
+    if(typeof k==="string"&&k.length===1&&/^[0-9]$/.test(k)){return k;}
     const c=e.code||"";
-    const mDig=/^Digit([0-9])$/.exec(c);
-    if(mDig){return mDig[1];}
-    const mNum=/^Numpad([0-9])$/.exec(c);
-    if(mNum){return mNum[1];}
+    let m=/^Digit([0-9])$/.exec(c);if(m){return m[1];}
+    m=/^Numpad([0-9])$/.exec(c);if(m){return m[1];}
+    const pk=e.which||e.keyCode;
+    if(typeof pk==="number"&&pk>=48&&pk<=57){return String.fromCharCode(48+(pk-48));}
+    if(typeof pk==="number"&&pk>=96&&pk<=105){return String(pk-96);}
     return null;
   }
-  /** Block duplicate handling when programmatically setting .value (fires input in some engines). */
-  let suppressAgeInputEvent=false;
-  function withAgeSuppress(fn){
-    suppressAgeInputEvent=true;
-    try{fn();}
-    finally{queueMicrotask(()=>{suppressAgeInputEvent=false});}
-  }
-  function sanitizeOneDigitInp(inp){
-    const d=String(inp.value||"").replace(/\D/g,"").slice(-1).slice(0,1);
-    inp.value=/^[0-9]$/.test(d)?d:"";
-    return inp.value;
-  }
-  function focusAgeDigit(i){
+  let ageDigitNavSeq=0;
+  /** Move focus after the DOM applies the digit (fixes iOS / WebView timing). */
+  function focusAgeDigitIndex(i){
     if(i<0||i>=ageDigits.length)return;
     const el=ageDigits[i];
-    function runFocus(){
+    const mySeq=++ageDigitNavSeq;
+    const run=()=>{
+      if(mySeq!==ageDigitNavSeq)return;
       try{
         el.focus({preventScroll:true});
-        try{if(typeof el.setSelectionRange==="function")el.setSelectionRange(0,1);}catch(_){}
-      }catch(_){
-        try{el.focus();}catch(__){}
-      }
-    }
-    queueMicrotask(()=>{
-      requestAnimationFrame(()=>{
-        runFocus();
-        window.setTimeout(runFocus,48);
-      });
-    });
-  }
-  /** Write one digit; focus next box when not last (mobile + desktop). */
-  function writeAgeDigitAndAdvance(inp,idx,rawDigit){
-    const dig=String(rawDigit||"").replace(/\D/g,"").slice(0,1);
-    if(!/^[0-9]$/.test(dig)){
-      withAgeSuppress(()=>{inp.value="";});
-      updateAgeContinueBtn();showAgeErr("");
-      return;
-    }
-    withAgeSuppress(()=>{inp.value=dig;});
-    updateAgeContinueBtn();showAgeErr("");
-    if(idx<ageDigits.length-1){focusAgeDigit(idx+1);}
+        if(typeof el.setSelectionRange==="function"){
+          el.setSelectionRange(0,1);
+        }
+      }catch(err){try{el.focus();}catch(e2){}}
+    };
+    run();
+    requestAnimationFrame(run);
+    requestAnimationFrame(()=>requestAnimationFrame(run));
+    window.setTimeout(run,0);
+    window.setTimeout(run,16);
   }
   ageDigits.forEach((inp,idx)=>{
     inp.addEventListener("beforeinput",(e)=>{
-      if(!e||!e.cancelable)return;
-      const t=e.inputType||"";
-      if(t==="deleteContentBackward"||t==="deleteContentForward")return;
-      if(t==="insertFromPaste"){
+      if(!e.cancelable||e.ctrlKey||e.metaKey||e.altKey){return;}
+      const it=e.inputType||"";
+      if(it==="insertLineBreak"||it==="insertParagraph"||it==="insertFromDrop"){
         e.preventDefault();
         return;
       }
-      if(t==="insertText"||t==="insertCompositionText"||t==="insertReplacementText"){
-        const data=typeof e.data==="string"?e.data:"";
-        if(data.length&&!/^[\d]*$/.test(data)){e.preventDefault();return;}
-        if(data.length>1){e.preventDefault();}
+      if(e.inputType==="insertText"){
+        const t=e.data!=null?String(e.data):"";
+        if(!t)return;
+        if(/^([0-9])$/.test(t)){return;}
+        const picked=t.replace(/\D/g,"").charAt(0);
+        e.preventDefault();
+        inp.value=picked||"";
+        showAgeErr("");
+        updateAgeContinueBtn();
+        if(picked&&idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
       }
-    });
-    inp.addEventListener("input",()=>{
-      if(suppressAgeInputEvent)return;
-      const d=sanitizeOneDigitInp(inp);
-      updateAgeContinueBtn();showAgeErr("");
-      if(d&&idx<ageDigits.length-1){focusAgeDigit(idx+1);}
     });
     inp.addEventListener("keydown",(e)=>{
-      if(e.ctrlKey||e.metaKey||e.altKey)return;
-      const dk=digitCharFromKeyboardEvent(e);
-      if(dk!==null){
-        e.preventDefault();e.stopPropagation();
-        writeAgeDigitAndAdvance(inp,idx,dk);
-        return;
-      }
-      if(e.key==="Backspace"&&!inp.value&&idx>0){
-        e.preventDefault();e.stopPropagation();
-        focusAgeDigit(idx-1);
-        requestAnimationFrame(()=>{
-          ageDigits[idx-1].value="";
-          updateAgeContinueBtn();showAgeErr("");
-          try{if(typeof ageDigits[idx-1].setSelectionRange==="function")ageDigits[idx-1].setSelectionRange(0,1);}catch(_){}
-        });
-        return;
-      }
+      if(e.ctrlKey||e.metaKey||e.altKey){return;}
       if(e.key==="Enter"){
         e.preventDefault();
         if(ageContinue&&!ageContinue.disabled)acceptAgeGate();
         return;
       }
-      if(e.key==="Tab"||(e.key&&e.key.startsWith("Arrow")))return;
-      if(e.key&&e.key.length===1&&!e.altKey){e.preventDefault();e.stopPropagation();}
-    },true);
+      if(e.key==="Backspace"){
+        if(inp.value){
+          inp.value="";
+          updateAgeContinueBtn();
+          showAgeErr("");
+        }else if(idx>0){
+          e.preventDefault();
+          ageDigits[idx-1].value="";
+          focusAgeDigitIndex(idx-1);
+          updateAgeContinueBtn();
+          showAgeErr("");
+        }
+        return;
+      }
+      if(e.key==="ArrowLeft"&&idx>0){
+        e.preventDefault();
+        focusAgeDigitIndex(idx-1);
+        return;
+      }
+      if(e.key==="ArrowRight"&&idx<ageDigits.length-1){
+        e.preventDefault();
+        focusAgeDigitIndex(idx+1);
+        return;
+      }
+      if(e.key==="Tab"||e.key==="Escape"){return;}
+      const d=ageDigitFromKeyEvent(e);
+      if(d!==null){
+        e.preventDefault();
+        inp.value=d;
+        showAgeErr("");
+        updateAgeContinueBtn();
+        if(idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
+        return;
+      }
+      if(e.key.length===1){
+        e.preventDefault();
+      }
+    });
+    inp.addEventListener("input",()=>{
+      let raw=String(inp.value||"").replace(/\D/g,"");
+      if(raw.length>1){raw=raw.slice(-1);}
+      inp.value=raw;
+      showAgeErr("");
+      updateAgeContinueBtn();
+      if(raw.length===1&&idx<ageDigits.length-1){
+        focusAgeDigitIndex(idx+1);
+      }
+    });
+    inp.addEventListener("keyup",(e)=>{
+      const nav=new Set(["Tab","Escape","ArrowLeft","ArrowRight","Shift","Control","Alt","Meta"]);
+      if(nav.has(e.key)){return;}
+      let raw=String(inp.value||"").replace(/\D/g,"").slice(0,1);
+      inp.value=raw;
+      updateAgeContinueBtn();
+      if(raw&&idx<ageDigits.length-1&&document.activeElement===inp){
+        focusAgeDigitIndex(idx+1);
+      }
+    });
     inp.addEventListener("paste",(e)=>{
-      e.preventDefault();e.stopPropagation();
-      const t=(e.clipboardData&&e.clipboardData.getData("text"))||"";
-      const d=t.replace(/\D/g,"").slice(0,1);
-      writeAgeDigitAndAdvance(inp,idx,d);
+      const t=e.clipboardData?.getData("text")||"";
+      const d=t.replace(/\D/g,"").charAt(0);
+      if(!d)return;
+      e.preventDefault();
+      inp.value=d;
+      showAgeErr("");
+      updateAgeContinueBtn();
+      if(idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
     });
   });
   if(ageGate){
@@ -3270,11 +3294,9 @@ document.addEventListener("DOMContentLoaded",()=>{
       const d=t.replace(/\D/g,"").slice(0,4).split("");
       if(!d.length)return;
       e.preventDefault();
-      withAgeSuppress(()=>{
-        ageDigits.forEach((el,i)=>{el.value=d[i]||"";});
-      });
+      ageDigits.forEach((el,i)=>{el.value=d[i]||"";});
       const j=Math.min(d.length,3);
-      if(ageDigits[j])focusAgeDigit(j);
+      if(ageDigits[j])focusAgeDigitIndex(j);
       showAgeErr("");
       updateAgeContinueBtn();
     });
