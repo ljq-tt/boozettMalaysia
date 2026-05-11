@@ -1936,8 +1936,8 @@ body.nav-mob-open{overflow:hidden}
     <div class="age-gate__privacy-panel" id="agePrivacyPanel"><span data-i18n="age.privacyBody"></span></div>
     <p class="age-gate__error" id="ageError" role="alert"></p>
     <div class="age-gate__btns">
-      <button type="button" class="btn btn--solid" id="ageContinue" disabled data-i18n="age.continue">Continue</button>
-      <button type="button" class="btn" id="ageDecline" data-i18n="age.no">Decline</button>
+      <button type="button" class="btn btn--solid" id="ageContinue" disabled><span data-i18n="age.continue">Continue</span></button>
+      <button type="button" class="btn" id="ageDecline"><span data-i18n="age.no">Decline</span></button>
     </div>
     <p class="age-gate__legal" data-i18n="age.footer">Drink with intention. We do not sell to minors.</p>
   </div>
@@ -3087,7 +3087,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   const AGE_LS_OK = "han_age_yob_ok_v1";
   const AGE_SS_OK = "han_age_yob_sess_v1";
   const ageGate=document.getElementById("ageGate");
-  const ageDigits=[...document.querySelectorAll(".age-gate__digit")];
   const ageContinue=document.getElementById("ageContinue");
   const ageRemember=document.getElementById("ageRemember");
   const ageError=document.getElementById("ageError");
@@ -3106,8 +3105,39 @@ document.addEventListener("DOMContentLoaded",()=>{
     setAgeLock(false);
     document.body.style.overflow="";
   }
+  /** Map one Unicode scalar to ASCII 0–9 when possible (full‑width digits, Arabic‑Indic, etc.). */
+  function ageAsciiDigit(ch){
+    if(!ch)return "";
+    const cp=typeof ch==="string"?ch.codePointAt(0):NaN;
+    if(cp>=48&&cp<=57)return String.fromCharCode(cp);
+    if(cp>=65296&&cp<=65305)return String.fromCharCode(cp-65296+48);
+    if(cp>=1632&&cp<=1641)return String.fromCharCode(cp-1632+48);
+    if(cp>=1776&&cp<=1785)return String.fromCharCode(cp-1776+48);
+    return "";
+  }
+  function ageDigitEl(i){
+    return document.getElementById("ageD"+String(i));
+  }
+  function ageFirstAsciiDigit(str){
+    for(const ch of String(str||"")){
+      const a=ageAsciiDigit(ch);
+      if(/^([0-9])$/.test(a))return a;
+    }
+    return "";
+  }
+  function sanitizeAgeDigitInput(inp){
+    if(!inp)return;
+    const d=ageFirstAsciiDigit(inp.value||"");
+    inp.value=d.slice(0,1);
+  }
   function yearJoined(){
-    return ageDigits.map(el=>String(el.value||"").replace(/\D/g,"").slice(-1)).join("");
+    let out="";
+    for(let i=0;i<4;i++){
+      const el=ageDigitEl(i);
+      if(!el){out+="";continue;}
+      out+=(ageFirstAsciiDigit(el.value)||"").slice(0,1);
+    }
+    return out;
   }
   function updateAgeContinueBtn(){
     if(ageContinue)ageContinue.disabled=(yearJoined().length!==4);
@@ -3129,7 +3159,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     return true;
   }
   function acceptAgeGate(){
-    if(!ageContinue||ageContinue.disabled)return;
+    if(!ageContinue)return;
     if(!validateBirthYear())return;
     try{
       if(ageRemember&&ageRemember.checked){
@@ -3157,7 +3187,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     setAgeLock(true);
     if(ageGate)ageGate.style.display="flex";
     updateAgeContinueBtn();
-    requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus({preventScroll:true});});
+    requestAnimationFrame(()=>{const a0=ageDigitEl(0);if(a0)a0.focus({preventScroll:true});});
   }
   /** Single digit 0–9 from keydown (desktop + most mobile); null if not a number key. */
   function ageDigitFromKeyEvent(e){
@@ -3172,10 +3202,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     return null;
   }
   let ageDigitNavSeq=0;
-  /** Move focus after the DOM applies the digit (fixes iOS / WebView timing). */
   function focusAgeDigitIndex(i){
-    if(i<0||i>=ageDigits.length)return;
-    const el=ageDigits[i];
+    if(i<0||i>3)return;
+    const el=ageDigitEl(i);
+    if(!el)return;
     const mySeq=++ageDigitNavSeq;
     const run=()=>{
       if(mySeq!==ageDigitNavSeq)return;
@@ -3192,31 +3222,56 @@ document.addEventListener("DOMContentLoaded",()=>{
     window.setTimeout(run,0);
     window.setTimeout(run,16);
   }
-  ageDigits.forEach((inp,idx)=>{
-    inp.addEventListener("beforeinput",(e)=>{
-      if(!e.cancelable||e.ctrlKey||e.metaKey||e.altKey){return;}
+  function ageDigitTarget(evTarget){
+    const t=evTarget;
+    if(!(t instanceof Element))return null;
+    const inp=t.closest("input.age-gate__digit");
+    if(!inp||!ageGate||!ageGate.contains(inp))return null;
+    const idx=parseInt(inp.getAttribute("data-yi")||"",10);
+    if(!Number.isFinite(idx)||idx<0||idx>3)return null;
+    return {inp,idx};
+  }
+  /** Clipboard digits as ASCII string (handles full‑width). */
+  function ageDigitsFromClipboardText(str){
+    let out="";
+    for(const ch of String(str||"")){
+      const x=ageAsciiDigit(ch);
+      if(/^([0-9])$/.test(x))out+=x;
+    }
+    return out.slice(0,4);
+  }
+  if(ageGate){
+    ageGate.addEventListener("beforeinput",(e)=>{
+      const hit=ageDigitTarget(e.target);
+      if(!hit)return;
+      const {inp,idx}=hit;
+      if(!e.cancelable||e.ctrlKey||e.metaKey||e.altKey)return;
       const it=e.inputType||"";
       if(it==="insertLineBreak"||it==="insertParagraph"||it==="insertFromDrop"){
         e.preventDefault();
         return;
       }
       if(e.inputType==="insertText"){
-        const t=e.data!=null?String(e.data):"";
-        if(!t)return;
-        if(/^([0-9])$/.test(t)){return;}
-        const picked=t.replace(/\D/g,"").charAt(0);
+        const txt=e.data!=null?String(e.data):"";
+        if(!txt)return;
+        if(/^([0-9])$/.test(txt))return;
+        const picked=ageFirstAsciiDigit(txt)||(txt.replace(/\D/g,"").charAt(0));
         e.preventDefault();
-        inp.value=picked||"";
+        inp.value=/^([0-9])$/.test(picked)?picked:"";
         showAgeErr("");
         updateAgeContinueBtn();
-        if(picked&&idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
+        if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
       }
     });
-    inp.addEventListener("keydown",(e)=>{
-      if(e.ctrlKey||e.metaKey||e.altKey){return;}
+    ageGate.addEventListener("keydown",(e)=>{
+      const hit=ageDigitTarget(e.target);
+      if(!hit)return;
+      const {inp,idx}=hit;
+      if(e.ctrlKey||e.metaKey||e.altKey)return;
       if(e.key==="Enter"){
         e.preventDefault();
-        if(ageContinue&&!ageContinue.disabled)acceptAgeGate();
+        updateAgeContinueBtn();
+        acceptAgeGate();
         return;
       }
       if(e.key==="Backspace"){
@@ -3226,7 +3281,8 @@ document.addEventListener("DOMContentLoaded",()=>{
           showAgeErr("");
         }else if(idx>0){
           e.preventDefault();
-          ageDigits[idx-1].value="";
+          const prev=ageDigitEl(idx-1);
+          if(prev)prev.value="";
           focusAgeDigitIndex(idx-1);
           updateAgeContinueBtn();
           showAgeErr("");
@@ -3238,70 +3294,69 @@ document.addEventListener("DOMContentLoaded",()=>{
         focusAgeDigitIndex(idx-1);
         return;
       }
-      if(e.key==="ArrowRight"&&idx<ageDigits.length-1){
+      if(e.key==="ArrowRight"&&idx<3){
         e.preventDefault();
         focusAgeDigitIndex(idx+1);
         return;
       }
-      if(e.key==="Tab"||e.key==="Escape"){return;}
-      const d=ageDigitFromKeyEvent(e);
-      if(d!==null){
+      if(e.key==="Tab"||e.key==="Escape")return;
+      const dk=ageDigitFromKeyEvent(e);
+      if(dk!==null){
         e.preventDefault();
-        inp.value=d;
+        inp.value=dk;
         showAgeErr("");
         updateAgeContinueBtn();
-        if(idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
+        if(idx<3)focusAgeDigitIndex(idx+1);
         return;
       }
-      if(e.key.length===1){
+      if(e.key.length===1)e.preventDefault();
+    });
+    ageGate.addEventListener("input",(e)=>{
+      const hit=ageDigitTarget(e.target);
+      if(!hit)return;
+      const {inp,idx}=hit;
+      sanitizeAgeDigitInput(inp);
+      showAgeErr("");
+      updateAgeContinueBtn();
+      if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
+    });
+    ageGate.addEventListener("keyup",(e)=>{
+      const hit=ageDigitTarget(e.target);
+      if(!hit)return;
+      const {inp,idx}=hit;
+      const skip=new Set(["Tab","Escape","ArrowLeft","ArrowRight","Shift","Control","Alt","Meta","Backspace","Enter"]);
+      if(skip.has(e.key))return;
+      sanitizeAgeDigitInput(inp);
+      updateAgeContinueBtn();
+      if(inp.value&&idx<3&&document.activeElement===inp)focusAgeDigitIndex(idx+1);
+    });
+    ageGate.addEventListener("paste",(e)=>{
+      const hit=ageDigitTarget(e.target);
+      const t=e.clipboardData?.getData("text")||"";
+      const digits=ageDigitsFromClipboardText(t);
+      if(digits.length>=2){
         e.preventDefault();
+        for(let i=0;i<4;i++){
+          const el=ageDigitEl(i);
+          if(el)el.value=digits[i]||"";
+        }
+        focusAgeDigitIndex(Math.min(digits.length,4)-1);
+        showAgeErr("");
+        updateAgeContinueBtn();
+        return;
       }
-    });
-    inp.addEventListener("input",()=>{
-      let raw=String(inp.value||"").replace(/\D/g,"");
-      if(raw.length>1){raw=raw.slice(-1);}
-      inp.value=raw;
-      showAgeErr("");
-      updateAgeContinueBtn();
-      if(raw.length===1&&idx<ageDigits.length-1){
-        focusAgeDigitIndex(idx+1);
+      if(hit&&digits.length===1){
+        e.preventDefault();
+        hit.inp.value=digits;
+        showAgeErr("");
+        updateAgeContinueBtn();
+        if(hit.idx<3)focusAgeDigitIndex(hit.idx+1);
+        return;
       }
-    });
-    inp.addEventListener("keyup",(e)=>{
-      const nav=new Set(["Tab","Escape","ArrowLeft","ArrowRight","Shift","Control","Alt","Meta"]);
-      if(nav.has(e.key)){return;}
-      let raw=String(inp.value||"").replace(/\D/g,"").slice(0,1);
-      inp.value=raw;
-      updateAgeContinueBtn();
-      if(raw&&idx<ageDigits.length-1&&document.activeElement===inp){
-        focusAgeDigitIndex(idx+1);
-      }
-    });
-    inp.addEventListener("paste",(e)=>{
-      const t=e.clipboardData?.getData("text")||"";
-      const d=t.replace(/\D/g,"").charAt(0);
-      if(!d)return;
-      e.preventDefault();
-      inp.value=d;
-      showAgeErr("");
-      updateAgeContinueBtn();
-      if(idx<ageDigits.length-1){focusAgeDigitIndex(idx+1);}
-    });
-  });
-  if(ageGate){
-    ageGate.addEventListener("paste",e=>{
-      const t=e.clipboardData?.getData("text")||"";
-      const d=t.replace(/\D/g,"").slice(0,4).split("");
-      if(!d.length)return;
-      e.preventDefault();
-      ageDigits.forEach((el,i)=>{el.value=d[i]||"";});
-      const j=Math.min(d.length,3);
-      if(ageDigits[j])focusAgeDigitIndex(j);
-      showAgeErr("");
-      updateAgeContinueBtn();
+      if(hit&&digits.length===0)e.preventDefault();
     });
   }
-  if(ageContinue)ageContinue.onclick=acceptAgeGate;
+  if(ageContinue)ageContinue.addEventListener("click",acceptAgeGate);
   const ageDecline=document.getElementById("ageDecline");
   if(ageDecline)ageDecline.onclick=()=>{
     document.body.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0E0B08;color:#E8DCC0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;text-align:center;padding:24px;letter-spacing:.02em;line-height:1.3">Some other evening,<br>perhaps.</div>`;
@@ -3312,7 +3367,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   // Lang & currency
   document.getElementById("langSelect").onchange=e=>{
-    state.lang=e.target.value;applyI18N();renderGrid();updateCart();updateFeaturedPrices();
+    state.lang=e.target.value;applyI18N();updateAgeContinueBtn();renderGrid();updateCart();updateFeaturedPrices();
     const ae=document.getElementById("ageError");if(ae)ae.textContent="";
     try{localStorage.setItem("han_lang",state.lang)}catch(err){}
   };
@@ -3469,6 +3524,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   // Init
   applyI18N();
+  updateAgeContinueBtn();
   loadProducts();
   updateCart();
   setupReveal();
