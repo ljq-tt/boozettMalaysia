@@ -434,34 +434,52 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   justify-content:flex-start;
   min-width:0;
 }
+.nav__center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:clamp(16px,2vw,34px);
+  flex-wrap:wrap;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--bone-mute);
+}
+.nav__link{
+  position:relative;
+  padding:8px 0;
+  transition:color .25s ease;
+}
+.nav__link:hover{color:var(--bone)}
+.nav__link.is-active{color:var(--bone)}
+.nav__link.is-active::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
+}
 .nav__menu-btn{
   display:flex;
   align-items:center;
   justify-content:center;
-  width:44px;
-  height:44px;
+  width:40px;
+  height:40px;
   padding:0;
-  margin-right:4px;
   border:1px solid var(--line);
-  background:var(--card);
+  background:transparent;
   color:var(--bone-mute);
-  border-radius:12px;
+  border-radius:999px;
   cursor:pointer;
   flex-shrink:0;
-  transition:border-color .3s ease,color .3s ease,background .3s ease;
+  transition:border-color .3s ease,color .3s ease,background .3s ease,transform .2s ease;
   -webkit-appearance:none;
   appearance:none;
 }
-.nav__menu-btn:hover{
-  border-color:var(--gold-deep);
-  color:var(--bone);
-}
+.nav__menu-btn:hover{border-color:var(--gold-deep);color:var(--bone);transform:translateY(-1px)}
 .nav__burger{
   display:flex;
   flex-direction:column;
   justify-content:center;
-  gap:6px;
-  width:18px;
+  gap:5px;
+  width:16px;
 }
 .nav__burger span{
   display:block;
@@ -1890,6 +1908,9 @@ body.nav-mob-open{overflow:hidden}
    ================================================================ */
 /* Drawer holds all locales’ link labels — no horizontal row vs centred wordmark overlap */
 
+@media(max-width:1180px){
+  .nav__center{display:none}
+}
 @media(max-width:980px){
   .grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
   .section-head{grid-template-columns:1fr;gap:24px}
@@ -1911,6 +1932,7 @@ body.nav-mob-open{overflow:hidden}
   .spec-grid{grid-template-columns:1fr}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
+  .nav__center{display:none}
 }
 </style>
 </head>
@@ -1990,20 +2012,28 @@ body.nav-mob-open{overflow:hidden}
 <nav class="nav" aria-label="Primary">
   <div class="container nav__inner">
     <div class="nav__start">
-      <button type="button" class="nav__menu-btn" id="navMenuOpen" aria-expanded="false" aria-controls="navMobilePanel">
-        <span class="nav__burger" aria-hidden="true"><span></span><span></span><span></span></span>
-      </button>
+      <a href="#" class="logo">
+        <span class="logo__mark cjk">漢</span>
+        <span>Maison Han</span>
+      </a>
     </div>
-    <a href="#" class="logo">
-      <span class="logo__mark cjk">漢</span>
-      <span>Maison Han</span>
-    </a>
+    <div class="nav__center" aria-label="Primary categories">
+      <a href="#collection" class="nav__link" data-cat-link="all">Home</a>
+      <a href="#collection" class="nav__link" data-cat-link="spirits">Spirits</a>
+      <a href="#collection" class="nav__link" data-cat-link="whisky">Whisky</a>
+      <a href="#collection" class="nav__link" data-cat-link="wine">Wine</a>
+      <a href="#collection" class="nav__link" data-cat-link="sparkling">Sparkling</a>
+      <a href="#collection" class="nav__link" data-cat-link="others">Others</a>
+    </div>
     <div class="nav__cta">
       <button type="button" class="nav__search" id="navSearch" data-i18n="nav.search">Search</button>
       <span class="nav__cart" id="cartOpen">
         <span data-i18n="nav.cart">Cart</span>
         <span class="cart-count" id="cartCount">0</span>
       </span>
+      <button type="button" class="nav__menu-btn" id="navMenuOpen" aria-expanded="false" aria-controls="navMobilePanel">
+        <span class="nav__burger" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
     </div>
   </div>
 </nav>
