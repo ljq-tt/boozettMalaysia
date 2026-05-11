@@ -3,7 +3,9 @@
 // Netlify backup: netlify/functions/list-products.js (kept; do not delete).
 //
 // Env:
-//   MAISON_HAN_API_BASE - TaTa API origin (no trailing slash); GET {base}/storefront/products
+//   MAISON_HAN_API_BASE - TaTa public origin + servlet context-path, NO trailing slash.
+//     Example: https://api.example.com/prod-api  (NOT https://api.example.com alone when backend lives under /prod-api).
+//     Catalog URL is always: {MAISON_HAN_API_BASE}/storefront/products
 //   PRODUCT_IMAGE_BASE - optional; prefix relative image URLs (/profile/...) when using Stripe-only catalog
 //   STRIPE_SECRET_KEY - required when MAISON_HAN_API_BASE is unset (Stripe catalog fallback).
 import {

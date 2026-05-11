@@ -687,6 +687,11 @@ body.nav-mob-open{overflow:hidden}
   font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;
   letter-spacing:.04em;
 }
+.grid-loading__hint{
+  font-family:"Manrope",sans-serif;font-style:normal;font-size:13px;
+  margin-top:14px;color:var(--bone-faint);max-width:40rem;margin-left:auto;margin-right:auto;
+  line-height:1.45;letter-spacing:.02em;
+}
 
 /* Collection pagination */
 .pager{
@@ -2099,7 +2104,7 @@ en:{
   "top.1":"Hand-Verified Provenance","top.2":"Insured Worldwide Delivery","top.3":"Private Cellar Concierge",
   "nav.collection":"Collection","nav.maotai":"Moutai","nav.japan":"Japan","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
   "hero.no":"№ 001 — A House of Rare Pours","hero.sub":"A private cellar of vintage Moutai and aged Japanese whisky — sourced direct, sealed to provenance, brought to a single table.","hero.cta1":"View the Collection","hero.cta2":"Enter the Cellar",
-  "col.eyebrow":"№ 002 — Curated this season","col.title":"The <em>Collection</em>","col.lead":"Each pour in our house is hand-verified, vintage-confirmed, and accompanied by a certificate of provenance. We handle perhaps a hundred bottles a month — never more.","col.empty":"Nothing in this category yet.",
+  "col.eyebrow":"№ 002 — Curated this season","col.title":"The <em>Collection</em>","col.lead":"Each pour in our house is hand-verified, vintage-confirmed, and accompanied by a certificate of provenance. We handle perhaps a hundred bottles a month — never more.","col.empty":"Nothing in this category yet.","catalog.empty":"The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
   "filter.label":"Filter","filter.all":"All","filter.maotai":"Moutai &amp; Baijiu","filter.japan":"Japanese Whisky","filter.scotch":"Single Malt","filter.wine":"Vintage Wine","filter.cognac":"Cognac",
   "search.label":"Search collection","search.placeholder":"Name, distillery or №…","search.none":"No bottles match your search.",
   "prov.eyebrow":"№ 003 — Provenance","prov.title":"A bottle is only as<br>true as its journey.","prov.lead":"Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.","prov.cta":"Read the Provenance Standard",
@@ -2130,7 +2135,7 @@ en:{
   "top.1":"逐瓶溯源","top.2":"全球承保送达","top.3":"私人酒窖管家",
   "nav.collection":"典藏","nav.maotai":"茅台","nav.japan":"日本威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
   "hero.sub":"陈年茅台与日本威士忌的私人酒窖——直采、封藏、亲手送达每一张餐桌。","hero.cta1":"浏览典藏","hero.cta2":"进入私窖",
-  "col.eyebrow":"№ 002 — 本季精选","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆经手工核验、年份确认，附带溯源证书。每月仅经手百余瓶——从不更多。","col.empty":"此分类暂无酒款。",
+  "col.eyebrow":"№ 002 — 本季精选","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆经手工核验、年份确认，附带溯源证书。每月仅经手百余瓶——从不更多。","col.empty":"此分类暂无酒款。","catalog.empty":"商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
   "filter.label":"筛选","filter.all":"全部","filter.maotai":"茅台 & 白酒","filter.japan":"日本威士忌","filter.scotch":"单一麦芽","filter.wine":"年份葡萄酒","filter.cognac":"干邑",
   "search.label":"搜寻典藏","search.placeholder":"名称、酒厂或编号…","search.none":"没有符合搜寻条件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在于其行迹。","prov.lead":"市面上的假茅台，销量远胜真品。我们因此拒绝市面。","prov.cta":"阅读溯源标准",
@@ -2237,21 +2242,31 @@ const CURRENCY={
 // 若改回 Netlify：把下方 fetch 换成 /.netlify/functions/list-products，并确保 netlify.toml 里 redirects 已启用
 // Env：MAISON_HAN_API_BASE（TaTa，无尾斜杠）；未设则 Stripe 目录需 STRIPE_SECRET_KEY。缓存约 60s。
 let PRODUCTS = [];
+/** true after /list-products returned HTTP 200 + JSON（含空数组 []）*/
+let catalogFetchSucceeded = false;
 
 const PRODUCTS_PER_PAGE = 12;
 
 async function loadProducts(){
   const grid=document.getElementById("grid");
   const pager=document.getElementById("collectionPager");
+  catalogFetchSucceeded = false;
   if(pager){pager.hidden=true;pager.innerHTML=""}
   if(grid&&PRODUCTS.length===0){
     grid.innerHTML='<div class="grid-loading"><span class="cjk">候</span><p>Loading the cellar&hellip;</p></div>';
   }
   try{
     const res=await fetch("/list-products",{headers:{Accept:"application/json"}});
-    if(!res.ok)throw new Error("HTTP "+res.status);
-    const data=await res.json();
-    if(!Array.isArray(data))throw new Error("Bad payload");
+    const data=await res.json().catch(()=>null);
+    if(!res.ok){
+      const hint=(data&&data.error)?String(data.error):"HTTP "+res.status;
+      throw new Error(hint);
+    }
+    if(!Array.isArray(data)){
+      const hint=(data&&data.error)?String(data.error):"Bad payload (expected JSON array)";
+      throw new Error(hint);
+    }
+    catalogFetchSucceeded=true;
     PRODUCTS=data;
     state.page=1;
     renderGrid();
@@ -2259,8 +2274,10 @@ async function loadProducts(){
     updateCart();
   }catch(err){
     console.error("loadProducts failed:",err);
+    catalogFetchSucceeded=false;
     if(grid){
-      grid.innerHTML='<div class="grid-loading"><span class="cjk">空</span><p>Could not reach the cellar. Please refresh.</p></div>';
+      const msg=String(err&&err.message?err.message:err);
+      grid.innerHTML='<div class="grid-loading"><span class="cjk">空</span><p>Could not reach the cellar.</p><p class="grid-loading__hint">'+msg.replace(/</g,"&lt;")+'</p></div>';
     }
   }
 }
@@ -2454,6 +2471,12 @@ function renderGrid(){
   const pager=document.getElementById("collectionPager");
   if(PRODUCTS.length===0){
     if(pager){pager.hidden=true;pager.innerHTML=""}
+    if(grid){
+      if(!catalogFetchSucceeded)return;
+      const dict=I18N[state.lang]||I18N.en;
+      const emptyCatalog=dict["catalog.empty"]!==undefined?dict["catalog.empty"]:I18N.en["catalog.empty"];
+      grid.innerHTML='<div class="grid-loading"><span class="cjk">空</span><p>'+emptyCatalog+'</p></div>';
+    }
     return;
   }
   const filtered=getCollectionFiltered();
