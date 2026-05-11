@@ -338,7 +338,8 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   opacity:.38;cursor:not-allowed;color:#0E0B08;background:rgba(184,153,104,.42);border-color:transparent;
 }
 .age-gate__btns .btn--solid.age-continue-wait:active{transform:none}
-.age-gate__btns #ageDecline{font-size:11px;letter-spacing:.24em;color:var(--age-muted);border-color:rgba(254,246,238,.38);}
+.age-gate__btns #ageContinue > span{display:inline-block;pointer-events:none}
+.age-gate__btns #ageContinue{position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(254,246,238,.22)}
 .age-gate__btns #ageDecline:hover{color:var(--age-highlight);border-color:var(--age-highlight);}
 .age-gate__legal{
   font-family:"Manrope",sans-serif;
@@ -2489,7 +2490,7 @@ en:{
   "guides.c.cat":"Celebrate louder","guides.c.title":"Champagne &amp; sparkling","guides.c.body":"Oyster lunches, countdowns on the balcony, studio-apartment victories.","guides.c.brands":"Names we rotate · Jacques Selosse · Salon energy · Grande marques &amp; grower gems",
   "guides.v.cat":"Table wines","guides.v.title":"Mid-week pours that still feel special","guides.v.body":"Burgundy through Napa — bottles that behave at supper without needing a TED talk.","guides.v.brands":"Sommelier flirtations · Sassicaia mood · Leroy-aligned Burgundy hunts",
   "guides.g.cat":"Liquid gifts","guides.g.title":"Cognac &amp; collectible spirits","guides.g.body":"Decanters, fireside cigars (where legal) and trophies with paperwork intact.","guides.g.brands":"Gifting shorthand · Tesseron stacks · Rémy/Hennessy Paradis moods",
-  "spot.section":"Featured cellar lanes","spot.brands.baijiu":"Representative pours · Vintage Moutai Feitian arcs · Luzhou Laojiao · Guojiao 1573 silhouettes","spot.brands.whisk":"Representative pours · Hibiki · Yamazaki · Yoichi · Nikka · Ichiro · Karuizawa mythologies","The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
+  "spot.section":"Featured cellar lanes","spot.brands.baijiu":"Representative pours · Vintage Moutai Feitian arcs · Luzhou Laojiao · Guojiao 1573 silhouettes","spot.brands.whisk":"Representative pours · Hibiki · Yamazaki · Yoichi · Nikka · Ichiro · Karuizawa mythologies","catalog.empty":"The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
   "filter.label":"Filter","filter.all":"All","filter.baijiu":"Chinese baijiu","filter.whisky":"Whisky","filter.wine":"Wine · still &amp; red","filter.sparkling":"Champagne &amp; sparkling","filter.cognac":"Cognac",
   "search.label":"Search collection","search.placeholder":"Name, distillery or №…","search.none":"No bottles match your search.",
   "prov.eyebrow":"№ 003 — Provenance","prov.title":"A bottle is only as<br>true as its journey.","prov.lead":"Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.","prov.cta":"Read the Provenance Standard",
@@ -2527,7 +2528,7 @@ en:{
   "guides.c.cat":"派对起泡","guides.c.title":"香槟与起泡酒","guides.c.body":"生蚝早餐、露台倒数、升职加薪——小农香槟与经典名庄共事。","guides.c.brands":"轮换座次 · Jacques Selosse 美学 · Salon 情结 · grandes marques",
   "guides.v.cat":"家常佐餐","guides.v.title":"我们真的会周中开的红葡萄酒","guides.v.body":"勃艮第、波尔多与美国精品——佐餐好喝，不靠长篇酒评撑场。","guides.v.brands":"侍酒师的偏爱 · Sassicaia 氛围 · 「Leroy 系」寻宝",
   "guides.g.cat":"礼赠与收藏","guides.g.title":"干邑与限量烈酒","guides.g.body":"夜谈、雪茄角（在法律允许处）——附完整票据与运输体面的收藏级酒款。","guides.g.brands":"礼金暗示 · Tesseron · Rémy / Hennessy Paradis 级灵感",
-  "spot.section":"两大专题酒窖","spot.brands.baijiu":"代表性风格 · 茅台飞天年代封存 · 泸州老窖 · 国窖 1573 气质","spot.brands.whisk":"代表性风格 · 响 · 山崎 · 余市 · 一郎 · 「轻井泽」叙事款","商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
+  "spot.section":"两大专题酒窖","spot.brands.baijiu":"代表性风格 · 茅台飞天年代封存 · 泸州老窖 · 国窖 1573 气质","spot.brands.whisk":"代表性风格 · 响 · 山崎 · 余市 · 一郎 · 「轻井泽」叙事款","catalog.empty":"商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
   "filter.label":"筛选","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 红酒及其他","filter.sparkling":"香槟 · 起泡酒","filter.cognac":"干邑",
   "search.label":"搜寻典藏","search.placeholder":"名称、酒厂或编号…","search.none":"没有符合搜寻条件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在于其行迹。","prov.lead":"市面上的假茅台，销量远胜真品。我们因此拒绝市面。","prov.cta":"阅读溯源标准",
@@ -3143,6 +3144,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
   function updateAgeContinueBtn(){
     if(!ageContinue)return;
+    ageContinue.disabled=false;
+    ageContinue.removeAttribute("disabled");
     const ok=yearJoined().length===4;
     ageContinue.setAttribute("aria-disabled",ok?"false":"true");
     ageContinue.classList.toggle("age-continue-wait",!ok);
@@ -3163,8 +3166,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(cur-y<21){showAgeErr("young");return false;}
     return true;
   }
+  let ageContinuePointerDown=false;
   function acceptAgeGate(){
-    if(!ageContinue)return;
+    if(!ageContinue||!ageGate)return;
+    try{
+      if(window.getComputedStyle(ageGate).display==="none")return;
+    }catch(e){return;}
     if(!validateBirthYear())return;
     try{
       if(ageRemember&&ageRemember.checked){
@@ -3345,7 +3352,27 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
   }
   wireAgeGateDigits();
-  if(ageContinue)ageContinue.addEventListener("click",acceptAgeGate);
+  if(ageGate&&ageContinue){
+    ageGate.addEventListener("click",(ev)=>{
+      const t=ev.target;
+      const btn=t&&typeof t.closest==="function"?t.closest("#ageContinue"):null;
+      if(btn!==ageContinue)return;
+      acceptAgeGate();
+    },true);
+    ageContinue.onpointerdown=()=>{ageContinuePointerDown=true;};
+    ageContinue.onpointercancel=ageContinue.onpointerup=ageContinue.onpointerleave=()=>{
+      ageContinuePointerDown=false;
+    };
+    ageContinue.addEventListener("touchend",(ev)=>{
+      if(!ageContinuePointerDown)return;
+      ageContinuePointerDown=false;
+      const t=ev.target;
+      const btn=t&&typeof t.closest==="function"?t.closest("#ageContinue"):null;
+      if(btn!==ageContinue)return;
+      ev.preventDefault();
+      acceptAgeGate();
+    },{passive:false});
+  }
   const ageDecline=document.getElementById("ageDecline");
   if(ageDecline)ageDecline.onclick=()=>{
     document.body.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0E0B08;color:#E8DCC0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;text-align:center;padding:24px;letter-spacing:.02em;line-height:1.3">Some other evening,<br>perhaps.</div>`;
