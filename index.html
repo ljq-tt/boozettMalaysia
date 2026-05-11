@@ -2739,7 +2739,12 @@ function stripHtml(s){
 }
 
 function getCollectionFiltered(){
-  return state.cat==="all" ? PRODUCTS : PRODUCTS.filter(p=>p.cat===state.cat);
+  return state.cat==="all"
+    ? PRODUCTS
+    : PRODUCTS.filter(p=>{
+        if(state.cat==="spirits")return p.cat==="spirits"||p.cat==="baijiu";
+        return p.cat===state.cat;
+      });
 }
 
 /* ============ CURRENCY ============ */
@@ -3388,6 +3393,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       document.querySelectorAll(".collection-nav__chip").forEach(b=>b.classList.toggle("is-active",b===chip));
       state.page=1;
       renderGrid();
+      scrollToCollectionTop();
     });
   });
 
