@@ -332,10 +332,12 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   letter-spacing:.22em;
 }
 .age-gate__btns .btn--solid{background:var(--gold);color:#0E0B08;border-color:var(--gold);}
-.age-gate__btns .btn--solid:not(:disabled):hover{background:#c5a879;color:#0E0B08;border-color:#c5a879;}
-.age-gate__btns .btn--solid:disabled{
+.age-gate__btns .btn--solid:not(.age-continue-wait):hover{background:#c5a879;color:#0E0B08;border-color:#c5a879;}
+.age-gate__btns .btn--solid:disabled,
+.age-gate__btns .btn--solid.age-continue-wait{
   opacity:.38;cursor:not-allowed;color:#0E0B08;background:rgba(184,153,104,.42);border-color:transparent;
 }
+.age-gate__btns .btn--solid.age-continue-wait:active{transform:none}
 .age-gate__btns #ageDecline{font-size:11px;letter-spacing:.24em;color:var(--age-muted);border-color:rgba(254,246,238,.38);}
 .age-gate__btns #ageDecline:hover{color:var(--age-highlight);border-color:var(--age-highlight);}
 .age-gate__legal{
@@ -1925,10 +1927,10 @@ body.nav-mob-open{overflow:hidden}
     <p class="age-gate__sub" id="ageTaglineDesc" data-i18n="age.sub">This house serves only those of legal drinking age in their country of residence.</p>
     <p class="age-gate__year-prompt" data-i18n="age.yearPrompt">Please enter your year of birth:</p>
     <div class="age-gate__digits" role="group" aria-label="Year of birth">
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="0" id="ageD0" aria-label="Birth year digit 1" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="1" id="ageD1" aria-label="Birth year digit 2" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
-      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" autocorrect="off" spellcheck="false" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="0" id="ageD0" aria-label="Birth year digit 1" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="1" id="ageD1" aria-label="Birth year digit 2" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
+      <input class="age-gate__digit" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
     </div>
     <label class="age-gate__remember"><input type="checkbox" id="ageRemember" /> <span data-i18n="age.remember">Remember this device</span></label>
     <p class="age-gate__disclaimer"><span data-i18n="age.disclaimer"></span></p>
@@ -1936,7 +1938,7 @@ body.nav-mob-open{overflow:hidden}
     <div class="age-gate__privacy-panel" id="agePrivacyPanel"><span data-i18n="age.privacyBody"></span></div>
     <p class="age-gate__error" id="ageError" role="alert"></p>
     <div class="age-gate__btns">
-      <button type="button" class="btn btn--solid" id="ageContinue" disabled><span data-i18n="age.continue">Continue</span></button>
+      <button type="button" class="btn btn--solid age-continue-wait" id="ageContinue" aria-disabled="true"><span data-i18n="age.continue">Continue</span></button>
       <button type="button" class="btn" id="ageDecline"><span data-i18n="age.no">Decline</span></button>
     </div>
     <p class="age-gate__legal" data-i18n="age.footer">Drink with intention. We do not sell to minors.</p>
@@ -2471,7 +2473,7 @@ body.nav-mob-open{overflow:hidden}
      ================================================================ -->
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false">
 /* ============ I18N ============ */
 const I18N={
 en:{
@@ -3140,7 +3142,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     return out;
   }
   function updateAgeContinueBtn(){
-    if(ageContinue)ageContinue.disabled=(yearJoined().length!==4);
+    if(!ageContinue)return;
+    const ok=yearJoined().length===4;
+    ageContinue.setAttribute("aria-disabled",ok?"false":"true");
+    ageContinue.classList.toggle("age-continue-wait",!ok);
   }
   function showAgeErr(which){
     if(!ageError)return;
@@ -3222,15 +3227,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     window.setTimeout(run,0);
     window.setTimeout(run,16);
   }
-  function ageDigitTarget(evTarget){
-    const t=evTarget;
-    if(!(t instanceof Element))return null;
-    const inp=t.closest("input.age-gate__digit");
-    if(!inp||!ageGate||!ageGate.contains(inp))return null;
-    const idx=parseInt(inp.getAttribute("data-yi")||"",10);
-    if(!Number.isFinite(idx)||idx<0||idx>3)return null;
-    return {inp,idx};
-  }
   /** Clipboard digits as ASCII string (handles full‑width). */
   function ageDigitsFromClipboardText(str){
     let out="";
@@ -3240,122 +3236,115 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     return out.slice(0,4);
   }
-  if(ageGate){
-    ageGate.addEventListener("beforeinput",(e)=>{
-      const hit=ageDigitTarget(e.target);
-      if(!hit)return;
-      const {inp,idx}=hit;
-      if(!e.cancelable||e.ctrlKey||e.metaKey||e.altKey)return;
-      const it=e.inputType||"";
-      if(it==="insertLineBreak"||it==="insertParagraph"||it==="insertFromDrop"){
-        e.preventDefault();
-        return;
-      }
-      if(e.inputType==="insertText"){
-        const txt=e.data!=null?String(e.data):"";
-        if(!txt)return;
-        if(/^([0-9])$/.test(txt))return;
-        const picked=ageFirstAsciiDigit(txt)||(txt.replace(/\D/g,"").charAt(0));
-        e.preventDefault();
-        inp.value=/^([0-9])$/.test(picked)?picked:"";
+  function wireAgeGateDigits(){
+    if(!ageGate)return;
+    for(let idx=0;idx<4;idx++){
+      const inp=ageDigitEl(idx);
+      if(!inp)continue;
+      inp.addEventListener("beforeinput",(e)=>{
+        if(!e.cancelable||e.ctrlKey||e.metaKey||e.altKey)return;
+        const it=e.inputType||"";
+        if(it==="insertLineBreak"||it==="insertParagraph"||it==="insertFromDrop"){
+          e.preventDefault();
+          return;
+        }
+        if(e.inputType==="insertText"){
+          const txt=e.data!=null?String(e.data):"";
+          if(!txt)return;
+          if(/^([0-9])$/.test(txt))return;
+          const picked=ageFirstAsciiDigit(txt)||(txt.replace(/\D/g,"").charAt(0));
+          e.preventDefault();
+          inp.value=/^([0-9])$/.test(picked)?picked:"";
+          showAgeErr("");
+          updateAgeContinueBtn();
+          if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
+        }
+      });
+      inp.addEventListener("keydown",(e)=>{
+        if(e.ctrlKey||e.metaKey||e.altKey)return;
+        if(e.key==="Enter"){
+          e.preventDefault();
+          updateAgeContinueBtn();
+          acceptAgeGate();
+          return;
+        }
+        if(e.key==="Backspace"){
+          if(inp.value){
+            inp.value="";
+            updateAgeContinueBtn();
+            showAgeErr("");
+          }else if(idx>0){
+            e.preventDefault();
+            const prev=ageDigitEl(idx-1);
+            if(prev)prev.value="";
+            focusAgeDigitIndex(idx-1);
+            updateAgeContinueBtn();
+            showAgeErr("");
+          }
+          return;
+        }
+        if(e.key==="ArrowLeft"&&idx>0){
+          e.preventDefault();
+          focusAgeDigitIndex(idx-1);
+          return;
+        }
+        if(e.key==="ArrowRight"&&idx<3){
+          e.preventDefault();
+          focusAgeDigitIndex(idx+1);
+          return;
+        }
+        if(e.key==="Tab"||e.key==="Escape")return;
+        const dk=ageDigitFromKeyEvent(e);
+        if(dk!==null){
+          e.preventDefault();
+          inp.value=dk;
+          showAgeErr("");
+          updateAgeContinueBtn();
+          if(idx<3)focusAgeDigitIndex(idx+1);
+          return;
+        }
+        if(typeof e.key==="string"&&e.key.length===1)e.preventDefault();
+      });
+      inp.addEventListener("input",()=>{
+        sanitizeAgeDigitInput(inp);
         showAgeErr("");
         updateAgeContinueBtn();
         if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
-      }
-    });
-    ageGate.addEventListener("keydown",(e)=>{
-      const hit=ageDigitTarget(e.target);
-      if(!hit)return;
-      const {inp,idx}=hit;
-      if(e.ctrlKey||e.metaKey||e.altKey)return;
-      if(e.key==="Enter"){
-        e.preventDefault();
+      });
+      inp.addEventListener("keyup",(e)=>{
+        const skip=new Set(["Tab","Escape","ArrowLeft","ArrowRight","Shift","Control","Alt","Meta","Backspace","Enter"]);
+        if(skip.has(e.key))return;
+        sanitizeAgeDigitInput(inp);
         updateAgeContinueBtn();
-        acceptAgeGate();
-        return;
-      }
-      if(e.key==="Backspace"){
-        if(inp.value){
-          inp.value="";
-          updateAgeContinueBtn();
-          showAgeErr("");
-        }else if(idx>0){
-          e.preventDefault();
-          const prev=ageDigitEl(idx-1);
-          if(prev)prev.value="";
-          focusAgeDigitIndex(idx-1);
-          updateAgeContinueBtn();
-          showAgeErr("");
+        if(inp.value&&idx<3&&document.activeElement===inp)focusAgeDigitIndex(idx+1);
+      });
+      inp.addEventListener("compositionend",()=>{
+        sanitizeAgeDigitInput(inp);
+        showAgeErr("");
+        updateAgeContinueBtn();
+        if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
+      });
+      inp.addEventListener("paste",(e)=>{
+        const raw=e.clipboardData?.getData("text/plain")||e.clipboardData?.getData("text")||"";
+        const digits=ageDigitsFromClipboardText(raw);
+        if(!digits.length){e.preventDefault();return;}
+        e.preventDefault();
+        if(digits.length>=2){
+          for(let i=0;i<4;i++){
+            const el=ageDigitEl(i);
+            if(el)el.value=digits[i]||"";
+          }
+          focusAgeDigitIndex(Math.min(digits.length,4)-1);
+        }else{
+          inp.value=digits;
+          if(idx<3)focusAgeDigitIndex(idx+1);
         }
-        return;
-      }
-      if(e.key==="ArrowLeft"&&idx>0){
-        e.preventDefault();
-        focusAgeDigitIndex(idx-1);
-        return;
-      }
-      if(e.key==="ArrowRight"&&idx<3){
-        e.preventDefault();
-        focusAgeDigitIndex(idx+1);
-        return;
-      }
-      if(e.key==="Tab"||e.key==="Escape")return;
-      const dk=ageDigitFromKeyEvent(e);
-      if(dk!==null){
-        e.preventDefault();
-        inp.value=dk;
         showAgeErr("");
         updateAgeContinueBtn();
-        if(idx<3)focusAgeDigitIndex(idx+1);
-        return;
-      }
-      if(e.key.length===1)e.preventDefault();
-    });
-    ageGate.addEventListener("input",(e)=>{
-      const hit=ageDigitTarget(e.target);
-      if(!hit)return;
-      const {inp,idx}=hit;
-      sanitizeAgeDigitInput(inp);
-      showAgeErr("");
-      updateAgeContinueBtn();
-      if(inp.value&&idx<3)focusAgeDigitIndex(idx+1);
-    });
-    ageGate.addEventListener("keyup",(e)=>{
-      const hit=ageDigitTarget(e.target);
-      if(!hit)return;
-      const {inp,idx}=hit;
-      const skip=new Set(["Tab","Escape","ArrowLeft","ArrowRight","Shift","Control","Alt","Meta","Backspace","Enter"]);
-      if(skip.has(e.key))return;
-      sanitizeAgeDigitInput(inp);
-      updateAgeContinueBtn();
-      if(inp.value&&idx<3&&document.activeElement===inp)focusAgeDigitIndex(idx+1);
-    });
-    ageGate.addEventListener("paste",(e)=>{
-      const hit=ageDigitTarget(e.target);
-      const t=e.clipboardData?.getData("text")||"";
-      const digits=ageDigitsFromClipboardText(t);
-      if(digits.length>=2){
-        e.preventDefault();
-        for(let i=0;i<4;i++){
-          const el=ageDigitEl(i);
-          if(el)el.value=digits[i]||"";
-        }
-        focusAgeDigitIndex(Math.min(digits.length,4)-1);
-        showAgeErr("");
-        updateAgeContinueBtn();
-        return;
-      }
-      if(hit&&digits.length===1){
-        e.preventDefault();
-        hit.inp.value=digits;
-        showAgeErr("");
-        updateAgeContinueBtn();
-        if(hit.idx<3)focusAgeDigitIndex(hit.idx+1);
-        return;
-      }
-      if(hit&&digits.length===0)e.preventDefault();
-    });
+      });
+    }
   }
+  wireAgeGateDigits();
   if(ageContinue)ageContinue.addEventListener("click",acceptAgeGate);
   const ageDecline=document.getElementById("ageDecline");
   if(ageDecline)ageDecline.onclick=()=>{
