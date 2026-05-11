@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 964 470" width="964" height="470">
+  <defs>
+    <linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="hsl(38 20% 6%)"/><stop offset="100%" stop-color="hsl(38 25% 3%)"/>
+    </linearGradient>
+    <radialGradient id="hg" cx="55%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#B89968" stop-opacity="0.16"/><stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="964" height="470" fill="url(#hbg)"/>
+  <rect width="964" height="470" fill="url(#hg)"/>
+  <g fill="none" stroke="#B89968" stroke-opacity="0.32" stroke-width="2">
+    <path d="M152 420 L168 440 L234 440 L242 360 L234 260 L224 220 L210 210 L198 220 L190 360 L198 440 L262 440 L278 420 L268 360 L268 240 L258 200 L242 192 L224 200 L214 240 L214 360 Z"/>
+    <path d="M318 420 L334 440 L420 440 L432 360 L424 252 L410 204 L386 192 L358 204 L344 252 L338 360 L346 440 L402 440 L418 420 L410 310 L410 228 L398 198 L372 192 L352 198 L338 228 L334 310 Z"/>
+    <path d="M468 420 L486 440 L574 440 L588 360 L580 264 L562 204 L532 192 L502 204 L484 264 L476 360 L488 440 L544 440 L562 420 L556 300 L552 224 L532 198 L506 198 L488 224 L480 300 Z"/>
+    <path d="M622 420 L640 440 L816 440 L836 360 L818 260 L788 196 L748 188 L712 196 L688 260 L678 360 L696 440 L776 440 L798 420 L788 300 L772 220 L748 198 L720 198 L696 220 L680 300 Z"/>
+  </g>
+  <ellipse cx="520" cy="160" rx="320" ry="70" stroke="#B89968" stroke-opacity="0.06" fill="none"/>
+</svg>
