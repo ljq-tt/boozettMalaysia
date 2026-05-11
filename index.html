@@ -167,7 +167,8 @@ a{color:inherit;text-decoration:none}
 .btn--solid:hover{background:transparent;color:var(--bone)}
 .btn--ink{color:var(--ink);border-color:rgba(14,11,8,.3)}
 .btn--ink:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.btn .arr{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;letter-spacing:0;text-transform:none}
+body.age-bridge-lock{overflow:hidden!important;touch-action:none;}
+body.age-bridge-lock .age-gate{touch-action:auto;}
 
 /* ================================================================
    AGE GATE — oxblood / wine tone (Penfolds-inspired), Maison Han typography
@@ -1673,7 +1674,7 @@ body.nav-mob-open{overflow:hidden}
       <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
       <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
     </div>
-    <label class="age-gate__remember"><input type="checkbox" id="ageRemember" checked /> <span data-i18n="age.remember">Remember this device</span></label>
+    <label class="age-gate__remember"><input type="checkbox" id="ageRemember" /> <span data-i18n="age.remember">Remember this device</span></label>
     <p class="age-gate__disclaimer"><span data-i18n="age.disclaimer"></span></p>
     <button type="button" class="age-gate__disclaimer-link" id="agePrivacyToggle" data-i18n="age.privacyLink"></button>
     <div class="age-gate__privacy-panel" id="agePrivacyPanel"><span data-i18n="age.privacyBody"></span></div>
@@ -2783,7 +2784,9 @@ function openNavMob(){
 
 /* ============ EVENTS ============ */
 document.addEventListener("DOMContentLoaded",()=>{
-  // Age gate — birth year + remember (Penfolds-inspired; 21+ gate for this site)
+  // Age gate — must enter a valid birth year (21+). Old `han_age=ok` from the one-click gate is ignored.
+  const AGE_LS_OK = "han_age_yob_ok_v1";
+  const AGE_SS_OK = "han_age_yob_sess_v1";
   const ageGate=document.getElementById("ageGate");
   const ageDigits=[...document.querySelectorAll(".age-gate__digit")];
   const ageContinue=document.getElementById("ageContinue");
@@ -2796,17 +2799,22 @@ document.addEventListener("DOMContentLoaded",()=>{
     const root=I18N[state.lang]||I18N.en;
     return(root[k]!==undefined)?root[k]:I18N.en[k];
   }
+  function setAgeLock(on){
+    document.body.classList.toggle("age-bridge-lock",!!on);
+  }
   function dismissAgeGate(){
-    ageGate.style.display="none";
+    if(ageGate)ageGate.style.display="none";
+    setAgeLock(false);
     document.body.style.overflow="";
   }
   function yearJoined(){
     return ageDigits.map(el=>String(el.value||"").replace(/\D/g,"").slice(-1)).join("");
   }
   function updateAgeContinueBtn(){
-    ageContinue.disabled=(yearJoined().length!==4);
+    if(ageContinue)ageContinue.disabled=(yearJoined().length!==4);
   }
   function showAgeErr(which){
+    if(!ageError)return;
     if(which==="year")ageError.textContent=ageDict("age.errorYear")||"";
     else if(which==="young")ageError.textContent=ageDict("age.errorYoung")||"";
     else ageError.textContent="";
@@ -2822,28 +2830,35 @@ document.addEventListener("DOMContentLoaded",()=>{
     return true;
   }
   function acceptAgeGate(){
+    if(!ageContinue||ageContinue.disabled)return;
     if(!validateBirthYear())return;
     try{
-      if(ageRemember.checked){
-        localStorage.setItem("han_age","ok");
-        sessionStorage.removeItem("han_age_sess");
+      if(ageRemember&&ageRemember.checked){
+        localStorage.setItem(AGE_LS_OK,"1");
+        sessionStorage.removeItem(AGE_SS_OK);
       }else{
-        sessionStorage.setItem("han_age_sess","1");
-        localStorage.removeItem("han_age");
+        sessionStorage.setItem(AGE_SS_OK,"1");
+        localStorage.removeItem(AGE_LS_OK);
       }
     }catch(e){}
     dismissAgeGate();
   }
+  try{
+    localStorage.removeItem("han_age");
+    sessionStorage.removeItem("han_age_sess");
+  }catch(e){}
   let ageBypass=false;
   try{
-    ageBypass=(localStorage.getItem("han_age")==="ok")||(sessionStorage.getItem("han_age_sess")==="1");
+    ageBypass=(localStorage.getItem(AGE_LS_OK)==="1")||(sessionStorage.getItem(AGE_SS_OK)==="1");
   }catch(e){}
   if(ageBypass){
     dismissAgeGate();
   }else{
     document.body.style.overflow="hidden";
-    ageGate.style.display="";
-    requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus();});
+    setAgeLock(true);
+    if(ageGate)ageGate.style.display="flex";
+    updateAgeContinueBtn();
+    requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus({preventScroll:true});});
   }
   ageDigits.forEach((inp,idx)=>{
     inp.addEventListener("input",e=>{
@@ -2861,7 +2876,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       if(e.key==="Enter"){
         e.preventDefault();
-        if(!ageContinue.disabled)acceptAgeGate();
+        if(ageContinue&&!ageContinue.disabled)acceptAgeGate();
       }
     });
   });
