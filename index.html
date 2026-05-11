@@ -996,53 +996,26 @@ body.nav-mob-open{overflow:hidden}
   font-weight:300;
 }
 
-.filter-bar{
-  display:flex;gap:32px;align-items:center;
+.collection-nav{
+  display:flex;gap:12px;flex-wrap:wrap;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
   padding:18px 0;margin-bottom:60px;
+}
+.collection-nav__chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:10px 16px;
+  border:1px solid var(--bone-hair);
+  border-radius:999px;
   font-family:"DM Sans","Manrope",sans-serif;
-  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-  flex-wrap:wrap;
-}
-.filter-bar__label{color:var(--gold);margin-right:8px}
-.filter-bar__btn{
-  color:var(--bone-mute);
-  cursor:pointer;
-  position:relative;
-  transition:color .3s;
-  padding:4px 0;
-}
-.filter-bar__btn:hover,.filter-bar__btn.active{color:var(--bone)}
-.filter-bar__btn.active::after{
-  content:"";position:absolute;
-  left:0;right:0;bottom:-19px;
-  height:1px;background:var(--gold);
-}
-.filter-bar__chips{
-  display:flex;gap:32px;align-items:center;
-  flex-wrap:wrap;flex:1;min-width:0;
-}
-.filter-bar__search{
-  flex:0 1 280px;max-width:100%;margin-left:auto;
-}
-.filter-bar__input{
-  width:100%;box-sizing:border-box;
-  padding:10px 0 12px;
-  border:none;border-bottom:1px solid var(--bone-hair);
-  background:transparent;
-  color:var(--bone);
-  font-family:"Manrope",sans-serif;
   font-size:11px;
-  letter-spacing:.12em;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--bone-mute);
+  transition:background .25s ease,color .25s ease,border-color .25s ease,transform .2s ease;
 }
-.filter-bar__input::placeholder{
-  color:var(--bone-faint);text-transform:uppercase;
-  letter-spacing:.22em;
-}
-.filter-bar__input:focus{
-  outline:none;border-bottom-color:var(--gold);
-}
+.collection-nav__chip:hover{color:var(--bone);border-color:var(--gold-deep);transform:translateY(-1px)}
+.collection-nav__chip.is-active{background:var(--bone);color:var(--shell);border-color:var(--bone)}
 
 .grid{
   display:grid;
@@ -1933,10 +1906,8 @@ body.nav-mob-open{overflow:hidden}
   .topbar__msg{display:none}
   .grid{grid-template-columns:1fr}
   .footer__top{grid-template-columns:1fr;gap:32px}
-  .filter-bar{gap:18px;font-size:10px;align-items:stretch}
-  .filter-bar__chips{gap:18px}
-  .filter-bar__search{flex:1 1 100%;margin-left:0;margin-top:4px}
-  .filter-bar__input{font-size:10px}
+  .collection-nav{gap:10px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:14px}
+  .collection-nav__chip{white-space:nowrap;flex:0 0 auto}
   .spec-grid{grid-template-columns:1fr}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
@@ -2189,19 +2160,13 @@ body.nav-mob-open{overflow:hidden}
       <p class="section-head__right" data-i18n="col.lead">Each pour in our house is hand-verified, vintage-confirmed, and accompanied by a certificate of provenance. We handle perhaps a hundred bottles a month — never more.</p>
     </div>
 
-    <div class="filter-bar reveal" id="filterBar">
-      <div class="filter-bar__chips">
-        <span class="filter-bar__label" data-i18n="filter.label">Filter</span>
-        <span class="filter-bar__btn active" data-cat="all" data-i18n="filter.all">All</span>
-        <span class="filter-bar__btn" data-cat="baijiu" data-i18n="filter.baijiu">Chinese baijiu</span>
-        <span class="filter-bar__btn" data-cat="whisky" data-i18n="filter.whisky">Whisky</span>
-        <span class="filter-bar__btn" data-cat="wine" data-i18n="filter.wine">Wine</span>
-        <span class="filter-bar__btn" data-cat="sparkling" data-i18n="filter.sparkling">Champagne</span>
-        <span class="filter-bar__btn" data-cat="cognac" data-i18n="filter.cognac">Cognac</span>
-      </div>
-      <div class="filter-bar__search">
-        <input type="search" id="collectionSearch" class="filter-bar__input" enterkeyhint="search" autocomplete="off" spellcheck="false" />
-      </div>
+    <div class="collection-nav reveal" id="categoryNav" aria-label="Category navigation">
+      <a href="#collection" class="collection-nav__chip is-active" data-cat="all" data-i18n="cat.all">All</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="spirits" data-i18n="cat.spirits">Spirits</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="whisky" data-i18n="cat.whisky">Whisky</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="wine" data-i18n="cat.wine">Wine</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="sparkling" data-i18n="cat.sparkling">Sparkling</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="others" data-i18n="cat.others">Others</a>
     </div>
 
     <div class="grid" id="grid"></div>
@@ -2506,12 +2471,12 @@ en:{
   "guides.eyebrow":"Curated moods","guides.title":"Shop by <em>story,</em><br />not showroom.","guides.lead":"Choose a doorway into flavour — everything here is something we pour at our own table.","guides.shop":"Browse lane →",
   "guides.w.cat":"Spirit forward","guides.w.title":"Explore world whisky","guides.w.body":"Scotland to Kyushu, Kentucky to Tasmania — sippers, splashes and gifting malts alike.","guides.w.brands":"Representative pours · Yamazaki · Macallan · Hibiki · Karuizawa moods",
   "guides.s.cat":"Rice elegance","guides.s.title":"Japanese sake &amp; curated rice wines","guides.s.body":"Cold Ginjo pours for small plates, hot tokkuri evenings, playlist nights at home.","guides.s.brands":"Cellar moods · Hakkaisan · Kubota silhouettes · Dassai-inspired releases",
-  "guides.b.cat":"Heritage pours","guides.b.title":"Chinese baijiu icons","guides.b.body":"Sauce-aroma collectibles and ceremonial bottlings traced to distilleries — not flea markets.","guides.b.brands":"Featured cues · Kweichow Moutai · Luzhou Laojiao · Wuliangye",
-  "guides.c.cat":"Celebrate louder","guides.c.title":"Champagne &amp; sparkling","guides.c.body":"Oyster lunches, countdowns on the balcony, studio-apartment victories.","guides.c.brands":"Names we rotate · Jacques Selosse · Salon energy · Grande marques &amp; grower gems",
+  "guides.b.cat":"Spirits core","guides.b.title":"Spirits: baijiu &amp; heritage pours","guides.b.body":"Sauce-aroma collectibles, ceremonial bottlings, and the bottles we keep at the heart of the house.","guides.b.brands":"Featured cues · Kweichow Moutai · Luzhou Laojiao · Wuliangye",
+  "guides.c.cat":"Sparkling lane","guides.c.title":"Sparkling: Champagne &amp; bubbles","guides.c.body":"Oyster lunches, balcony countdowns, and the bottles that carry a celebration.","guides.c.brands":"Names we rotate · Jacques Selosse · Salon energy · Grande marques &amp; grower gems",
   "guides.v.cat":"Table wines","guides.v.title":"Mid-week pours that still feel special","guides.v.body":"Burgundy through Napa — bottles that behave at supper without needing a TED talk.","guides.v.brands":"Sommelier flirtations · Sassicaia mood · Leroy-aligned Burgundy hunts",
   "guides.g.cat":"Liquid gifts","guides.g.title":"Cognac &amp; collectible spirits","guides.g.body":"Decanters, fireside cigars (where legal) and trophies with paperwork intact.","guides.g.brands":"Gifting shorthand · Tesseron stacks · Rémy/Hennessy Paradis moods",
   "spot.section":"Featured cellar lanes","spot.brands.baijiu":"Representative pours · Vintage Moutai Feitian arcs · Luzhou Laojiao · Guojiao 1573 silhouettes","spot.brands.whisk":"Representative pours · Hibiki · Yamazaki · Yoichi · Nikka · Ichiro · Karuizawa mythologies","catalog.empty":"The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
-  "filter.label":"Filter","filter.all":"All","filter.baijiu":"Chinese baijiu","filter.whisky":"Whisky","filter.wine":"Wine · still &amp; red","filter.sparkling":"Champagne &amp; sparkling","filter.cognac":"Cognac",
+  "cat.all":"All","cat.spirits":"Spirits","cat.whisky":"Whisky","cat.wine":"Wine","cat.sparkling":"Sparkling","cat.others":"Others",
   "search.label":"Search collection","search.placeholder":"Name, distillery or №…","search.none":"No bottles match your search.",
   "prov.eyebrow":"№ 003 — Provenance","prov.title":"A bottle is only as<br>true as its journey.","prov.lead":"Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.","prov.cta":"Read the Provenance Standard",
   "prov.1.t":"Direct from the source","prov.1.d":"Distilleries, family cellars, and verified single owners. Never auction-house secondaries we cannot trace.",
@@ -2549,7 +2514,7 @@ en:{
   "guides.v.cat":"家常佐餐","guides.v.title":"我们真的会周中开的红葡萄酒","guides.v.body":"勃艮第、波尔多与美国精品——佐餐好喝，不靠长篇酒评撑场。","guides.v.brands":"侍酒师的偏爱 · Sassicaia 氛围 · 「Leroy 系」寻宝",
   "guides.g.cat":"礼赠与收藏","guides.g.title":"干邑与限量烈酒","guides.g.body":"夜谈、雪茄角（在法律允许处）——附完整票据与运输体面的收藏级酒款。","guides.g.brands":"礼金暗示 · Tesseron · Rémy / Hennessy Paradis 级灵感",
   "spot.section":"两大专题酒窖","spot.brands.baijiu":"代表性风格 · 茅台飞天年代封存 · 泸州老窖 · 国窖 1573 气质","spot.brands.whisk":"代表性风格 · 响 · 山崎 · 余市 · 一郎 · 「轻井泽」叙事款","catalog.empty":"商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
-  "filter.label":"筛选","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 红酒及其他","filter.sparkling":"香槟 · 起泡酒","filter.cognac":"干邑",
+  "cat.all":"全部","cat.spirits":"烈酒","cat.whisky":"威士忌","cat.wine":"葡萄酒","cat.sparkling":"起泡酒","cat.others":"其他",
   "search.label":"搜寻典藏","search.placeholder":"名称、酒厂或编号…","search.none":"没有符合搜寻条件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在于其行迹。","prov.lead":"市面上的假茅台，销量远胜真品。我们因此拒绝市面。","prov.cta":"阅读溯源标准",
   "prov.1.t":"直采源头","prov.1.d":"酒厂、家族酒窖、可核实的单一持有者。绝不经无法追溯的二级拍卖。",
@@ -2588,7 +2553,7 @@ en:{
   "guides.g.cat":"禮藏烈酒","guides.g.title":"干邑與典藏烈酒","guides.g.body":"適合致贈、典藏與附完整文件的旅行酒禮。","guides.g.brands":"禮品暗示 · Tesseron · Rémy / Hennessy Paradis 級靈感",
   "spot.section":"兩條專題酒窖動線","spot.brands.baijiu":"代表性風味 · 茅台飛天年代 · 瀘州老窖 · 國窖 1573 氣質","spot.brands.whisk":"代表性風味 · 響 · 山崎 · 餘市 · 一郎 · 「輕井澤」叙事",
   "col.eyebrow":"№ 002 — 本季精選","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆經手工核驗、年份確認，附帶溯源證書。每月僅經手百餘瓶——從不更多。","col.empty":"此分類暫無酒款。",
-  "filter.label":"篩選","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 紅酒及其他","filter.sparkling":"香檳 · 氣泡酒","filter.cognac":"干邑",
+  "cat.all":"全部","cat.spirits":"烈酒","cat.whisky":"威士忌","cat.wine":"葡萄酒","cat.sparkling":"氣泡酒","cat.others":"其他",
   "search.label":"搜尋典藏","search.placeholder":"名稱、酒廠或編號…","search.none":"沒有符合搜尋條件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在於其行跡。","prov.lead":"市面上的假茅台，銷量遠勝真品。我們因此拒絕市面。","prov.cta":"閱讀溯源標準",
   "prov.1.t":"直採源頭","prov.1.d":"酒廠、家族酒窖、可核實的單一持有者。絕不經無法追溯的二級拍賣。",
@@ -2627,7 +2592,7 @@ ja:{
   "guides.g.cat":"贈答スピリッツ","guides.g.title":"コニャックとコレクション向け","guides.g.body":"キャンペファイア、合法な葉巻、証憑付きのギフト。","guides.g.brands":"贈り物の合図 · Tesseron · Rémy / Hennessy Paradis級",
   "spot.section":"注目の二本柱","spot.brands.baijiu":"代表系譜 · vintage 茅台の系譜 · 瀘州老窖 · 国窖 1573","spot.brands.whisk":"代表系譜 · 響 · 山崎 · 余市 · イチローズ · 軽井沢神話",
   "col.eyebrow":"№ 002 — 今季の選り抜き","col.title":"コレ <em>クション</em>","col.lead":"当館の一本は、すべて手作業で照合され、年代を確認し、来歴証明書を添えてお届けします。一月に扱うのは百本ほど — それ以上は決して。","col.empty":"このカテゴリにはまだありません。",
-  "filter.label":"絞り込み","filter.all":"全て","filter.baijiu":"白酒","filter.whisky":"ウィスキー","filter.wine":"ワイン・赤ワインほか","filter.sparkling":"シャンパーニュ・発泡ワイン","filter.cognac":"コニャック",
+  "cat.all":"全て","cat.spirits":"スピリッツ","cat.whisky":"ウイスキー","cat.wine":"ワイン","cat.sparkling":"スパークリング","cat.others":"その他",
   "search.label":"コレクションを検索","search.placeholder":"名称、蒸留所、№…","search.none":"該当するボトルはございません。",
   "prov.eyebrow":"№ 003 — 来歴","prov.title":"瓶の真贋は、<br>その旅路に等しい。","prov.lead":"市場では偽の茅台が本物より売れる。だから当館は、市場を取らない。","prov.cta":"来歴基準を読む",
   "prov.1.t":"源泉から直接","prov.1.d":"蒸留所、家族の酒蔵、確認済みの単一所有者から。追跡不能なオークションの二次流通は、決して扱わない。",
@@ -2774,21 +2739,7 @@ function stripHtml(s){
 }
 
 function getCollectionFiltered(){
-  const byCat=state.cat==="all"?PRODUCTS:PRODUCTS.filter(p=>p.cat===state.cat);
-  const q=(state.search||"").trim().toLowerCase();
-  if(!q)return byCat;
-  return byCat.filter(p=>{
-    const blob=[
-      stripHtml(p.name),
-      p.sub||"",
-      p.catLabel||"",
-      p.cat||"",
-      String(p.no||""),
-      p.year||"",
-      p.origin||"",
-    ].join(" ").toLowerCase();
-    return blob.includes(q);
-  });
+  return state.cat==="all" ? PRODUCTS : PRODUCTS.filter(p=>p.cat===state.cat);
 }
 
 /* ============ CURRENCY ============ */
@@ -2918,11 +2869,8 @@ function renderGrid(){
     state.page=1;
     return renderGrid();
   }
-  const baseline=state.cat==="all"?PRODUCTS.length:PRODUCTS.filter(p=>p.cat===state.cat).length;
   const dict=I18N[state.lang]||I18N.en;
-  const q=(state.search||"").trim();
-  const emptyKey=q&&filtered.length===0&&baseline>0?"search.none":"col.empty";
-  const emptyText=(dict[emptyKey]!==undefined)?dict[emptyKey]:I18N.en[emptyKey==="search.none"?"search.none":"col.empty"];
+  const emptyText=(dict["col.empty"]!==undefined)?dict["col.empty"]:I18N.en["col.empty"];
   grid.innerHTML=pageItems.map(p=>`
     <article class="product" data-id="${p.id}">
       <div class="product__visual ${p.bv}">
@@ -3424,22 +3372,24 @@ document.addEventListener("DOMContentLoaded",()=>{
       const c=a.getAttribute("data-collection-cat");
       if(!c)return;
       state.cat=c;
-      document.querySelectorAll(".filter-bar__btn").forEach(b=>{
-        b.classList.toggle("active",(b.dataset.cat||"")===c);
+      document.querySelectorAll(".collection-nav__chip").forEach(b=>{
+        b.classList.toggle("is-active",(b.dataset.cat||"")===c);
       });
       state.page=1;
       queueMicrotask(()=>renderGrid());
     });
   });
 
-  const collectionSearch=document.getElementById("collectionSearch");
-  if(collectionSearch){
-    collectionSearch.addEventListener("input",()=>{
-      state.search=collectionSearch.value;
+  document.querySelectorAll(".collection-nav__chip").forEach(chip=>{
+    chip.addEventListener("click",e=>{
+      e.preventDefault();
+      const c=chip.dataset.cat||"all";
+      state.cat=c;
+      document.querySelectorAll(".collection-nav__chip").forEach(b=>b.classList.toggle("is-active",b===chip));
       state.page=1;
       renderGrid();
     });
-  }
+  });
 
   document.getElementById("navSearch").onclick=()=>{
     closeNavMob();
