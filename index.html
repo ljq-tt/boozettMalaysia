@@ -2649,30 +2649,36 @@ async function loadProducts(){
   if(grid&&PRODUCTS.length===0){
     grid.innerHTML='<div class="grid-loading"><span class="cjk">候</span><p>Loading the cellar&hellip;</p></div>';
   }
-  try{
-    const res=await fetch("/list-products",{headers:{Accept:"application/json"}});
-    const data=await res.json().catch(()=>null);
-    if(!res.ok){
-      const hint=(data&&data.error)?String(data.error):"HTTP "+res.status;
-      throw new Error(hint);
+  const sources=["/list-products","./catalog.json"];
+  let lastErr=null;
+  for(const src of sources){
+    try{
+      const res=await fetch(src,{headers:{Accept:"application/json"}});
+      const data=await res.json().catch(()=>null);
+      if(!res.ok){
+        const hint=(data&&data.error)?String(data.error):"HTTP "+res.status;
+        throw new Error(hint);
+      }
+      if(!Array.isArray(data)){
+        const hint=(data&&data.error)?String(data.error):"Bad payload (expected JSON array)";
+        throw new Error(hint);
+      }
+      catalogFetchSucceeded=true;
+      PRODUCTS=data;
+      state.page=1;
+      renderGrid();
+      updateFeaturedPrices();
+      updateCart();
+      return;
+    }catch(err){
+      lastErr=err;
     }
-    if(!Array.isArray(data)){
-      const hint=(data&&data.error)?String(data.error):"Bad payload (expected JSON array)";
-      throw new Error(hint);
-    }
-    catalogFetchSucceeded=true;
-    PRODUCTS=data;
-    state.page=1;
-    renderGrid();
-    updateFeaturedPrices();
-    updateCart();
-  }catch(err){
-    console.error("loadProducts failed:",err);
-    catalogFetchSucceeded=false;
-    if(grid){
-      const msg=String(err&&err.message?err.message:err);
-      grid.innerHTML='<div class="grid-loading"><span class="cjk">空</span><p>Could not reach the cellar.</p><p class="grid-loading__hint">'+msg.replace(/</g,"&lt;")+'</p></div>';
-    }
+  }
+  console.error("loadProducts failed:",lastErr);
+  catalogFetchSucceeded=false;
+  if(grid){
+    const msg=String(lastErr&&lastErr.message?lastErr.message:lastErr);
+    grid.innerHTML='<div class="grid-loading"><span class="cjk">空</span><p>Could not reach the cellar.</p><p class="grid-loading__hint">'+msg.replace(/</g,"&lt;")+'</p></div>';
   }
 }
 
@@ -2865,11 +2871,16 @@ function renderGrid(){
     return;
   }
   const filtered=getCollectionFiltered();
-  const totalPages=Math.max(1,Math.ceil(filtered.length/PRODUCTS_PER_PAGE));
+  const searchQuery=(state.search||"").trim().toLowerCase();
+  const searchFiltered=searchQuery?filtered.filter(p=>{
+    const blob=[stripHtml(p.name),p.sub||"",p.catLabel||"",p.cat||"",String(p.no||""),p.year||"",p.origin||""].join(" ").toLowerCase();
+    return blob.includes(searchQuery);
+  }):filtered;
+  const totalPages=Math.max(1,Math.ceil(searchFiltered.length/PRODUCTS_PER_PAGE));
   if(state.page>totalPages)state.page=totalPages;
   if(state.page<1)state.page=1;
   const start=(state.page-1)*PRODUCTS_PER_PAGE;
-  const pageItems=filtered.slice(start,start+PRODUCTS_PER_PAGE);
+  const pageItems=searchFiltered.slice(start,start+PRODUCTS_PER_PAGE);
   if(pageItems.length===0&&filtered.length>0){
     state.page=1;
     return renderGrid();
@@ -3396,6 +3407,15 @@ document.addEventListener("DOMContentLoaded",()=>{
       scrollToCollectionTop();
     });
   });
+
+  const collectionSearch=document.getElementById("collectionSearch");
+  if(collectionSearch){
+    collectionSearch.addEventListener("input",()=>{
+      state.search=collectionSearch.value;
+      state.page=1;
+      renderGrid();
+    });
+  }
 
   document.getElementById("navSearch").onclick=()=>{
     closeNavMob();
