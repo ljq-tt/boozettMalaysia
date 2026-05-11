@@ -170,53 +170,149 @@ a{color:inherit;text-decoration:none}
 .btn .arr{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;letter-spacing:0;text-transform:none}
 
 /* ================================================================
-   AGE GATE — restrained paper card on ink
+   AGE GATE — oxblood / wine tone (Penfolds-inspired), Maison Han typography
    ================================================================ */
 .age-gate{
   position:fixed;inset:0;z-index:1000;
-  background:var(--ink);
+  --age-burgundy:#591018;
+  --age-burgundy-deep:#2c080d;
+  --age-highlight:rgba(254,246,238,.94);
+  --age-muted:rgba(254,246,238,.76);
+  --age-soft:rgba(254,246,238,.52);
+  --age-wire:rgba(184,153,104,.42);
+  background:
+    radial-gradient(120% 80% at 50% -10%,rgba(184,153,104,.14),transparent 55%),
+    radial-gradient(80% 50% at 100% 100%,rgba(110,16,25,.65),transparent 60%),
+    linear-gradient(168deg,var(--age-burgundy-deep) 0%,var(--age-burgundy) 38%,#3e0a10 100%);
+  background-color:var(--age-burgundy-deep);
   display:flex;align-items:center;justify-content:center;
-  padding:24px;
+  padding:clamp(18px,4vw,40px);
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
-.age-gate__bg{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 30%,rgba(184,153,104,.08),transparent 50%);
+.age-gate::before{
+  content:"";position:absolute;inset:0;
+  opacity:.065;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   pointer-events:none;
 }
+.age-gate::after{
+  content:"";position:absolute;inset:0;
+  opacity:.095;
+  background-image:
+    radial-gradient(ellipse 90% 40% at 15% 20%,transparent 50%,rgba(184,153,104,.25) 51%,transparent 53%),
+    radial-gradient(ellipse 70% 55% at 85% 30%,transparent 62%,rgba(254,246,238,.06) 63%,transparent 65%),
+    radial-gradient(ellipse 120% 50% at 50% 100%,transparent 58%,rgba(184,153,104,.12) 60%,transparent 62%);
+  pointer-events:none;
+}
+.age-gate__bg{display:none;}
 .age-gate__card{
-  position:relative;z-index:1;
-  background:transparent;
-  max-width:520px;width:100%;
+  position:relative;z-index:2;
+  max-width:480px;width:100%;
   text-align:center;
-  padding:48px 32px;
+  padding:clamp(26px,4vw,48px) clamp(16px,3vw,32px);
 }
-.age-gate__seal{
-  width:56px;height:56px;border-radius:50%;
-  border:1px solid var(--gold);
+.age-gate__location{
+  font-family:"Manrope",sans-serif;
+  font-size:10px;font-weight:500;
+  letter-spacing:.36em;text-transform:uppercase;
+  color:var(--age-soft);
+  margin-bottom:clamp(26px,4vw,40px);
   display:flex;align-items:center;justify-content:center;
-  margin:0 auto 32px;
-  font-family:"Shippori Mincho",serif;
-  font-size:24px;color:var(--gold);
-  letter-spacing:0;
+  gap:10px;
 }
-.age-gate__title{
-  font-size:clamp(40px,6vw,64px);
-  margin-bottom:8px;
-  color:var(--bone);
+.age-gate__location-chev{
+  border:solid var(--age-soft);border-width:0 1px 1px 0;
+  width:6px;height:6px;transform:rotate(45deg);margin-top:-2px;opacity:.7;
+}
+.age-gate__wordmark{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(38px,7vw,58px);font-weight:400;font-style:italic;
+  color:var(--age-highlight);letter-spacing:.14em;line-height:.95;margin-bottom:.45em;
+  text-shadow:0 1px 24px rgba(0,0,0,.35);
+}
+.age-gate__wordmark-small{font-size:.42em;display:block;margin-top:.25em;font-style:normal;opacity:.92}
+.age-gate__tagline{
+  font-family:"Manrope",sans-serif;
+  font-weight:600;font-size:clamp(11px,2.8vw,12px);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:var(--age-soft);
+  line-height:1.45;
+  max-width:40em;margin-left:auto;margin-right:auto;
+  margin-bottom:clamp(26px,4vw,36px);
 }
 .age-gate__sub{
-  font-family:"Manrope",sans-serif;
-  font-size:13px;letter-spacing:.04em;
-  color:var(--bone-mute);
-  margin-bottom:40px;
-  max-width:380px;margin-left:auto;margin-right:auto;
+  font-family:"Manrope",sans-serif;font-weight:400;
+  font-size:13px;letter-spacing:.04em;line-height:1.58;
+  color:var(--age-muted);
+  margin:calc(-14px) auto clamp(22px,3.5vw,30px);max-width:34em;font-weight:300;
 }
+
+.age-gate__year-prompt{
+  font-family:"Manrope",sans-serif;
+  font-size:13px;letter-spacing:.08em;color:var(--age-muted);margin-bottom:18px;font-weight:400;
+}
+.age-gate__digits{
+  display:flex;justify-content:center;gap:clamp(12px,3.5vw,18px);margin-bottom:22px;
+}
+.age-gate__digit{
+  width:clamp(48px,12vw,60px);height:clamp(54px,12vw,64px);
+  border:1px solid var(--age-wire);border-radius:2px;background:rgba(14,11,8,.22);
+  color:var(--age-highlight);font-family:"Manrope","Cormorant Garamond",serif;
+  font-size:clamp(22px,5vw,28px);font-weight:400;letter-spacing:0;text-align:center;
+  padding:0;outline:none;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;
+  caret-color:var(--gold);
+}
+.age-gate__digit:focus{
+  border-color:rgba(254,246,238,.92);
+  background:rgba(14,11,8,.42);
+  box-shadow:0 0 0 1px rgba(184,153,104,.35);
+}
+.age-gate__digit::placeholder{color:rgba(254,246,238,.28)}
+.age-gate__remember{
+  display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:28px;
+  font-family:"Manrope",sans-serif;font-size:12px;color:var(--age-muted);letter-spacing:.04em;text-align:left;
+  padding:0 8px;
+}
+.age-gate__remember input[type="checkbox"]{
+  accent-color:#B89968;width:16px;height:16px;margin:0;flex-shrink:0;cursor:pointer;
+}
+.age-gate__disclaimer{
+  font-family:"Manrope",sans-serif;
+  font-size:11px;line-height:1.65;color:var(--age-soft);letter-spacing:.02em;text-align:center;
+  max-width:46em;margin:0 auto 8px;
+}
+.age-gate__disclaimer-link{
+  display:block;margin:-8px auto 18px;color:var(--age-highlight)!important;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:.6px;font-weight:500;background:none!important;border:none;cursor:pointer;padding:8px;font-family:inherit;font-size:11px;letter-spacing:.06em;text-align:center;
+}
+.age-gate__privacy-panel{
+  display:none;
+  margin:0 auto 24px;max-width:44em;padding:14px;border:1px solid rgba(184,153,104,.35);
+  background:rgba(14,11,8,.38);border-radius:2px;text-align:left;
+  font-family:"Manrope",sans-serif;font-size:11px;line-height:1.55;color:var(--age-soft);
+}
+.age-gate__privacy-panel.is-open{display:block;}
+.age-gate__error{
+  font-family:"Manrope",sans-serif;font-size:12px;color:#f0c4cb;letter-spacing:.04em;
+  min-height:1.35em;margin:0 0 16px;display:none;text-align:center;
+}
+.age-gate__error:not(:empty){display:block;}
 .age-gate__btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.age-gate__btns .btn{
+  min-width:min(148px,44vw);border-radius:2px;background:transparent;border:1px solid rgba(254,246,238,.46);
+  letter-spacing:.22em;
+}
+.age-gate__btns .btn--solid{background:var(--gold);color:#0E0B08;border-color:var(--gold);}
+.age-gate__btns .btn--solid:not(:disabled):hover{background:#c5a879;color:#0E0B08;border-color:#c5a879;}
+.age-gate__btns .btn--solid:disabled{
+  opacity:.38;cursor:not-allowed;color:#0E0B08;background:rgba(184,153,104,.42);border-color:transparent;
+}
+.age-gate__btns #ageDecline{font-size:11px;letter-spacing:.24em;color:var(--age-muted);border-color:rgba(254,246,238,.38);}
+.age-gate__btns #ageDecline:hover{color:var(--age-highlight);border-color:var(--age-highlight);}
 .age-gate__legal{
   font-family:"Manrope",sans-serif;
-  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--bone-faint);
-  margin-top:48px;line-height:1.7;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(254,246,238,.32);
+  margin-top:clamp(36px,5vw,48px);line-height:1.8;
 }
 
 /* ================================================================
@@ -1564,17 +1660,29 @@ body.nav-mob-open{overflow:hidden}
 <!-- ================================================================
      AGE GATE
      ================================================================ -->
-<div class="age-gate" id="ageGate">
-  <div class="age-gate__bg"></div>
+<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageWordmark" aria-describedby="ageTaglineDesc">
   <div class="age-gate__card">
-    <div class="age-gate__seal cjk">禁</div>
-    <h2 class="display age-gate__title" data-i18n="age.title">A moment, please.</h2>
-    <p class="age-gate__sub" data-i18n="age.sub">This house serves only those of legal drinking age in their country of residence.</p>
-    <div class="age-gate__btns">
-      <button class="btn btn--solid" id="ageYes" data-i18n="age.yes">Enter</button>
-      <button class="btn" id="ageNo" data-i18n="age.no">Decline</button>
+    <p class="age-gate__location"><span data-i18n="age.region">WORLDWIDE</span><span class="age-gate__location-chev" aria-hidden="true"></span></p>
+    <p class="age-gate__wordmark serif" id="ageWordmark"><span data-i18n="age.wordmark">Maison Han</span><span class="age-gate__wordmark-small cjk" data-i18n="age.wordmarkHan">漢館</span></p>
+    <p class="age-gate__tagline" data-i18n="age.tagline">RARE POURS · SEALED TO PROVENANCE</p>
+    <p class="age-gate__sub" id="ageTaglineDesc" data-i18n="age.sub">This house serves only those of legal drinking age in their country of residence.</p>
+    <p class="age-gate__year-prompt" data-i18n="age.yearPrompt">Please enter your year of birth:</p>
+    <div class="age-gate__digits" role="group" aria-label="Year of birth">
+      <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="0" id="ageD0" aria-label="Birth year digit 1" />
+      <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="1" id="ageD1" aria-label="Birth year digit 2" />
+      <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="2" id="ageD2" aria-label="Birth year digit 3" />
+      <input class="age-gate__digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" autocorrect="off" spellcheck="false" data-yi="3" id="ageD3" aria-label="Birth year digit 4" />
     </div>
-    <p class="age-gate__legal" data-i18n="age.legal">Drink with intention. We do not sell to minors.</p>
+    <label class="age-gate__remember"><input type="checkbox" id="ageRemember" checked /> <span data-i18n="age.remember">Remember this device</span></label>
+    <p class="age-gate__disclaimer"><span data-i18n="age.disclaimer"></span></p>
+    <button type="button" class="age-gate__disclaimer-link" id="agePrivacyToggle" data-i18n="age.privacyLink"></button>
+    <div class="age-gate__privacy-panel" id="agePrivacyPanel"><span data-i18n="age.privacyBody"></span></div>
+    <p class="age-gate__error" id="ageError" role="alert"></p>
+    <div class="age-gate__btns">
+      <button type="button" class="btn btn--solid" id="ageContinue" disabled data-i18n="age.continue">Continue</button>
+      <button type="button" class="btn" id="ageDecline" data-i18n="age.no">Decline</button>
+    </div>
+    <p class="age-gate__legal" data-i18n="age.footer">Drink with intention. We do not sell to minors.</p>
   </div>
 </div>
 
@@ -1628,8 +1736,8 @@ body.nav-mob-open{overflow:hidden}
       </button>
       <ul class="nav__links">
         <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
-        <li><a href="#maotai" data-i18n="nav.maotai">Moutai</a></li>
-        <li><a href="#japan" data-i18n="nav.japan">Japan</a></li>
+        <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
+        <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
         <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
         <li><a href="#journal" data-i18n="nav.journal">Journal</a></li>
       </ul>
@@ -1656,8 +1764,8 @@ body.nav-mob-open{overflow:hidden}
   </div>
   <ul class="nav-mob__links">
     <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
-    <li><a href="#maotai" data-i18n="nav.maotai">Moutai</a></li>
-    <li><a href="#japan" data-i18n="nav.japan">Japan</a></li>
+    <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
+    <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
     <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
     <li><a href="#journal" data-i18n="nav.journal">Journal</a></li>
   </ul>
@@ -1724,10 +1832,10 @@ body.nav-mob-open{overflow:hidden}
       <div class="filter-bar__chips">
         <span class="filter-bar__label" data-i18n="filter.label">Filter</span>
         <span class="filter-bar__btn active" data-cat="all" data-i18n="filter.all">All</span>
-        <span class="filter-bar__btn" data-cat="maotai" data-i18n="filter.maotai">Moutai &amp; Baijiu</span>
-        <span class="filter-bar__btn" data-cat="japan" data-i18n="filter.japan">Japanese Whisky</span>
-        <span class="filter-bar__btn" data-cat="scotch" data-i18n="filter.scotch">Single Malt</span>
-        <span class="filter-bar__btn" data-cat="wine" data-i18n="filter.wine">Vintage Wine</span>
+        <span class="filter-bar__btn" data-cat="baijiu" data-i18n="filter.baijiu">Chinese baijiu</span>
+        <span class="filter-bar__btn" data-cat="whisky" data-i18n="filter.whisky">Whisky</span>
+        <span class="filter-bar__btn" data-cat="wine" data-i18n="filter.wine">Wine</span>
+        <span class="filter-bar__btn" data-cat="sparkling" data-i18n="filter.sparkling">Champagne</span>
         <span class="filter-bar__btn" data-cat="cognac" data-i18n="filter.cognac">Cognac</span>
       </div>
       <div class="filter-bar__search">
@@ -1784,7 +1892,7 @@ body.nav-mob-open{overflow:hidden}
 <!-- ================================================================
      MAOTAI EDIT
      ================================================================ -->
-<section class="edit edit--maotai" id="maotai">
+<section class="edit edit--maotai" id="baijiu">
   <div class="container">
     <div class="edit__head reveal">
       <div class="edit__chap cjk">茅</div>
@@ -1792,7 +1900,7 @@ body.nav-mob-open{overflow:hidden}
         <div class="edit__no" data-i18n="maotai.no">— Chapter I —</div>
         <h2 class="display edit__title" data-i18n="maotai.title">The House of <em>Moutai</em></h2>
         <p class="edit__lead" data-i18n="maotai.lead">For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.</p>
-        <a href="#collection" class="btn btn--gold edit__cta" data-i18n="maotai.cta">View All Moutai <span class="arr">→</span></a>
+        <a href="#collection" class="btn btn--gold edit__cta" data-collection-cat="baijiu" data-i18n="maotai.cta">Browse baiju in the cellar <span class="arr">→</span></a>
       </div>
     </div>
 
@@ -1833,7 +1941,7 @@ body.nav-mob-open{overflow:hidden}
 <!-- ================================================================
      JAPAN EDIT
      ================================================================ -->
-<section class="edit edit--japan" id="japan">
+<section class="edit edit--japan" id="whisky">
   <div class="container">
     <div class="edit__head reveal">
       <div class="edit__chap cjk">響</div>
@@ -1841,7 +1949,7 @@ body.nav-mob-open{overflow:hidden}
         <div class="edit__no" data-i18n="japan.no">— Chapter II —</div>
         <h2 class="display edit__title" data-i18n="japan.title">The Edit from <em>Japan</em></h2>
         <p class="edit__lead" data-i18n="japan.lead">Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.</p>
-        <a href="#collection" class="btn btn--gold edit__cta" data-i18n="japan.cta">View All Japanese Whisky <span class="arr">→</span></a>
+        <a href="#collection" class="btn btn--gold edit__cta" data-collection-cat="whisky" data-i18n="japan.cta">Browse whisky in the cellar <span class="arr">→</span></a>
       </div>
     </div>
 
@@ -1984,10 +2092,10 @@ body.nav-mob-open{overflow:hidden}
       <div class="footer__col">
         <h4 data-i18n="footer.shop">Shop</h4>
         <ul>
-          <li data-i18n="filter.maotai">Moutai &amp; Baijiu</li>
-          <li data-i18n="filter.japan">Japanese Whisky</li>
-          <li data-i18n="filter.scotch">Single Malt</li>
-          <li data-i18n="filter.wine">Vintage Wine</li>
+          <li data-i18n="filter.baijiu">Chinese baijiu</li>
+          <li data-i18n="filter.whisky">Whisky</li>
+          <li data-i18n="filter.wine">Wine</li>
+          <li data-i18n="filter.sparkling">Champagne</li>
           <li data-i18n="filter.cognac">Cognac</li>
         </ul>
       </div>
@@ -2100,20 +2208,20 @@ body.nav-mob-open{overflow:hidden}
 /* ============ I18N ============ */
 const I18N={
 en:{
-  "age.title":"A moment, please.","age.sub":"This house serves only those of legal drinking age in their country of residence.","age.yes":"Enter","age.no":"Decline","age.legal":"Drink with intention. We do not sell to minors.",
+  "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"RARE POURS · SEALED TO PROVENANCE","age.sub":"This house serves only those of legal drinking age in their country of residence.","age.yearPrompt":"Please enter your year of birth:","age.remember":"Remember this device","age.disclaimer":"You confirm that you meet the minimum age to purchase alcohol where you live (this site requires 21+). Purchases are for personal use only. Selecting Remember stores only a confirmation flag in this browser so we may skip this step later — never your birth year.","age.privacyLink":"Privacy summary ·","age.privacyBody":"We collect only what is necessary to operate the storefront and Stripe checkout (for example cart state and anonymous age confirmation preferences). Messages you send via concierge flows are governed by applicable law. Replace this text with your final policy URL or counsel-approved copy when launching.","age.continue":"Continue","age.no":"Decline","age.footer":"DRINK WITH INTENTION · WE DO NOT SELL TO MINORS","age.errorYear":"Please enter a valid four-digit birth year.","age.errorYoung":"You must be at least 21 to enter Maison Han.",
   "top.1":"Hand-Verified Provenance","top.2":"Insured Worldwide Delivery","top.3":"Private Cellar Concierge",
-  "nav.collection":"Collection","nav.maotai":"Moutai","nav.japan":"Japan","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
+  "nav.collection":"Collection","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
   "hero.no":"№ 001 — A House of Rare Pours","hero.sub":"A private cellar of vintage Moutai and aged Japanese whisky — sourced direct, sealed to provenance, brought to a single table.","hero.cta1":"View the Collection","hero.cta2":"Enter the Cellar",
   "col.eyebrow":"№ 002 — Curated this season","col.title":"The <em>Collection</em>","col.lead":"Each pour in our house is hand-verified, vintage-confirmed, and accompanied by a certificate of provenance. We handle perhaps a hundred bottles a month — never more.","col.empty":"Nothing in this category yet.","catalog.empty":"The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
-  "filter.label":"Filter","filter.all":"All","filter.maotai":"Moutai &amp; Baijiu","filter.japan":"Japanese Whisky","filter.scotch":"Single Malt","filter.wine":"Vintage Wine","filter.cognac":"Cognac",
+  "filter.label":"Filter","filter.all":"All","filter.baijiu":"Chinese baijiu","filter.whisky":"Whisky","filter.wine":"Wine · still &amp; red","filter.sparkling":"Champagne &amp; sparkling","filter.cognac":"Cognac",
   "search.label":"Search collection","search.placeholder":"Name, distillery or №…","search.none":"No bottles match your search.",
   "prov.eyebrow":"№ 003 — Provenance","prov.title":"A bottle is only as<br>true as its journey.","prov.lead":"Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.","prov.cta":"Read the Provenance Standard",
   "prov.1.t":"Direct from the source","prov.1.d":"Distilleries, family cellars, and verified single owners. Never auction-house secondaries we cannot trace.",
   "prov.2.t":"Triple-seal authentication","prov.2.d":"Each bottle is verified against the producer's archive, photographed under UV, and sealed with a numbered house wax before dispatch.",
   "prov.3.t":"A certificate, by hand","prov.3.d":"Every order ships with a hand-numbered provenance card, signed by the house cellar master. Frame it. It is part of the story.",
-  "maotai.no":"— Chapter I —","maotai.title":"The House of <em>Moutai</em>","maotai.lead":"For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.","maotai.cta":"View All Moutai",
+  "maotai.no":"— Chapter I —","maotai.title":"The House of <em>Moutai</em>","maotai.lead":"For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.","maotai.cta":"Browse baijiu in the cellar",
   "maotai.sub":"Single-bottle reserve. One of seventeen in private hands.","maotai.desc":"A pre-merger bottling from the original Maotai distillery, sealed under cellophane the week of the Seoul Olympics. Aged thirty-six years in a Guizhou family cellar before passing into our care. Sauce-aroma at its most patient — soy, dried plum, leather, honey, and a finish that holds for ten minutes after the glass is empty.",
-  "japan.no":"— Chapter II —","japan.title":"The Edit from <em>Japan</em>","japan.lead":"Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.","japan.cta":"View All Japanese Whisky",
+  "japan.no":"— Chapter II —","japan.title":"The Edit from <em>Japan</em>","japan.lead":"Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.","japan.cta":"Browse whisky in the cellar",
   "japan.sub":"A vatting of malts aged in mizunara, sherry, and American white oak.","japan.desc":"The crown of Suntory's blending art. Stone fruit, sandalwood, a slow ribbon of smoke that arrives only when the glass is half empty. Decanted in the company's faceted twenty-four-sided bottle — one face for each hour of the day, one hour for each pour. Increasingly rare since Suntory paused production in 2018.",
   "spec.abv":"Strength","spec.vol":"Volume","spec.origin":"Origin","spec.year":"Vintage",
   "cellar.eyebrow":"№ 005 — By invitation","cellar.title":"The <em>Private</em> Cellar","cellar.lead":"A standing arrangement for collectors who prefer the rarities to find them. Three tiers, by quiet introduction.","cellar.cta":"Request Introduction",
@@ -2131,20 +2239,20 @@ en:{
   "prod.add":"Reserve Bottle","prod.added":"Added to cellar","prod.cta":"Reserve","modal.close":"Close ✕"
 },
 "zh-CN":{
-  "age.title":"请稍候。","age.sub":"本馆仅服务于所在国家或地区已达法定饮酒年龄者。","age.yes":"进入","age.no":"离开","age.legal":"请有意识地饮酒。我们绝不向未成年人销售。",
+  "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本馆仅服务于所在国家或地区已达法定饮酒年龄者。","age.yearPrompt":"请输入出生年份（四位）：","age.remember":"在本设备记住「已通过」确认","age.disclaimer":"您确认在您所在地已达可合法购买酒类之年龄（本站要求年满 21 周岁）。所选商品仅供个人合理使用。勾选「记住」时，我们仅在该浏览器写入匿名通关标记，恕不储存您的出生年份。","age.privacyLink":"隐私说明摘要 ·","age.privacyBody":"本前台仅留存运营独立站所需之最少数据（匿名年龄确认偏好、购物车与 Stripe 结算流程相关）。正式上线前请以法务审定的隐私政策替换本段示意文案。","age.continue":"继续","age.no":"离开","age.footer":"有意识地饮酒 · 绝不向未成年人销售","age.errorYear":"请输入有效的四位出生年份。","age.errorYoung":"须年满 21 周岁方可进入本馆线上橱窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保送达","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.maotai":"茅台","nav.japan":"日本威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
+  "nav.collection":"典藏","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
   "hero.sub":"陈年茅台与日本威士忌的私人酒窖——直采、封藏、亲手送达每一张餐桌。","hero.cta1":"浏览典藏","hero.cta2":"进入私窖",
   "col.eyebrow":"№ 002 — 本季精选","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆经手工核验、年份确认，附带溯源证书。每月仅经手百余瓶——从不更多。","col.empty":"此分类暂无酒款。","catalog.empty":"商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
-  "filter.label":"筛选","filter.all":"全部","filter.maotai":"茅台 & 白酒","filter.japan":"日本威士忌","filter.scotch":"单一麦芽","filter.wine":"年份葡萄酒","filter.cognac":"干邑",
+  "filter.label":"筛选","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 红酒及其他","filter.sparkling":"香槟 · 起泡酒","filter.cognac":"干邑",
   "search.label":"搜寻典藏","search.placeholder":"名称、酒厂或编号…","search.none":"没有符合搜寻条件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在于其行迹。","prov.lead":"市面上的假茅台，销量远胜真品。我们因此拒绝市面。","prov.cta":"阅读溯源标准",
   "prov.1.t":"直采源头","prov.1.d":"酒厂、家族酒窖、可核实的单一持有者。绝不经无法追溯的二级拍卖。",
   "prov.2.t":"三重封缄核验","prov.2.d":"每瓶皆与生产商档案核对，紫外灯下留影，并以编号火漆封缄后发出。",
   "prov.3.t":"亲手签发证书","prov.3.d":"每件订单附手写编号溯源卡，由本馆窖藏总监亲笔签名。装裱起来——它是故事的一部分。",
-  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> 馆","maotai.lead":"七百年来，茅台村以红高粱酿出某种带着土地味道的东西。我们只收藏那些尝起来像记忆的年份。","maotai.cta":"查看全部茅台",
+  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> 馆","maotai.lead":"七百年来，茅台村以红高粱酿出某种带着土地味道的东西。我们只收藏那些尝起来像记忆的年份。","maotai.cta":"白酒典藏一览",
   "maotai.sub":"单瓶典藏。私人持有的十七瓶之一。","maotai.desc":"汉城奥运周封缄的茅台原厂改制前出品。在贵州一户人家的酒窖中静卧三十六载方入我馆。最为隐忍的酱香——酱油、乌梅、皮革、蜂蜜，杯空十分钟而余韵不散。",
-  "japan.no":"— 第二章 —","japan.title":"日本 <em>之 编</em>","japan.lead":"响、山崎、白州、余市、轻井泽。教世人单一麦芽也可低语的几座酒厂。我们只收藏至今仍在低语的年份。","japan.cta":"查看全部日本威士忌",
+  "japan.no":"— 第二章 —","japan.title":"日本 <em>之 编</em>","japan.lead":"响、山崎、白州、余市、轻井泽。教世人单一麦芽也可低语的几座酒厂。我们只收藏至今仍在低语的年份。","japan.cta":"威士忌典藏一览",
   "japan.sub":"水楢、雪莉与美国白橡桶熟成麦芽勾调。","japan.desc":"三得利调和艺术之冠。核果、檀香、半杯之后才悄然到来的烟丝。装入二十四面棱瓶——一面对应一时辰，一时辰对应一杯。自2018年三得利停产以来，愈发稀有。",
   "spec.abv":"酒精度","spec.vol":"容量","spec.origin":"产地","spec.year":"年份",
   "cellar.eyebrow":"№ 005 — 仅限邀约","cellar.title":"私 <em>人</em> 酒窖","cellar.lead":"专为愿让稀世自来寻己的藏家所设。三档制，仅以低声引荐入会。","cellar.cta":"申请引荐",
@@ -2162,20 +2270,20 @@ en:{
   "prod.add":"认领此瓶","prod.added":"已存入您的酒窖","prod.cta":"认领","modal.close":"关闭 ✕"
 },
 "zh-TW":{
-  "age.title":"請稍候。","age.sub":"本館僅服務所在國家或地區已達法定飲酒年齡者。","age.yes":"進入","age.no":"離開","age.legal":"請有意識地飲酒。我們絕不向未成年人銷售。",
+  "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本館僅服務所在國家或地區已達法定飲酒年齡者。","age.yearPrompt":"請輸入出生年份（四位）：","age.remember":"在此裝置記住「已通過」確認","age.disclaimer":"您確認在您所在地已達可合法購買酒類之年齡（本站要求年滿 21 周歲）。所選商品僅供個人合理使用。勾選「記住」時，我們僅在瀏覽器寫入匿名通關標記，恕不儲存您的出生年份。","age.privacyLink":"隱私說明摘要 ·","age.privacyBody":"此前台僅留存營運獨立站所需之最少數據（匿名年齡確認偏好、購物車與 Stripe 結算流程）。正式上線前請以法務核定之私隱政策替換本段示意文案。","age.continue":"繼續","age.no":"離開","age.footer":"有意識地飲酒 · 絕不向未成年人銷售","age.errorYear":"請輸入有效的四位出生年份。","age.errorYoung":"須年滿 21 周歲方可進入本館線上櫥窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保遞送","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.maotai":"茅台","nav.japan":"日本威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
+  "nav.collection":"典藏","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
   "hero.sub":"陳年茅台與日本威士忌的私人酒窖——直採、封藏、親手送達每一張餐桌。","hero.cta1":"瀏覽典藏","hero.cta2":"進入私窖",
   "col.eyebrow":"№ 002 — 本季精選","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆經手工核驗、年份確認，附帶溯源證書。每月僅經手百餘瓶——從不更多。","col.empty":"此分類暫無酒款。",
-  "filter.label":"篩選","filter.all":"全部","filter.maotai":"茅台 & 白酒","filter.japan":"日本威士忌","filter.scotch":"單一麥芽","filter.wine":"年份葡萄酒","filter.cognac":"干邑",
+  "filter.label":"篩選","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 紅酒及其他","filter.sparkling":"香檳 · 氣泡酒","filter.cognac":"干邑",
   "search.label":"搜尋典藏","search.placeholder":"名稱、酒廠或編號…","search.none":"沒有符合搜尋條件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在於其行跡。","prov.lead":"市面上的假茅台，銷量遠勝真品。我們因此拒絕市面。","prov.cta":"閱讀溯源標準",
   "prov.1.t":"直採源頭","prov.1.d":"酒廠、家族酒窖、可核實的單一持有者。絕不經無法追溯的二級拍賣。",
   "prov.2.t":"三重封緘核驗","prov.2.d":"每瓶皆與生產商檔案核對，紫外燈下留影，並以編號火漆封緘後發出。",
   "prov.3.t":"親筆簽發證書","prov.3.d":"每件訂單附手寫編號溯源卡，由本館窖藏總監親筆簽名。裝裱起來——它是故事的一部分。",
-  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> 館","maotai.lead":"七百年來，茅台村以紅高粱釀出某種帶著土地味道的東西。我們只收藏那些嘗起來像記憶的年份。","maotai.cta":"查看全部茅台",
+  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> 館","maotai.lead":"七百年來，茅台村以紅高粱釀出某種帶著土地味道的東西。我們只收藏那些嘗起來像記憶的年份。","maotai.cta":"白酒典藏一覽",
   "maotai.sub":"單瓶典藏。私人持有的十七瓶之一。","maotai.desc":"漢城奧運週封緘的茅台原廠改制前出品。在貴州一戶人家的酒窖中靜臥三十六載方入我館。最為隱忍的醬香——醬油、烏梅、皮革、蜂蜜，杯空十分鐘而餘韻不散。",
-  "japan.no":"— 第二章 —","japan.title":"日本 <em>之 編</em>","japan.lead":"響、山崎、白州、余市、輕井澤。教世人單一麥芽也可低語的幾座酒廠。我們只收藏至今仍在低語的年份。","japan.cta":"查看全部日本威士忌",
+  "japan.no":"— 第二章 —","japan.title":"日本 <em>之 編</em>","japan.lead":"響、山崎、白州、余市、輕井澤。教世人單一麥芽也可低語的幾座酒廠。我們只收藏至今仍在低語的年份。","japan.cta":"威士忌典藏一覽",
   "japan.sub":"水楢、雪莉與美國白橡桶熟成麥芽勾調。","japan.desc":"三得利調和藝術之冠。核果、檀香、半杯之後才悄然到來的煙絲。裝入二十四面稜瓶——一面對應一時辰，一時辰對應一杯。自2018年三得利停產以來，愈發稀有。",
   "spec.abv":"酒精度","spec.vol":"容量","spec.origin":"產地","spec.year":"年份",
   "cellar.eyebrow":"№ 005 — 僅限邀約","cellar.title":"私 <em>人</em> 酒窖","cellar.lead":"專為願讓稀世自來尋己的藏家所設。三檔制，僅以低聲引薦入會。","cellar.cta":"申請引薦",
@@ -2193,20 +2301,20 @@ en:{
   "prod.add":"認領此瓶","prod.added":"已存入您的酒窖","prod.cta":"認領","modal.close":"關閉 ✕"
 },
 ja:{
-  "age.title":"少々お待ちください。","age.sub":"当館は、お客様の居住国における法定飲酒年齢に達した方のみにお仕えいたします。","age.yes":"入る","age.no":"辞す","age.legal":"心して飲み給え。未成年への提供は一切いたしません。",
+  "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀少な一杯 · 来歴を封じる館","age.sub":"当館は、お客様の居住国における法定飲酒年齢に達した方のみにお仕えいたします。","age.yearPrompt":"生まれ年を4桁でご入力ください。","age.remember":"この端末では次回から入力を省略","age.disclaimer":"お客様の地域で酒類購入に必要な年齢（当サイトでは21歳以上）を満たすこと、および個人利用のみを確認します。「記憶される」選択時、このブラウザには通過確認フラグのみを保存します。出生年そのものは保存しません。","age.privacyLink":"プライバシー概要 ·","age.privacyBody":"本方針文言はひな型です。本番運用時は適用法令に準拠した確定ポリシーに差し替えてください。","age.continue":"続ける","age.no":"辞退する","age.footer":"心意を持って飲むこと · 未成年への提供なし","age.errorYear":"4桁の妥当な出生年をご入力ください。","age.errorYoung":"21歳未満の方はご入館いただけません。",
   "top.1":"一瓶ごとの来歴確認","top.2":"全世界保険付き配送","top.3":"プライベート·コンシェルジュ",
-  "nav.collection":"コレクション","nav.maotai":"茅台","nav.japan":"日本ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
+  "nav.collection":"コレクション","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
   "hero.sub":"年代物の茅台と熟成日本ウイスキーの私的セラー — 直接仕入れ、来歴を封じ、あなたのテーブルへ。","hero.cta1":"コレクションを見る","hero.cta2":"私蔵庫へ",
   "col.eyebrow":"№ 002 — 今季の選り抜き","col.title":"コレ <em>クション</em>","col.lead":"当館の一本は、すべて手作業で照合され、年代を確認し、来歴証明書を添えてお届けします。一月に扱うのは百本ほど — それ以上は決して。","col.empty":"このカテゴリにはまだありません。",
-  "filter.label":"絞り込み","filter.all":"全て","filter.maotai":"茅台 & 白酒","filter.japan":"日本ウイスキー","filter.scotch":"シングルモルト","filter.wine":"ヴィンテージワイン","filter.cognac":"コニャック",
+  "filter.label":"絞り込み","filter.all":"全て","filter.baijiu":"白酒","filter.whisky":"ウィスキー","filter.wine":"ワイン・赤ワインほか","filter.sparkling":"シャンパーニュ・発泡ワイン","filter.cognac":"コニャック",
   "search.label":"コレクションを検索","search.placeholder":"名称、蒸留所、№…","search.none":"該当するボトルはございません。",
   "prov.eyebrow":"№ 003 — 来歴","prov.title":"瓶の真贋は、<br>その旅路に等しい。","prov.lead":"市場では偽の茅台が本物より売れる。だから当館は、市場を取らない。","prov.cta":"来歴基準を読む",
   "prov.1.t":"源泉から直接","prov.1.d":"蒸留所、家族の酒蔵、確認済みの単一所有者から。追跡不能なオークションの二次流通は、決して扱わない。",
   "prov.2.t":"三重封緘鑑定","prov.2.d":"全瓶を生産者アーカイブと照合し、紫外線下で記録、当館の番号入り蝋封を施してから出荷します。",
   "prov.3.t":"一筆一筆の証明書","prov.3.d":"各注文に、手書き番号付きの来歴証が添付され、当館セラーマスターの直筆署名を伴います。額装してください — それは物語の一部です。",
-  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> の家","maotai.lead":"七百年、茅台村は赤高粱からその土地の味を瓶詰めしてきた。我々は、記憶のように味わえる年代だけを扱う。","maotai.cta":"茅台を全て見る",
+  "maotai.no":"— 第一章 —","maotai.title":"茅 <em>台</em> の家","maotai.lead":"七百年、茅台村は赤高粱からその土地の味を瓶詰めしてきた。我々は、記憶のように味わえる年代だけを扱う。","maotai.cta":"白酒のコレクションを見る",
   "maotai.sub":"単瓶秘蔵。私的所有の十七本のうちの一本。","maotai.desc":"ソウル五輪の週にセロハンで封じられた、合併前茅台蒸留所のボトリング。貴州の一族の酒蔵で三十六年熟成され、当館に渡った。最も忍耐強い醤香 — 醤油、干し梅、革、蜂蜜、グラスが空になってから十分間続く余韻。",
-  "japan.no":"— 第二章 —","japan.title":"日本からの <em>編</em>","japan.lead":"響、山崎、白州、余市、軽井沢。シングルモルトが囁けることを世界に教えた家々。我々は、今なお囁き続ける年代だけを扱う。","japan.cta":"日本ウイスキーを全て見る",
+  "japan.no":"— 第二章 —","japan.title":"日本からの <em>編</em>","japan.lead":"響、山崎、白州、余市、軽井沢。シングルモルトが囁けることを世界に教えた家々。我々は、今なお囁き続ける年代だけを扱う。","japan.cta":"ウイスキーのコレクションを見る",
   "japan.sub":"水楢、シェリー、米国産ホワイトオークで熟成したモルトのヴァッティング。","japan.desc":"サントリーの調和術の頂。ストーンフルーツ、白檀、グラスが半分になってから訪れる細い煙のリボン。二十四面体の瓶 — 一日の各時刻に一面、一時刻に一杯。2018年の生産休止以来、入手は稀に。",
   "spec.abv":"アルコール度","spec.vol":"容量","spec.origin":"産地","spec.year":"ヴィンテージ",
   "cellar.eyebrow":"№ 005 — 招待制","cellar.title":"プライベート <em>· </em>セラー","cellar.lead":"稀少が向こうから訪れることを好む蒐集家のための、常設の取り決め。三段階、静かな紹介をもって。","cellar.cta":"紹介を依頼する",
@@ -2675,20 +2783,114 @@ function openNavMob(){
 
 /* ============ EVENTS ============ */
 document.addEventListener("DOMContentLoaded",()=>{
-  // Age gate
+  // Age gate — birth year + remember (Penfolds-inspired; 21+ gate for this site)
   const ageGate=document.getElementById("ageGate");
-  try{if(localStorage.getItem("han_age")==="ok")ageGate.style.display="none"}catch(e){}
-  document.getElementById("ageYes").onclick=()=>{
-    try{localStorage.setItem("han_age","ok")}catch(e){}
+  const ageDigits=[...document.querySelectorAll(".age-gate__digit")];
+  const ageContinue=document.getElementById("ageContinue");
+  const ageRemember=document.getElementById("ageRemember");
+  const ageError=document.getElementById("ageError");
+  const agePrivacy=document.getElementById("agePrivacyPanel");
+  const agePrivacyBtn=document.getElementById("agePrivacyToggle");
+
+  function ageDict(k){
+    const root=I18N[state.lang]||I18N.en;
+    return(root[k]!==undefined)?root[k]:I18N.en[k];
+  }
+  function dismissAgeGate(){
     ageGate.style.display="none";
-  };
-  document.getElementById("ageNo").onclick=()=>{
+    document.body.style.overflow="";
+  }
+  function yearJoined(){
+    return ageDigits.map(el=>String(el.value||"").replace(/\D/g,"").slice(-1)).join("");
+  }
+  function updateAgeContinueBtn(){
+    ageContinue.disabled=(yearJoined().length!==4);
+  }
+  function showAgeErr(which){
+    if(which==="year")ageError.textContent=ageDict("age.errorYear")||"";
+    else if(which==="young")ageError.textContent=ageDict("age.errorYoung")||"";
+    else ageError.textContent="";
+  }
+  function validateBirthYear(){
+    const s=yearJoined();
+    showAgeErr("");
+    const cur=new Date().getFullYear();
+    if(s.length!==4){showAgeErr("year");return false;}
+    const y=parseInt(s,10);
+    if(!Number.isFinite(y)||y<1900||y>cur){showAgeErr("year");return false;}
+    if(cur-y<21){showAgeErr("young");return false;}
+    return true;
+  }
+  function acceptAgeGate(){
+    if(!validateBirthYear())return;
+    try{
+      if(ageRemember.checked){
+        localStorage.setItem("han_age","ok");
+        sessionStorage.removeItem("han_age_sess");
+      }else{
+        sessionStorage.setItem("han_age_sess","1");
+        localStorage.removeItem("han_age");
+      }
+    }catch(e){}
+    dismissAgeGate();
+  }
+  let ageBypass=false;
+  try{
+    ageBypass=(localStorage.getItem("han_age")==="ok")||(sessionStorage.getItem("han_age_sess")==="1");
+  }catch(e){}
+  if(ageBypass){
+    dismissAgeGate();
+  }else{
+    document.body.style.overflow="hidden";
+    ageGate.style.display="";
+    requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus();});
+  }
+  ageDigits.forEach((inp,idx)=>{
+    inp.addEventListener("input",e=>{
+      let v=String(e.target.value||"").replace(/\D/g,"");
+      v=v.slice(-1)||"";
+      e.target.value=v;
+      if(v&&idx<ageDigits.length-1)ageDigits[idx+1].focus();
+      showAgeErr("");
+      updateAgeContinueBtn();
+    });
+    inp.addEventListener("keydown",e=>{
+      if(e.key==="Backspace"&&!inp.value&&idx>0){
+        ageDigits[idx-1].focus();
+        e.preventDefault();
+      }
+      if(e.key==="Enter"){
+        e.preventDefault();
+        if(!ageContinue.disabled)acceptAgeGate();
+      }
+    });
+  });
+  if(ageGate){
+    ageGate.addEventListener("paste",e=>{
+      const t=e.clipboardData?.getData("text")||"";
+      const d=t.replace(/\D/g,"").slice(0,4).split("");
+      if(!d.length)return;
+      e.preventDefault();
+      ageDigits.forEach((el,i)=>{el.value=d[i]||"";});
+      const j=Math.min(d.length,3);
+      if(ageDigits[j])ageDigits[j].focus();
+      showAgeErr("");
+      updateAgeContinueBtn();
+    });
+  }
+  if(ageContinue)ageContinue.onclick=acceptAgeGate;
+  const ageDecline=document.getElementById("ageDecline");
+  if(ageDecline)ageDecline.onclick=()=>{
     document.body.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0E0B08;color:#E8DCC0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;text-align:center;padding:24px;letter-spacing:.02em;line-height:1.3">Some other evening,<br>perhaps.</div>`;
   };
+  if(agePrivacyBtn&&agePrivacy){
+    agePrivacyBtn.onclick=()=>agePrivacy.classList.toggle("is-open");
+  }
 
   // Lang & currency
   document.getElementById("langSelect").onchange=e=>{
     state.lang=e.target.value;applyI18N();renderGrid();updateCart();updateFeaturedPrices();
+    const ae=document.getElementById("ageError");if(ae)ae.textContent="";
     try{localStorage.setItem("han_lang",state.lang)}catch(err){}
   };
   document.getElementById("currSelect").onchange=e=>{
@@ -2702,6 +2904,18 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll(".filter-bar__btn").forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
     state.cat=btn.dataset.cat;state.page=1;renderGrid();
+  });
+  document.querySelectorAll('a[data-collection-cat]').forEach(a=>{
+    a.addEventListener("click",()=>{
+      const c=a.getAttribute("data-collection-cat");
+      if(!c)return;
+      state.cat=c;
+      document.querySelectorAll(".filter-bar__btn").forEach(b=>{
+        b.classList.toggle("active",(b.dataset.cat||"")===c);
+      });
+      state.page=1;
+      queueMicrotask(()=>renderGrid());
+    });
   });
 
   const collectionSearch=document.getElementById("collectionSearch");
