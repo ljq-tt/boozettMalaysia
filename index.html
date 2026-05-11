@@ -3159,19 +3159,48 @@ document.addEventListener("DOMContentLoaded",()=>{
     updateAgeContinueBtn();
     requestAnimationFrame(()=>{if(ageDigits[0])ageDigits[0].focus({preventScroll:true});});
   }
+  function digitCharFromKeyboardEvent(e){
+    if(typeof e.key==="string"&&e.key.length===1&&/^[0-9]$/.test(e.key)){return e.key;}
+    const c=e.code||"";
+    const mDig=/^Digit([0-9])$/.exec(c);
+    if(mDig){return mDig[1];}
+    const mNum=/^Numpad([0-9])$/.exec(c);
+    if(mNum){return mNum[1];}
+    return null;
+  }
+  function focusAgeDigit(i){
+    if(i<0||i>=ageDigits.length)return;
+    const el=ageDigits[i];
+    window.setTimeout(()=>{
+      try{
+        el.focus({preventScroll:true});
+        if(typeof el.setSelectionRange==="function"){el.setSelectionRange(0,1);}
+      }catch(err){try{el.focus();}catch(e2){}}
+    },0);
+  }
   ageDigits.forEach((inp,idx)=>{
-    inp.addEventListener("input",e=>{
-      let v=String(e.target.value||"").replace(/\D/g,"");
-      v=v.slice(-1)||"";
-      e.target.value=v;
-      if(v&&idx<ageDigits.length-1)ageDigits[idx+1].focus();
+    inp.addEventListener("input",()=>{
+      let v=String(inp.value||"").replace(/\D/g,"").slice(-1);
+      inp.value=v;
       showAgeErr("");
       updateAgeContinueBtn();
+      if(v&&idx<ageDigits.length-1){focusAgeDigit(idx+1);}
     });
     inp.addEventListener("keydown",e=>{
-      if(e.key==="Backspace"&&!inp.value&&idx>0){
-        ageDigits[idx-1].focus();
+      if(e.ctrlKey||e.metaKey||e.altKey){return;}
+      const d=digitCharFromKeyboardEvent(e);
+      if(d!==null){
         e.preventDefault();
+        inp.value=d;
+        showAgeErr("");
+        updateAgeContinueBtn();
+        if(idx<ageDigits.length-1){focusAgeDigit(idx+1);}
+        return;
+      }
+      if(e.key==="Backspace"&&!inp.value&&idx>0){
+        ageDigits[idx-1].focus({preventScroll:true});
+        e.preventDefault();
+        return;
       }
       if(e.key==="Enter"){
         e.preventDefault();
@@ -3187,7 +3216,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       e.preventDefault();
       ageDigits.forEach((el,i)=>{el.value=d[i]||"";});
       const j=Math.min(d.length,3);
-      if(ageDigits[j])ageDigits[j].focus();
+      if(ageDigits[j])focusAgeDigit(j);
       showAgeErr("");
       updateAgeContinueBtn();
     });
