@@ -438,24 +438,55 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:clamp(16px,2vw,34px);
+  gap:clamp(12px,1.4vw,26px);
   flex-wrap:wrap;
   font-family:"DM Sans","Manrope",sans-serif;
-  font-size:11px;
-  letter-spacing:.22em;
+  font-size:10px;
+  letter-spacing:.24em;
   text-transform:uppercase;
   color:var(--bone-mute);
 }
+.nav__dropdown{position:relative}
 .nav__link{
   position:relative;
   padding:8px 0;
-  transition:color .25s ease;
+  transition:color .25s ease,opacity .25s ease;
+  white-space:nowrap;
 }
 .nav__link:hover{color:var(--bone)}
 .nav__link.is-active{color:var(--bone)}
 .nav__link.is-active::after{
   content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
 }
+.nav__link--btn{font:inherit;background:none;border:none;cursor:pointer}
+.nav__dropdown{position:relative}
+.nav__mega{
+  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+  width:min(920px,90vw);
+  background:rgba(250,248,245,.98);
+  border:1px solid var(--line);
+  box-shadow:0 24px 60px rgba(41,36,36,.14);
+  padding:20px;
+  display:none;
+  z-index:30;
+}
+.nav__mega.open{display:block}
+.nav__mega-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.nav__mega-col{padding:12px 14px;border:1px solid rgba(232,220,192,.35);background:#fffdf9}
+.nav__mega-title{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px
+}
+.nav__mega-list{display:flex;flex-direction:column;gap:10px}
+.nav__mega-list a{
+  font-family:"Manrope",sans-serif;
+  font-size:13px;line-height:1.4;color:var(--bone-mute)
+}
+.nav__mega-list a:hover{color:var(--bone)}
 .nav__menu-btn{
   display:flex;
   align-items:center;
@@ -617,13 +648,23 @@ button.nav__search{
   transition:color .3s ease,border-color .3s ease;
 }
 .nav-mob__close:hover{color:var(--bone);border-color:var(--gold-deep)}
+.nav-mob__section{padding:18px 0;border-bottom:1px solid rgba(232,220,192,.1)}
+.nav-mob__section:last-of-type{border-bottom:none}
+.nav-mob__section-title{
+  font-family:"Manrope",sans-serif;
+  font-size:10px;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:14px;
+}
 .nav-mob__links{
   list-style:none;
   display:flex;
   flex-direction:column;
   gap:4px;
 }
-.nav-mob__links a{
+.nav-mob__links--compact a{
   display:block;
   font-family:"Manrope",sans-serif;
   font-size:13px;
@@ -631,12 +672,12 @@ button.nav__search{
   letter-spacing:.26em;
   text-transform:uppercase;
   color:var(--bone-mute);
-  padding:14px 0;
+  padding:12px 0;
   border-bottom:1px solid rgba(232,220,192,.08);
   transition:color .3s ease,padding-left .3s ease;
 }
-.nav-mob__links li:last-child a{border-bottom:none}
-.nav-mob__links a:hover{color:var(--bone);padding-left:6px}
+.nav-mob__links--compact a:last-child{border-bottom:none}
+.nav-mob__links--compact a:hover{color:var(--bone);padding-left:6px}
 body.nav-mob-open{overflow:hidden}
 
 /* ================================================================
@@ -1932,7 +1973,6 @@ body.nav-mob-open{overflow:hidden}
   .spec-grid{grid-template-columns:1fr}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
-  .nav__center{display:none}
 }
 </style>
 </head>
@@ -2017,13 +2057,194 @@ body.nav-mob-open{overflow:hidden}
         <span>Maison Han</span>
       </a>
     </div>
-    <div class="nav__center" aria-label="Primary categories">
-      <a href="#collection" class="nav__link" data-cat-link="all">Home</a>
-      <a href="#collection" class="nav__link" data-cat-link="spirits">Spirits</a>
-      <a href="#collection" class="nav__link" data-cat-link="whisky">Whisky</a>
-      <a href="#collection" class="nav__link" data-cat-link="wine">Wine</a>
-      <a href="#collection" class="nav__link" data-cat-link="sparkling">Sparkling</a>
-      <a href="#collection" class="nav__link" data-cat-link="others">Others</a>
+    <div class="nav__center" aria-label="Primary navigation">
+      <a href="#hero" class="nav__link">首页</a>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="cat">酒水分类</button>
+        <div class="nav__mega" data-mega-panel="cat" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">中国与烈酒</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">白酒 / Spirits</a>
+                <a href="#collection" data-cat-link="others">獭祭 / 预调 / 其他</a>
+                <a href="#collection" data-cat-link="all">全部典藏</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">威士忌与葡萄酒</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="whisky">日本威士忌 / Whisky</a>
+                <a href="#collection" data-cat-link="wine">红酒 / Wine</a>
+                <a href="#collection" data-cat-link="sparkling">香槟 / Sparkling</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">筛选思路</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">按大类浏览</a>
+                <a href="#collection" data-cat-link="sparkling">按节庆场景</a>
+                <a href="#collection" data-cat-link="others">按特殊款式</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="scene">场景选酒</button>
+        <div class="nav__mega" data-mega-panel="scene" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">送礼</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">商务送礼</a>
+                <a href="#collection" data-cat-link="whisky">节日送礼</a>
+                <a href="#collection" data-cat-link="sparkling">庆祝送礼</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">自饮</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="wine">晚餐佐餐</a>
+                <a href="#collection" data-cat-link="whisky">独酌威士忌</a>
+                <a href="#collection" data-cat-link="others">轻松微醺</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">收藏</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">年份白酒</a>
+                <a href="#collection" data-cat-link="whisky">稀有威士忌</a>
+                <a href="#collection" data-cat-link="others">特别收录</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="gift">礼盒礼赠</button>
+        <div class="nav__mega" data-mega-panel="gift" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">礼赠类型</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">高端白酒礼盒</a>
+                <a href="#collection" data-cat-link="whisky">威士忌礼赠</a>
+                <a href="#collection" data-cat-link="sparkling">庆祝礼赠</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">价格带</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="all">入门礼物</a>
+                <a href="#collection" data-cat-link="whisky">中高端礼品</a>
+                <a href="#collection" data-cat-link="spirits">收藏级礼赠</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">用途</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="sparkling">节庆宴请</a>
+                <a href="#collection" data-cat-link="wine">餐桌礼赠</a>
+                <a href="#collection" data-cat-link="others">轻礼与特别款</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="new">新品特惠</button>
+        <div class="nav__mega" data-mega-panel="new" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">新到货</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="all">本周上新</a>
+                <a href="#collection" data-cat-link="whisky">新入威士忌</a>
+                <a href="#collection" data-cat-link="wine">新入葡萄酒</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">优惠</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="others">限时清单</a>
+                <a href="#collection" data-cat-link="sparkling">庆祝特价</a>
+                <a href="#collection" data-cat-link="spirits">白酒精选</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">推荐节奏</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="wine">佐餐推荐</a>
+                <a href="#collection" data-cat-link="whisky">夜饮推荐</a>
+                <a href="#collection" data-cat-link="sparkling">庆典推荐</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="tools">酒具周边</button>
+        <div class="nav__mega" data-mega-panel="tools" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">配件</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="others">开瓶器</a>
+                <a href="#collection" data-cat-link="others">醒酒器</a>
+                <a href="#collection" data-cat-link="others">冰桶与杯具</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">礼盒周边</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="spirits">白酒礼盒配件</a>
+                <a href="#collection" data-cat-link="whisky">威士忌礼盒配件</a>
+                <a href="#collection" data-cat-link="sparkling">香槟庆祝周边</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">陈列</div>
+              <div class="nav__mega-list">
+                <a href="#collection" data-cat-link="all">桌面陈列</a>
+                <a href="#collection" data-cat-link="others">小件配饰</a>
+                <a href="#collection" data-cat-link="wine">酒架灵感</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav__dropdown">
+        <button type="button" class="nav__link nav__link--btn" data-mega="about">品牌关于</button>
+        <div class="nav__mega" data-mega-panel="about" aria-hidden="true">
+          <div class="nav__mega-grid">
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">Maison Han</div>
+              <div class="nav__mega-list">
+                <a href="#provenance">溯源标准</a>
+                <a href="#cellar">私窖服务</a>
+                <a href="#journal">酒志</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">服务</div>
+              <div class="nav__mega-list">
+                <a href="#" id="navSearchFromAbout">站内搜寻</a>
+                <a href="#" id="navCartFromAbout">查看酒篮</a>
+                <a href="#" id="navLanguageFromAbout">语言与币种</a>
+              </div>
+            </div>
+            <div class="nav__mega-col">
+              <div class="nav__mega-title">品牌气质</div>
+              <div class="nav__mega-list">
+                <a href="#hero">高端</a>
+                <a href="#collection">克制</a>
+                <a href="#journal">编辑感</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="nav__cta">
       <button type="button" class="nav__search" id="navSearch" data-i18n="nav.search">Search</button>
@@ -2044,15 +2265,36 @@ body.nav-mob-open{overflow:hidden}
     <span class="nav-mob__eyebrow" id="navMobTitle" data-i18n="nav.menu_title">Menu</span>
     <button type="button" class="nav-mob__close" id="navMenuClose" data-i18n="nav.menu_close">Close</button>
   </div>
-  <ul class="nav-mob__links">
-    <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
-    <li><a href="#discover" data-i18n="nav.discover">Discover</a></li>
-    <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
-    <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
-    <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
-    <li><a href="#journal" data-i18n="nav.journal">Journal</a></li>
-    <li><a href="account.html">Account</a></li>
-  </ul>
+  <div class="nav-mob__section">
+    <div class="nav-mob__section-title">主导航</div>
+    <div class="nav-mob__links nav-mob__links--compact">
+      <a href="#hero">首页</a>
+      <a href="#collection">典藏</a>
+      <a href="#discover">主题导购</a>
+      <a href="#cellar">私窖</a>
+      <a href="#journal">酒志</a>
+    </div>
+  </div>
+  <div class="nav-mob__section">
+    <div class="nav-mob__section-title">酒水分类</div>
+    <div class="nav-mob__links nav-mob__links--compact">
+      <a href="#collection" data-cat-link="spirits">白酒 / Spirits</a>
+      <a href="#collection" data-cat-link="whisky">日本威士忌 / Whisky</a>
+      <a href="#collection" data-cat-link="wine">红酒 / Wine</a>
+      <a href="#collection" data-cat-link="sparkling">香槟 / Sparkling</a>
+      <a href="#collection" data-cat-link="others">獭祭 / 预调 / 其他</a>
+    </div>
+  </div>
+  <div class="nav-mob__section">
+    <div class="nav-mob__section-title">快捷入口</div>
+    <div class="nav-mob__links nav-mob__links--compact">
+      <a href="#collection" data-cat-link="all">全部典藏</a>
+      <a href="#collection" data-cat-link="sparkling">节庆礼赠</a>
+      <a href="#collection" data-cat-link="whisky">礼赠威士忌</a>
+      <a href="#collection" data-cat-link="spirits">高端白酒</a>
+      <a href="account.html">Account</a>
+    </div>
+  </div>
 </aside>
 
 <!-- ================================================================
@@ -2805,6 +3047,9 @@ function syncNavCategoryLinks(){
   document.querySelectorAll(".collection-nav__chip").forEach(chip=>{
     chip.classList.toggle("is-active",(chip.dataset.cat||"all")===state.cat);
   });
+  document.querySelectorAll(".nav__mega [data-cat-link]").forEach(link=>{
+    link.classList.toggle("is-active",(link.dataset.catLink||"all")===state.cat);
+  });
 }
 
 /* ============ CURRENCY ============ */
@@ -3514,6 +3759,34 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("navMobOverlay").onclick=()=>closeNavMob();
   document.querySelectorAll(".nav-mob__links a").forEach(a=>{
     a.addEventListener("click",()=>closeNavMob());
+  });
+  document.querySelectorAll(".nav__mega").forEach(panel=>{
+    panel.addEventListener("click",e=>e.stopPropagation());
+  });
+  document.querySelectorAll(".nav__dropdown").forEach(drop=>{
+    const btn=drop.querySelector("[data-mega]");
+    const panel=drop.querySelector(".nav__mega");
+    if(!btn||!panel)return;
+    const open=()=>{
+      document.querySelectorAll(".nav__mega.open").forEach(p=>{if(p!==panel)p.classList.remove("open")});
+      panel.classList.add("open");
+      panel.setAttribute("aria-hidden","false");
+    };
+    const close=()=>{
+      panel.classList.remove("open");
+      panel.setAttribute("aria-hidden","true");
+    };
+    btn.addEventListener("mouseenter",open);
+    drop.addEventListener("mouseenter",open);
+    drop.addEventListener("mouseleave",close);
+    btn.addEventListener("focus",open);
+    btn.addEventListener("click",e=>{e.preventDefault();panel.classList.toggle("open");panel.setAttribute("aria-hidden",panel.classList.contains("open")?"false":"true")});
+  });
+  document.addEventListener("click",e=>{
+    if(!e.target.closest(".nav__dropdown")){
+      document.querySelectorAll(".nav__mega.open").forEach(p=>p.classList.remove("open"));
+      document.querySelectorAll(".nav__mega").forEach(p=>p.setAttribute("aria-hidden","true"));
+    }
   });
 
   // Cart
