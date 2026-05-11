@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison Han ?? Verify email</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Maison Han</div>
+  <div class="api-box">
+    <label for="apiBase">API base</label>
+    <input type="text" id="apiBase" placeholder="https://your-host/prod-api" />
+  </div>
+  <div class="msg err" id="err"></div>
+  <p class="muted" id="status">Confirming...</p>
+  <div class="row-links"><a href="account-login.html">Sign in</a> ?? <a href="index.html">Home</a></div>
+</div>
+<script src="js/portal-api.js"></script>
+<script>
+(function () {
+  try { document.getElementById('apiBase').value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
+  document.getElementById('apiBase').addEventListener('change', function (ev) {
+    try { localStorage.setItem(HanPortal.API_KEY, ev.target.value.trim()); } catch (e) {}
+  });
+  var qs = new URLSearchParams(location.search);
+  var t = qs.get('token');
+  var errEl = document.getElementById('err');
+  var st = document.getElementById('status');
+  if (!t) {
+    errEl.textContent = 'Missing token in URL.';
+    errEl.style.display = 'block';
+    st.textContent = '';
+    throw new Error();
+  }
+  HanPortal.verifyEmailToken(t)
+    .then(function () {
+      st.textContent = 'Email verified. You can sign in.';
+    })
+    .catch(function (e) {
+      errEl.textContent = e.message || 'Verification failed';
+      errEl.style.display = 'block';
+      st.textContent = '';
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison Han ¡ª Reset password</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Maison Han</div>
+  <div class="api-box"><label for="apiBase">API base</label><input type="text" id="apiBase" /></div>
+  <div class="msg err" id="err"></div>
+  <div class="card">
+    <form id="form">
+      <label for="password">New password</label>
+      <input id="password" type="password" required minlength="8" autocomplete="new-password" />
+      <button class="btn btn--solid" type="submit">Update password</button>
+    </form>
+    <div class="row-links"><a href="account-login.html">Sign in</a></div>
+  </div>
+</div>
+<script src="js/portal-api.js"></script>
+<script>
+(function () {
+  try { apiBase.value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
+  apiBase.onchange = function () {
+    try { localStorage.setItem(HanPortal.API_KEY, apiBase.value.trim()); } catch (e) {}
+  };
+  var qs = new URLSearchParams(location.search);
+  var tok = qs.get('token');
+  if (!tok) {
+    err.textContent = 'Missing reset token.';
+    err.style.display = 'block';
+  }
+  form.onsubmit = function (ev) {
+    ev.preventDefault();
+    err.style.display = 'none';
+    HanPortal.resetPwd(tok, password.value)
+      .then(function () {
+        alert('Password updated. Sign in.');
+        location.href = 'account-login.html';
+      })
+      .catch(function (e) {
+        err.textContent = e.message;
+        err.style.display = 'block';
+      });
+  };
+})();
+</script>
+</body>
+</html>

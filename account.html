@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison Han ¡ª My account</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Maison Han</div>
+  <div class="api-box"><label for="apiBase">API base</label><input type="text" id="apiBase" /></div>
+  <div class="msg err" id="err"></div>
+  <div class="card">
+    <p class="muted" id="meta">Loading¡­</p>
+    <form id="pf">
+      <label for="nick">Nickname</label>
+      <input id="nick" type="text" maxlength="64" />
+      <button class="btn btn--solid" type="submit">Save profile</button>
+    </form>
+    <button class="btn" type="button" id="resend" style="margin-top:12px">Resend verification email</button>
+    <button class="btn" type="button" id="logout" style="margin-top:12px">Sign out</button>
+    <div class="row-links"><a href="index.html">Home</a></div>
+  </div>
+</div>
+<script src="js/portal-api.js"></script>
+<script>
+(function () {
+  try { apiBase.value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
+  apiBase.onchange = function () {
+    try { localStorage.setItem(HanPortal.API_KEY, apiBase.value.trim()); } catch (e) {}
+  };
+  err.style.display = 'none';
+
+  function showMember(d) {
+    meta.textContent =
+      (d.email || '') +
+      ' ¡¤ verified ' +
+      (d.emailVerified === '1' ? 'yes' : 'no') +
+      ' ¡¤ USD points balance ' +
+      (d.pointsBalance != null ? d.pointsBalance : 0);
+    nick.value = d.nickName || '';
+  }
+
+  if (!HanPortal.getToken()) {
+    meta.textContent = 'Not signed in.';
+    pf.style.display = 'none';
+    resend.style.display = 'none';
+    logout.onclick = function () {
+      location.href = 'account-login.html';
+    };
+  } else {
+    HanPortal.me()
+      .then(function (res) {
+        var d = res.data || {};
+        showMember(d);
+      })
+      .catch(function () {
+        meta.textContent = 'Session expired. Sign in again.';
+        pf.style.display = 'none';
+        resend.style.display = 'none';
+      });
+
+    pf.onsubmit = function (ev) {
+      ev.preventDefault();
+      err.style.display = 'none';
+      HanPortal.updateMe({ nickName: nick.value.trim() })
+        .then(function (r) {
+          showMember(r.data || {});
+          alert('Saved');
+        })
+        .catch(function (e) {
+          err.textContent = e.message;
+          err.style.display = 'block';
+        });
+    };
+
+    resend.onclick = function () {
+      err.style.display = 'none';
+      HanPortal.resendVerify()
+        .then(function () {
+          alert('If not yet verified, a new email was sent.');
+        })
+        .catch(function (e) {
+          err.textContent = e.message;
+          err.style.display = 'block';
+        });
+    };
+
+    logout.onclick = function () {
+      HanPortal.logout().finally(function () {
+        location.href = 'account-login.html';
+      });
+    };
+  }
+})();
+</script>
+</body>
+</html>

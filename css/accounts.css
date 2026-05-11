@@ -1,0 +1,132 @@
+:root {
+  --ink: #0e0b08;
+  --paper: #fcf8f1;
+  --bone: #e8dcc0;
+  --gold: #b89968;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    Manrope,
+    system-ui,
+    sans-serif;
+  background: radial-gradient(120% 90% at 50% -20%, rgba(184, 153, 104, 0.12), transparent),
+    linear-gradient(168deg, #1a0508 0%, #591018 40%, #0e0b08 100%);
+  color: var(--bone);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--gold);
+}
+
+.wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 28px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 28px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card {
+  background: rgba(14, 11, 8, 0.55);
+  border: 1px solid rgba(232, 220, 192, 0.18);
+  padding: 26px 22px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+input[type='email'],
+input[type='password'],
+input[type='text'] {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid rgba(232, 220, 192, 0.25);
+  background: rgba(252, 248, 241, 0.06);
+  color: var(--paper);
+  font-size: 15px;
+  margin-bottom: 16px;
+  border-radius: 0;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 14px 18px;
+  border: 1px solid rgba(232, 220, 192, 0.35);
+  background: transparent;
+  color: var(--bone);
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn--solid {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+  margin-top: 8px;
+}
+.btn:hover {
+  opacity: 0.92;
+}
+
+.muted {
+  font-size: 13px;
+  opacity: 0.75;
+}
+.row-links {
+  margin-top: 18px;
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.msg {
+  font-size: 13px;
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid rgba(232, 220, 192, 0.2);
+  display: none;
+}
+.msg.err {
+  display: block;
+  border-color: #a66;
+  color: #f3caca;
+}
+
+.api-box {
+  margin-bottom: 20px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.api-box input {
+  margin-top: 6px;
+}

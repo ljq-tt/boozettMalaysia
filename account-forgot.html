@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison Han ¡ª Forgot password</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Maison Han</div>
+  <div class="api-box"><label for="apiBase">API base</label><input type="text" id="apiBase" /></div>
+  <div class="msg err" id="err"></div>
+  <div class="card">
+    <form id="form">
+      <label for="email">Email</label>
+      <input id="email" type="email" required />
+      <button class="btn btn--solid" type="submit">Send reset link</button>
+    </form>
+    <div class="row-links"><a href="account-login.html">Sign in</a> ¡¤ <a href="index.html">Home</a></div>
+  </div>
+</div>
+<script src="js/portal-api.js"></script>
+<script>
+(function () {
+  try { apiBase.value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
+  apiBase.onchange = function () {
+    try { localStorage.setItem(HanPortal.API_KEY, apiBase.value.trim()); } catch (e) {}
+  };
+  form.onsubmit = function (ev) {
+    ev.preventDefault();
+    err.style.display = 'none';
+    HanPortal.forgot(email.value.trim())
+      .then(function (j) {
+        alert(j.msg || 'If the email is registered, you will receive instructions.');
+      })
+      .catch(function (e) {
+        err.textContent = e.message;
+        err.style.display = 'block';
+      });
+  };
+})();
+</script>
+</body>
+</html>
