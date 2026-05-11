@@ -2649,10 +2649,28 @@ async function loadProducts(){
   if(grid&&PRODUCTS.length===0){
     grid.innerHTML='<div class="grid-loading"><span class="cjk">候</span><p>Loading the cellar&hellip;</p></div>';
   }
-  const sources=["/list-products","./catalog.json"];
+  const sources=["./catalog-data.js","/list-products","./catalog.json"];
   let lastErr=null;
   for(const src of sources){
     try{
+      if(src.endsWith(".js")){
+        await new Promise((resolve,reject)=>{
+          const s=document.createElement("script");
+          s.src=src;
+          s.onload=()=>resolve();
+          s.onerror=()=>reject(new Error("Failed to load "+src));
+          document.head.appendChild(s);
+        });
+        const data=window.__CATALOG__;
+        if(!Array.isArray(data))throw new Error("Bad payload (expected JSON array)");
+        catalogFetchSucceeded=true;
+        PRODUCTS=data;
+        state.page=1;
+        renderGrid();
+        updateFeaturedPrices();
+        updateCart();
+        return;
+      }
       const res=await fetch(src,{headers:{Accept:"application/json"}});
       const data=await res.json().catch(()=>null);
       if(!res.ok){
@@ -3376,13 +3394,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     try{localStorage.setItem("han_curr",state.currency)}catch(err){}
   };
 
-  // Filter bar
-  document.getElementById("filterBar").addEventListener("click",e=>{
-    const btn=e.target.closest(".filter-bar__btn");if(!btn)return;
-    document.querySelectorAll(".filter-bar__btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    state.cat=btn.dataset.cat;state.page=1;renderGrid();
-  });
+  // Category navigation
+  const filterBar=document.getElementById("filterBar");
+  if(filterBar){
+    filterBar.addEventListener("click",e=>{
+      const btn=e.target.closest(".filter-bar__btn");if(!btn)return;
+      document.querySelectorAll(".filter-bar__btn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      state.cat=btn.dataset.cat;state.page=1;renderGrid();
+    });
+  }
   document.querySelectorAll('a[data-collection-cat]').forEach(a=>{
     a.addEventListener("click",()=>{
       const c=a.getAttribute("data-collection-cat");
