@@ -2240,7 +2240,7 @@ const CURRENCY={
 /* ============ PRODUCTS ============ */
 // 默认：Cloudflare Pages → GET /list-products（functions/list-products.js）
 // 若改回 Netlify：把下方 fetch 换成 /.netlify/functions/list-products，并确保 netlify.toml 里 redirects 已启用
-// Env：MAISON_HAN_API_BASE（TaTa，无尾斜杠）；未设则 Stripe 目录需 STRIPE_SECRET_KEY。缓存约 60s。
+// 目录来源：TaTa（MAISON_HAN_API_BASE）或 Stripe（STRIPE_SECRET_KEY）或同域 catalog.json（无 TaTa 且密钥未配置，或 STATIC_CATALOG=1）。缓存约 60s。
 let PRODUCTS = [];
 /** true after /list-products returned HTTP 200 + JSON（含空数组 []）*/
 let catalogFetchSucceeded = false;

@@ -4,10 +4,12 @@
 //
 // Env:
 //   MAISON_HAN_API_BASE - TaTa public origin + servlet context-path, NO trailing slash.
-//     Example: https://api.example.com/prod-api  (NOT https://api.example.com alone when backend lives under /prod-api).
 //     Catalog URL is always: {MAISON_HAN_API_BASE}/storefront/products
+//   STRIPE_SECRET_KEY - Stripe catalog when MAISON_HAN_API_BASE is unset and STATIC_CATALOG is off.
+//   STATIC_CATALOG - if "1"/"true"/"yes": always read site-root /catalog.json (lets you keep STRIPE_SECRET_KEY for checkout while browsing uses static rows).
 //   PRODUCT_IMAGE_BASE - optional; prefix relative image URLs (/profile/...) when using Stripe-only catalog
-//   STRIPE_SECRET_KEY - required when MAISON_HAN_API_BASE is unset (Stripe catalog fallback).
+//
+// Fallback: when MAISON_HAN_API_BASE and STRIPE_SECRET_KEY are both absent, tries GET same-origin /catalog.json (static showcase — no Stripe/TaTa).
 import {
   stripeProductsListPage,
   stripePricesForProduct,
@@ -53,6 +55,62 @@ function jsonResponse(status, body, extraHeaders = {}) {
       ...extraHeaders,
     },
   });
+}
+
+function envFlagTrue(env, key) {
+  const v = String(env[key] ?? '')
+    .trim()
+    .toLowerCase();
+  return v === '1' || v === 'true' || v === 'yes';
+}
+
+/**
+ * Reads /catalog.json from the deployed site (same project root as index.html).
+ * priceId may be null: grid/checkout still render; Stripe checkout skips lines without priceId.
+ */
+async function loadStaticCatalog(request) {
+  const u = new URL('/catalog.json', request.url);
+  const res = await fetch(u.toString(), {
+    headers: { Accept: 'application/json' },
+  });
+  if (!res.ok) return null;
+  const raw = await res.json().catch(() => null);
+  if (!Array.isArray(raw)) return null;
+  const out = [];
+  for (const p of raw) {
+    if (!p || typeof p !== 'object') continue;
+    const id = Number(p.id);
+    if (!Number.isFinite(id) || id <= 0) continue;
+    const priceIdRaw = p.priceId;
+    let priceId = null;
+    if (priceIdRaw != null && String(priceIdRaw).trim() !== '') {
+      priceId = String(priceIdRaw).trim();
+    }
+    out.push({
+      id,
+      productId: p.productId != null ? String(p.productId) : '',
+      priceId,
+      no: String(p.no ?? ''),
+      cat: String(p.cat ?? 'other').toLowerCase(),
+      catLabel: String(p.catLabel ?? p.cat ?? ''),
+      bv: String(p.bv ?? 'bv-maotai'),
+      bottle: String(p.bottle ?? 'generic'),
+      image: String(p.image ?? ''),
+      name: String(p.name ?? ''),
+      sub: String(p.sub ?? ''),
+      price:
+        typeof p.price === 'number' ? p.price : parseFloat(String(p.price)) || 0,
+      abv: String(p.abv ?? ''),
+      vol: String(p.vol ?? ''),
+      origin: String(p.origin ?? ''),
+      year: String(p.year ?? ''),
+      badge: p.badge != null && String(p.badge).trim() ? String(p.badge) : undefined,
+      desc: String(p.desc ?? ''),
+      sortOrder: Number.isFinite(Number(p.sortOrder)) ? Number(p.sortOrder) : 999,
+    });
+  }
+  out.sort((a, b) => a.sortOrder - b.sortOrder || a.id - b.id);
+  return out.length ? out : null;
 }
 
 async function loadFromTataBackend(apiBase) {
@@ -167,17 +225,31 @@ async function loadFromStripe(secretKey) {
 }
 
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { env, request } = context;
 
   if (cache && Date.now() < cacheExpiry) {
     return jsonResponse(200, cache, { 'X-Cache': 'HIT' });
   }
 
-  const apiBase = env.MAISON_HAN_API_BASE;
+  const apiBase = String(env.MAISON_HAN_API_BASE ?? '').trim();
+  const secretKey = String(env.STRIPE_SECRET_KEY ?? '').trim();
+  const forceStatic = envFlagTrue(env, 'STATIC_CATALOG');
 
   try {
     let products;
-    if (apiBase) {
+    let sourceTag = 'stripe';
+
+    if (forceStatic) {
+      products = await loadStaticCatalog(request);
+      sourceTag = 'static';
+      if (!products) {
+        return jsonResponse(500, {
+          error:
+            'STATIC_CATALOG is enabled but /catalog.json is missing or invalid.',
+        });
+      }
+    } else if (apiBase) {
+      sourceTag = 'tata';
       const raw = await loadFromTataBackend(apiBase);
       if (!raw) {
         return jsonResponse(502, {
@@ -191,15 +263,17 @@ export async function onRequestGet(context) {
             (a.sortOrder || 999) - (b.sortOrder || 999) ||
             (a.id || 0) - (b.id || 0),
         );
+    } else if (secretKey) {
+      products = await loadFromStripe(secretKey);
     } else {
-      const secretKey = env.STRIPE_SECRET_KEY;
-      if (!secretKey) {
+      products = await loadStaticCatalog(request);
+      sourceTag = 'static';
+      if (!products) {
         return jsonResponse(500, {
           error:
-            'Set MAISON_HAN_API_BASE or STRIPE_SECRET_KEY in Cloudflare Pages environment variables.',
+            'Set MAISON_HAN_API_BASE, STRIPE_SECRET_KEY, STATIC_CATALOG=1 with catalog.json, or deploy catalog.json with no TaTa/Stripe keys.',
         });
       }
-      products = await loadFromStripe(secretKey);
     }
 
     products = absolutizeCatalogImages(products, catalogImageBase(env));
@@ -209,7 +283,7 @@ export async function onRequestGet(context) {
 
     return jsonResponse(200, products, {
       'X-Cache': 'MISS',
-      'X-Catalog-Source': apiBase ? 'tata' : 'stripe',
+      'X-Catalog-Source': sourceTag,
     });
   } catch (err) {
     console.error('list-products error:', err);
