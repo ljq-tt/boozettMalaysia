@@ -3030,9 +3030,14 @@ document.addEventListener("DOMContentLoaded",()=>{
         .map(x=>{const p=PRODUCTS.find(p=>p.id===x.id);return p&&p.priceId?{priceId:p.priceId,qty:x.qty}:null})
         .filter(Boolean);
       if(items.length===0)throw new Error("No valid items in cart");
+      const hdr={"Content-Type":"application/json"};
+      try{
+        var _pt=localStorage.getItem("han_portal_token");
+        if(_pt&&String(_pt).trim())hdr["Authorization"]="Bearer "+String(_pt).trim();
+      }catch(_){}
       const res=await fetch("/create-checkout-session",{ // Netlify: `/.netlify/functions/create-checkout-session`
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+        headers:hdr,
         body:JSON.stringify({items,ageConfirmed:true})
       });
       const data=await res.json();

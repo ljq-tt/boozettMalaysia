@@ -1,9 +1,11 @@
-// MAISON HAN ¡ª Stripe Checkout Session (Cloudflare Pages Function).
+// MAISON HAN  Stripe Checkout Session (Cloudflare Pages Function).
 // Route: POST /create-checkout-session
 // Netlify backup: netlify/functions/create-checkout-session.js (kept; do not delete).
 // Stripe via REST + fetch only (no npm `stripe`) so Pages can bundle without `npm install`.
 //
-// Env: STRIPE_SECRET_KEY (encrypted in Cloudflare Pages).
+// Env: STRIPE_SECRET_KEY (required).
+// Env: MAISON_HAN_API_BASE (optional): TaTa API root as used by storefront, including context path e.g. https://host/prod-api
+//       so server-side Checkout can call GET ${MAISON_HAN_API_BASE}/portal/me with the browser Authorization header.
 
 import {
   stripePriceRetrieve,
@@ -47,6 +49,37 @@ async function assertValidStorefrontPrice(secretKey, priceId) {
   }
   if (String(pr.currency).toLowerCase() !== 'usd') {
     throw new Error(`Only USD prices are supported: ${priceId}`);
+  }
+}
+
+async function resolveMhMemberIdFromPortal(env, request) {
+  const base = String(env.MAISON_HAN_API_BASE || '').trim().replace(/\/+$/, '');
+  const rawAuth = request.headers.get('Authorization') || request.headers.get('authorization') || '';
+  const auth = rawAuth.trim();
+  if (!base || !/^Bearer\s+\S+/i.test(auth)) {
+    return null;
+  }
+  try {
+    const r = await fetch(`${base}/portal/me`, {
+      method: 'GET',
+      headers: { Authorization: auth, Accept: 'application/json' },
+    });
+    if (!r.ok) {
+      return null;
+    }
+    const j = await r.json();
+    if (Number(j.code) !== 200 || !j.data) {
+      return null;
+    }
+    const mid = j.data.memberId ?? j.data.member_id;
+    if (mid == null) {
+      return null;
+    }
+    const s = String(mid).trim();
+    return s.length ? s : null;
+  } catch (err) {
+    console.warn('[create-checkout-session] portal/me', err);
+    return null;
   }
 }
 
@@ -97,6 +130,16 @@ export async function onRequestPost(context) {
     `https://${request.headers.get('host') || 'example.com'}`;
 
   try {
+    const mhMemberId = await resolveMhMemberIdFromPortal(env, request);
+    const md = {
+      site: 'maison-han',
+      age_confirmed: payload.ageConfirmed ? 'true' : 'false',
+      item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
+    };
+    if (mhMemberId) {
+      md.mh_member_id = mhMemberId;
+    }
+
     const session = await stripeCheckoutSessionCreate(secretKey, {
       mode: 'payment',
       payment_method_types: ['card'],
@@ -127,11 +170,7 @@ export async function onRequestPost(context) {
             'By placing this order you confirm you are of legal drinking age in your jurisdiction.',
         },
       },
-      metadata: {
-        site: 'maison-han',
-        age_confirmed: payload.ageConfirmed ? 'true' : 'false',
-        item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
-      },
+      metadata: md,
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel.html`,
     });

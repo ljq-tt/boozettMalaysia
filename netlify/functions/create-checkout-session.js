@@ -5,6 +5,7 @@
 //
 // Required env var (set in Netlify → Site settings → Environment):
 //   STRIPE_SECRET_KEY = sk_test_... (or sk_live_... once approved for alcohol)
+// Optional: MAISON_HAN_API_BASE = https://your-tata-host/prod-api — bind mh_member_id in Stripe metadata via GET /portal/me
 
 const Stripe = require('stripe');
 
@@ -48,6 +49,40 @@ async function assertValidStorefrontPrice(stripe, priceId) {
   }
   if (String(pr.currency).toLowerCase() !== 'usd') {
     throw new Error(`Only USD prices are supported: ${priceId}`);
+  }
+}
+
+async function resolveMhMemberIdFromPortal(event) {
+  const base = String(process.env.MAISON_HAN_API_BASE || '')
+    .trim()
+    .replace(/\/+$/, '');
+  const h = event.headers || {};
+  const raw = h.authorization || h.Authorization || '';
+  const auth = String(raw || '').trim();
+  if (!base || !/^Bearer\s+\S+/i.test(auth)) {
+    return null;
+  }
+  try {
+    const r = await fetch(`${base}/portal/me`, {
+      method: 'GET',
+      headers: { Authorization: auth, Accept: 'application/json' },
+    });
+    if (!r.ok) {
+      return null;
+    }
+    const j = await r.json();
+    if (Number(j.code) !== 200 || !j.data) {
+      return null;
+    }
+    const mid = j.data.memberId ?? j.data.member_id;
+    if (mid == null) {
+      return null;
+    }
+    const s = String(mid).trim();
+    return s.length ? s : null;
+  } catch (err) {
+    console.warn('[checkout] portal/me', err);
+    return null;
   }
 }
 
@@ -103,6 +138,15 @@ exports.handler = async (event) => {
     `https://${headers.host || 'example.com'}`;
 
   try {
+    const mhMemberId = await resolveMhMemberIdFromPortal(event);
+    const md = {
+      site: 'maison-han',
+      age_confirmed: payload.ageConfirmed ? 'true' : 'false',
+      item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
+    };
+    if (mhMemberId) {
+      md.mh_member_id = mhMemberId;
+    }
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -133,11 +177,7 @@ exports.handler = async (event) => {
             'By placing this order you confirm you are of legal drinking age in your jurisdiction.',
         },
       },
-      metadata: {
-        site: 'maison-han',
-        age_confirmed: payload.ageConfirmed ? 'true' : 'false',
-        item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
-      },
+      metadata: md,
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel.html`,
     });
