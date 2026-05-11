@@ -7,9 +7,9 @@
 <link itemprop="url" href="https://timely-kashata-e3e95f.netlify.app/" />
 <meta itemprop="image" content="https://booze-b56.pages.dev/images/hero-shelf.png" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<meta name="description" content="MAISON HAN — A private cellar of rare Moutai and Japanese whisky, sourced direct, sealed to provenance, delivered worldwide." />
+<meta name="description" content="Maison Han — curated baijiu, whisky, Champagne & wine for modern tables. Rare pours with traceable provenance, brighter lifestyle energy." />
 <meta name="robots" content="index,follow,max-image-preview:large" />
-<meta name="theme-color" content="#0E0B08" />
+<meta name="theme-color" content="#FAF8F5" />
 <title>MAISON HAN · A House of Rare Pours</title>
 
 <!-- 分享卡片：og:image 等须为完整 https 绝对地址（微信等爬虫对相对路径经常不解析）。
@@ -59,43 +59,62 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ================================================================
-   TOKENS — restrained, editorial, dark luxury
+   TOKENS — airy lifestyle boutique (light shell, serif headlines)
+   Legacy names (--ink/--bone/…) kept so existing selectors keep working:
+   surface = --shell, headings/text on light = --bone (dark cocoa)
    ================================================================ */
 :root{
-  --ink:#0E0B08;            /* warm black, like sumi ink */
-  --ink-2:#16110C;          /* slightly lifted */
-  --ink-3:#1F1813;          /* card surfaces */
-  --paper:#F2EBDC;          /* aged paper cream */
-  --paper-2:#E8DFCB;        /* deeper paper */
-  --bone:#E8DCC0;           /* warm off-white text on dark */
-  --bone-mute:rgba(232,220,192,.65);
-  --bone-faint:rgba(232,220,192,.35);
-  --bone-hair:rgba(232,220,192,.16);
-  --gold:#B89968;           /* antique brass, not bright */
-  --gold-deep:#8C7349;
-  --oxblood:#6E1019;        /* maotai red, restrained */
-  --oxblood-deep:#4A0A11;
-  --jade:#5C6F5C;
-  --maxw:1320px;
+  --shell:#FAF8F5;
+  --shell-deep:#F3EDE6;
+  --shell-muted:#EDE6DD;
+  --card:#FFFFFF;
+  --text:#292420;
+  --text-soft:rgba(41,36,36,.72);
+  --text-faint:rgba(41,36,36,.4);
+  --line:rgba(41,36,36,.09);
+  --gold:#A07845;
+  --gold-deep:#7E5F38;
+  --clay:#C45E42;
+  --sage:#5B7167;
+  --wine:#7A2933;
+  --maxw:1280px;
+  --radius:20px;
+  --radius-lg:26px;
+  --shadow-soft:0 22px 64px rgba(41,36,36,.065);
+  --shadow-hover:0 28px 80px rgba(41,36,36,.085);
+
+  /* legacy aliases used across file */
+  --ink:#292420;
+  --ink-2:#F3EDE8;
+  --ink-3:#FFFFFF;
+  --paper:#EDE6DD;
+  --paper-2:#E2D9CE;
+  --bone:#292420;
+  --bone-mute:rgba(41,36,36,.72);
+  --bone-faint:rgba(41,36,36,.32);
+  --bone-hair:var(--line);
+  --oxblood:#842A35;
+  --oxblood-deep:#5C1D26;
+  --jade:#5B7167;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{
-  font-family:"Manrope","Cormorant Garamond",serif;
-  background:var(--ink);
-  color:var(--bone);
-  font-size:15px;
-  line-height:1.55;
-  font-weight:300;
+  font-family:"DM Sans","Manrope","Noto Serif SC",system-ui,sans-serif;
+  background:var(--shell);
+  color:var(--bone-mute);
+  font-size:16px;
+  line-height:1.6;
+  font-weight:400;
   letter-spacing:.01em;
   overflow-x:hidden;
 }
-[lang="zh-CN"] body,[lang="zh-TW"] body{font-family:"Noto Serif SC","Cormorant Garamond",serif;font-weight:300}
+[lang="zh-CN"] body,[lang="zh-TW"] body{font-family:"DM Sans","Noto Serif SC","Manrope",sans-serif;font-weight:400}
 [lang="ja"] body{font-family:"Shippori Mincho","Cormorant Garamond",serif;font-weight:400}
 [lang="ko"] body{font-family:"Noto Serif KR","Cormorant Garamond",serif;font-weight:300}
 
@@ -119,12 +138,12 @@ a{color:inherit;text-decoration:none}
 .display em{font-style:italic;font-weight:400}
 
 .eyebrow{
-  font-family:"Manrope",sans-serif;
+  font-family:"DM Sans","Manrope",sans-serif;
   font-size:11px;
-  font-weight:500;
+  font-weight:600;
   text-transform:uppercase;
-  letter-spacing:.32em;
-  color:var(--gold);
+  letter-spacing:.26em;
+  color:var(--gold-deep);
 }
 
 .rule{
@@ -147,26 +166,36 @@ a{color:inherit;text-decoration:none}
    BUTTONS — minimal, hairline, no shadows
    ================================================================ */
 .btn{
-  display:inline-flex;align-items:center;gap:14px;
-  padding:14px 28px;
+  display:inline-flex;align-items:center;gap:12px;
+  padding:14px 26px;
   background:transparent;
   color:var(--bone);
-  border:1px solid var(--bone-faint);
-  border-radius:0;
-  font-family:"Manrope",sans-serif;
-  font-weight:400;font-size:12px;
-  letter-spacing:.28em;
+  border:1px solid var(--bone-hair);
+  border-radius:999px;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-weight:500;font-size:12px;
+  letter-spacing:.12em;
   text-transform:uppercase;
-  transition:background .5s ease,color .5s ease,border-color .5s ease;
+  transition:background .35s ease,color .35s ease,border-color .35s ease,transform .2s ease,box-shadow .35s ease;
   white-space:nowrap;
 }
-.btn:hover{background:var(--bone);color:var(--ink);border-color:var(--bone)}
-.btn--gold{border-color:var(--gold);color:var(--gold)}
-.btn--gold:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.btn--solid{background:var(--bone);color:var(--ink);border-color:var(--bone)}
-.btn--solid:hover{background:transparent;color:var(--bone)}
-.btn--ink{color:var(--ink);border-color:rgba(14,11,8,.3)}
-.btn--ink:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn:hover{background:var(--bone);color:var(--shell);border-color:var(--bone);transform:translateY(-1px);box-shadow:var(--shadow-soft)}
+.btn:active{transform:translateY(0)}
+.btn--gold{
+  border:none;
+  color:#fffefb;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-deep) 100%);
+  box-shadow:0 10px 32px rgba(160,120,69,.35);
+}
+.btn--gold:hover{
+  filter:brightness(1.06);
+  color:#fffefb;
+  border:none;
+}
+.btn--solid{background:var(--bone);color:var(--shell);border-color:var(--bone)}
+.btn--solid:hover{background:var(--clay);color:#fff;border-color:var(--clay)}
+.btn--ink{color:var(--bone);border-color:var(--line)}
+.btn--ink:hover{background:var(--shell-deep);color:var(--bone);border-color:var(--bone)}
 body.age-bridge-lock{overflow:hidden!important;touch-action:none;}
 body.age-bridge-lock .age-gate{touch-action:auto;}
 
@@ -320,14 +349,14 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
    TOP BAR
    ================================================================ */
 .topbar{
-  background:var(--ink);
+  background:var(--shell-deep);
   color:var(--bone-mute);
-  padding:11px 0;
-  font-family:"Manrope",sans-serif;
+  padding:10px 0;
+  font-family:"DM Sans","Manrope",sans-serif;
   font-size:11px;
-  letter-spacing:.22em;
+  letter-spacing:.18em;
   text-transform:uppercase;
-  border-bottom:1px solid var(--bone-hair);
+  border-bottom:1px solid var(--line);
 }
 .topbar__inner{
   display:flex;justify-content:space-between;align-items:center;
@@ -346,25 +375,26 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   border:none;
   padding:0 14px 0 0;
   font-size:11px;cursor:pointer;
-  font-family:"Manrope",sans-serif;
-  letter-spacing:.2em;text-transform:uppercase;
+  font-family:"DM Sans","Manrope",sans-serif;
+  letter-spacing:.18em;text-transform:uppercase;
   appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23B89968'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%237E5F38'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
   background-position:right center;
 }
 .selector:hover{color:var(--bone)}
-.selector option{background:var(--ink);color:var(--bone)}
+.selector option{background:var(--shell);color:var(--bone)}
 
 /* ================================================================
    NAV
    ================================================================ */
 .nav{
   position:sticky;top:0;z-index:50;
-  background:rgba(14,11,8,.92);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--bone-hair);
+  background:rgba(250,248,245,.94);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 12px 40px rgba(41,36,36,.035);
 }
 .nav__inner{
   display:grid;grid-template-columns:1fr auto 1fr;
@@ -385,9 +415,10 @@ body.age-bridge-lock .age-gate{touch-action:auto;}
   height:44px;
   padding:0;
   margin-right:4px;
-  border:1px solid var(--bone-hair);
-  background:rgba(0,0,0,.22);
+  border:1px solid var(--line);
+  background:var(--card);
   color:var(--bone-mute);
+  border-radius:12px;
   cursor:pointer;
   flex-shrink:0;
   transition:border-color .3s ease,color .3s ease,background .3s ease;
@@ -502,15 +533,15 @@ button.nav__search{
   z-index:116;
   width:min(360px,calc(100vw - 40px));
   max-width:100%;
-  background:var(--ink);
-  border-right:1px solid var(--bone-hair);
+  background:var(--shell);
+  border-right:1px solid var(--line);
   transform:translateX(-100%);
   visibility:hidden;
   transition:transform .45s cubic-bezier(.16,1,.3,1),visibility 0s .45s;
   display:flex;
   flex-direction:column;
   padding:28px clamp(24px,5vw,32px) 40px;
-  box-shadow:8px 0 48px rgba(0,0,0,.4);
+  box-shadow:var(--shadow-hover);
 }
 .nav-mob.open{
   transform:translateX(0);
@@ -569,43 +600,89 @@ button.nav__search{
 body.nav-mob-open{overflow:hidden}
 
 /* ================================================================
-   HERO — full-bleed cellar, top + left dark gradients for type
+   HERO — lifestyle slides (CSS crossfade) + light editorial type
    ================================================================ */
 .hero{
   position:relative;
-  min-height:88vh;
+  min-height:min(92vh,900px);
   display:flex;
   align-items:center;
-  padding:120px 0 100px;
+  padding:100px 0 88px;
   overflow:hidden;
+  background:var(--shell);
 }
-.hero__media{
+.hero__slides{
   position:absolute;
   inset:0;
   z-index:0;
+  border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-soft);
 }
-.hero__media-img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center center;
+@media(min-width:981px){
+  .hero__slides{
+    left:4%;right:4%;top:0;bottom:12%;
+    border-radius:var(--radius-lg);
+  }
+}
+.hero__slide{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  animation:heroKen 18s ease-in-out infinite;
+}
+.hero__slide--1{
+  animation-delay:0s;
+  background-image:
+    linear-gradient(125deg,rgba(250,248,245,.15) 0%,transparent 45%),
+    url("https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1800&q=82");
+}
+.hero__slide--2{
+  animation-delay:-6s;
+  background-image:
+    linear-gradient(125deg,rgba(250,248,245,.12) 0%,transparent 50%),
+    url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=82");
+}
+.hero__slide--3{
+  animation-delay:-12s;
+  background-image:
+    linear-gradient(125deg,rgba(250,248,245,.14) 0%,transparent 48%),
+    url("https://images.unsplash.com/photo-1558642452-9a2b7e171893?auto=format&fit=crop&w=1800&q=82");
+}
+@keyframes heroKen{
+  0%{opacity:0;transform:scale(1.06)}
+  6%{opacity:1;transform:scale(1.035)}
+  34%{opacity:1;transform:scale(1.02)}
+  42%{opacity:0;transform:scale(1.015)}
+  100%{opacity:0}
 }
 .hero__overlay{
   position:absolute;
   inset:0;
   z-index:1;
   pointer-events:none;
+  border-radius:inherit;
   background:
-    linear-gradient(180deg,rgba(5,4,3,.94) 0%,rgba(5,4,3,.72) 12%,rgba(5,4,3,.38) 28%,rgba(5,4,3,.06) 48%,transparent 68%),
-    linear-gradient(90deg,rgba(4,3,2,.94) 0%,rgba(4,3,2,.72) min(42vw,620px),rgba(4,3,2,.28) min(72vw,1100px),transparent 92%);
+    linear-gradient(165deg,rgba(250,248,245,.97) 0%,rgba(250,248,245,.74) 18%,transparent 46%),
+    linear-gradient(92deg,rgba(250,248,245,.95) 0%,rgba(250,248,245,.7) min(54vw,740px),rgba(250,248,245,.2) min(74vw,1020px),transparent 94%);
+}
+@media(max-width:980px){
+  .hero__overlay{
+    background:
+      linear-gradient(180deg,rgba(250,248,245,.96) 0%,rgba(250,248,245,.55) 36%,transparent 62%),
+      linear-gradient(180deg,transparent 40%,rgba(250,248,245,.92) 100%);
+  }
 }
 .hero__grain{
   position:absolute;
   inset:0;
-  opacity:.12;
-  mix-blend-mode:overlay;
+  opacity:.07;
+  mix-blend-mode:multiply;
   pointer-events:none;
   z-index:2;
+  border-radius:inherit;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -615,54 +692,43 @@ body.nav-mob-open{overflow:hidden}
   width:100%;
   display:block;
 }
-.hero__left{max-width:min(640px,92vw)}
+.hero__left{max-width:min(580px,92vw)}
 .hero__no{
-  font-family:"Manrope",sans-serif;
+  font-family:"DM Sans","Manrope",sans-serif;
   font-style:normal;
   font-size:11px;
-  font-weight:500;
-  color:rgba(255,255,255,.52);
-  letter-spacing:.38em;
-  margin-bottom:28px;
+  font-weight:600;
+  color:var(--gold-deep);
+  letter-spacing:.32em;
+  margin-bottom:20px;
   text-transform:uppercase;
 }
 .hero__title{
-  font-size:clamp(48px,7.6vw,112px);
-  font-weight:300;
-  letter-spacing:-.02em;
-  line-height:.92;
-  color:rgba(255,255,255,.98);
+  font-size:clamp(44px,6.8vw,96px);
+  font-weight:400;
+  letter-spacing:-.03em;
+  line-height:.98;
+  color:var(--bone);
 }
-.hero__title em{font-style:italic;font-weight:400;color:rgba(255,255,255,.94)}
+.hero__title em{font-style:italic;font-weight:500;color:var(--clay)}
 .hero__title-line{display:block;overflow:hidden}
-.hero__title-inner{display:block;animation:rise 1.6s cubic-bezier(.16,1,.3,1) backwards}
-.hero__title-line:nth-child(1) .hero__title-inner{animation-delay:.2s}
-.hero__title-line:nth-child(2) .hero__title-inner{animation-delay:.35s}
-.hero__title-line:nth-child(3) .hero__title-inner{animation-delay:.5s}
+.hero__title-inner{display:block;animation:rise 1.4s cubic-bezier(.16,1,.3,1) backwards}
+.hero__title-line:nth-child(1) .hero__title-inner{animation-delay:.12s}
+.hero__title-line:nth-child(2) .hero__title-inner{animation-delay:.28s}
+.hero__title-line:nth-child(3) .hero__title-inner{animation-delay:.44s}
 @keyframes rise{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
 
 .hero__sub{
-  margin-top:36px;
+  margin-top:28px;
   font-family:"Cormorant Garamond",serif;
   font-style:italic;
-  font-size:clamp(17px,1.55vw,22px);
-  color:rgba(255,255,255,.72);
-  max-width:500px;
+  font-size:clamp(18px,1.9vw,23px);
+  color:var(--text-soft);
+  max-width:480px;
   line-height:1.55;
-  font-weight:300;
+  font-weight:400;
 }
-.hero__cta{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap}
-.hero__cta .btn,
-.hero__cta .btn--gold{
-  border-color:rgba(244,239,229,.52);
-  color:rgba(255,255,255,.96);
-}
-.hero__cta .btn:hover,
-.hero__cta .btn--gold:hover{
-  background:rgba(244,239,229,.94);
-  color:var(--ink);
-  border-color:rgba(244,239,229,.94);
-}
+.hero__cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
 
 /* hairline marquee at bottom of hero */
 .hero__marquee{
@@ -671,32 +737,212 @@ body.nav-mob-open{overflow:hidden}
   left:0;
   right:0;
   z-index:4;
-  border-top:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.28);
-  backdrop-filter:saturate(1.05);
-  padding:18px 0;
+  border-top:1px solid var(--line);
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  padding:16px 0;
   overflow:hidden;
   font-family:"Cormorant Garamond",serif;
   font-style:italic;
   font-size:14px;
-  color:rgba(255,255,255,.38);
-  letter-spacing:.1em;
+  color:rgba(41,36,36,.52);
+  letter-spacing:.06em;
   white-space:nowrap;
 }
 .hero__marquee__track{
   display:inline-block;
-  animation:slide 60s linear infinite;
+  animation:slide 48s linear infinite;
 }
-.hero__marquee span+span{margin-left:60px}
+.hero__marquee span+span{margin-left:56px}
 .hero__marquee span::before{content:"·  ";color:var(--gold)}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ================================================================
+   DISCOVER — category story cards → collection filters
+   ================================================================ */
+.guides{
+  padding:72px 0 48px;
+  background:linear-gradient(180deg,var(--shell) 0%,var(--shell-deep) 100%);
+}
+.guides__head{
+  max-width:640px;margin-bottom:40px;text-align:left;
+}
+.guides__title{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:400;
+  font-size:clamp(36px,4.8vw,56px);
+  line-height:1.02;
+  color:var(--bone);
+  letter-spacing:-.02em;margin-top:14px;margin-bottom:16px;
+}
+.guides__title em{font-style:italic;color:var(--gold-deep)}
+.guides__lead{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;
+  font-size:18px;
+  color:var(--text-soft);
+  line-height:1.55;
+}
+.guides__grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:clamp(18px,2vw,24px);
+}
+.guides__card{
+  display:flex;flex-direction:column;
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-soft);
+  text-decoration:none;color:inherit;
+  transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s ease;
+  min-height:100%;
+}
+.guides__card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-hover);
+}
+.guides__media{
+  position:relative;
+  aspect-ratio:16/10;
+  background-size:cover;
+  background-position:center;
+}
+.guides__media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 35%,rgba(41,36,36,.45) 100%);
+  pointer-events:none;
+}
+.guides__media--w{background-image:url("https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=900&q=80")}
+.guides__media--s{background-image:url("https://images.unsplash.com/photo-1584225064785-c62a8b54d138?auto=format&fit=crop&w=900&q=80")}
+.guides__media--b{background-image:url("https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=900&q=80")}
+.guides__media--c{background-image:url("https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80")}
+.guides__media--v{background-image:url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=80")}
+.guides__media--g{background-image:url("https://images.unsplash.com/photo-1542843137-8791a6904c14?auto=format&fit=crop&w=900&q=80")}
+.guides__body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1;gap:10px}
+.guides__cat{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-deep);
+}
+.guides__name{
+  font-family:"Cormorant Garamond",serif;
+  font-size:26px;font-weight:500;
+  line-height:1.1;
+  color:var(--bone);
+  letter-spacing:-.02em;
+}
+.guides__desc{
+  font-size:14px;line-height:1.55;
+  color:var(--text-soft);
+  flex:1;
+}
+.guides__brands{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+  margin-top:4px;
+}
+.guides__link{
+  margin-top:12px;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--clay);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.guides__card:hover .guides__link{color:var(--gold-deep)}
+
+/* ================================================================
+   SPOTLIGHTS — compact featured cellars (replaces heavy edit blocks)
+   ================================================================ */
+.spotlights{
+  padding:56px 0 88px;
+  background:var(--shell);
+}
+.spotlights__grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:clamp(20px,3vw,32px);
+}
+.spot-card{
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--card);
+  box-shadow:var(--shadow-soft);
+  display:grid;
+  grid-template-rows:auto 1fr;
+  min-height:280px;
+}
+.spot-card__media{
+  min-height:200px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+}
+.spot-card__media--baijiu{
+  background-image:
+    linear-gradient(140deg,rgba(122,41,51,.25),transparent 55%),
+    url("https://images.unsplash.com/photo-1558642452-9a2b7e171893?auto=format&fit=crop&w=1200&q=82");
+}
+.spot-card__media--whisky{
+  background-image:
+    linear-gradient(140deg,rgba(91,113,103,.32),transparent 58%),
+    url("https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=1200&q=82");
+}
+.spot-card__body{padding:26px 28px 30px}
+.spot-card__eyebrow{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:10px;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--gold-deep);
+  margin-bottom:12px;
+}
+.spot-card__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(28px,3.2vw,38px);
+  line-height:1.05;
+  font-weight:500;
+  color:var(--bone);
+  margin-bottom:12px;
+}
+.spot-card__title em{font-style:italic;color:var(--clay)}
+.spot-card__lead{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;
+  font-size:17px;
+  line-height:1.5;
+  color:var(--text-soft);
+  margin-bottom:14px;
+}
+.spot-card__brands{
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+  margin-bottom:20px;
+  line-height:1.5;
+}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
 
 /* ================================================================
    COLLECTION — editorial product grid
    ================================================================ */
 .collection{
-  padding:140px 0 120px;
-  border-top:1px solid var(--bone-hair);
+  padding:100px 0 100px;
+  border-top:1px solid var(--line);
+  background:var(--shell);
 }
 .section-head{
   display:grid;grid-template-columns:1fr 2fr;
@@ -708,6 +954,7 @@ body.nav-mob-open{overflow:hidden}
 .section-head__title{
   font-size:clamp(48px,6vw,84px);
   line-height:.95;
+  color:var(--bone);
 }
 .section-head__right{
   font-family:"Cormorant Garamond",serif;
@@ -719,11 +966,11 @@ body.nav-mob-open{overflow:hidden}
 
 .filter-bar{
   display:flex;gap:32px;align-items:center;
-  border-top:1px solid var(--bone-hair);
-  border-bottom:1px solid var(--bone-hair);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
   padding:18px 0;margin-bottom:60px;
-  font-family:"Manrope",sans-serif;
-  font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
   flex-wrap:wrap;
 }
 .filter-bar__label{color:var(--gold);margin-right:8px}
@@ -801,13 +1048,13 @@ body.nav-mob-open{overflow:hidden}
   justify-content:center;
 }
 .pager__nav,.pager__num{
-  font-family:"Manrope",sans-serif;
+  font-family:"DM Sans","Manrope",sans-serif;
   min-width:40px;height:40px;padding:0 12px;
-  border:1px solid var(--bone-hair);
-  background:rgba(0,0,0,.15);
+  border:1px solid var(--line);
+  background:var(--card);
   color:var(--bone-mute);
   font-size:12px;font-weight:500;
-  letter-spacing:.06em;
+  letter-spacing:.06em;border-radius:10px;
   cursor:pointer;
   transition:color .2s ease,border-color .2s ease,background .2s ease;
 }
@@ -829,16 +1076,19 @@ body.nav-mob-open{overflow:hidden}
 .product{
   position:relative;
   cursor:pointer;
-  transition:transform .6s cubic-bezier(.16,1,.3,1);
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s ease;
+  border-radius:var(--radius);
+  padding:6px 6px 0;
 }
-.product:hover{transform:translateY(-6px)}
+.product:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover)}
 .product__visual{
   position:relative;
   aspect-ratio:4/5;
   overflow:hidden;
-  margin-bottom:24px;
+  margin-bottom:20px;
   background:var(--ink-2);
   display:flex;align-items:center;justify-content:center;
+  border-radius:calc(var(--radius) - 4px);
 }
 .product__visual::before{
   content:"";position:absolute;inset:0;
@@ -907,6 +1157,7 @@ body.nav-mob-open{overflow:hidden}
   line-height:1.15;
   letter-spacing:-.005em;
   margin-bottom:6px;
+  color:var(--bone);
 }
 .product__name em{font-style:italic;color:var(--gold)}
 .product__sub{
@@ -946,11 +1197,11 @@ body.nav-mob-open{overflow:hidden}
    PROVENANCE BAND — paper switch
    ================================================================ */
 .provenance{
-  background:var(--paper);
+  background:linear-gradient(180deg,var(--shell-muted) 0%,var(--shell) 100%);
   color:var(--ink);
-  padding:140px 0;
-  border-top:1px solid var(--bone-hair);
-  border-bottom:1px solid var(--bone-hair);
+  padding:100px 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
   position:relative;overflow:hidden;
 }
 .provenance__char{
@@ -958,7 +1209,7 @@ body.nav-mob-open{overflow:hidden}
   font-family:"Shippori Mincho",serif;
   font-size:clamp(200px,32vw,420px);
   font-weight:400;
-  color:rgba(14,11,8,.04);
+  color:rgba(41,36,36,.045);
   top:50%;right:-5%;
   transform:translateY(-50%);
   user-select:none;pointer-events:none;
@@ -1139,16 +1390,16 @@ body.nav-mob-open{overflow:hidden}
    MEMBERSHIP / CELLAR
    ================================================================ */
 .cellar{
-  padding:140px 0;
-  background:var(--ink-2);
-  border-top:1px solid var(--bone-hair);
-  border-bottom:1px solid var(--bone-hair);
+  padding:100px 0;
+  background:linear-gradient(165deg,var(--shell-deep) 0%,#e8eae7 52%,var(--shell) 100%);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
   text-align:center;
   position:relative;overflow:hidden;
 }
 .cellar__bg{
   position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,rgba(184,153,104,.08),transparent 60%);
+  background:radial-gradient(ellipse at 50% 0%,rgba(160,120,69,.07),transparent 55%);
 }
 .cellar__inner{position:relative;z-index:1;max-width:760px;margin:0 auto}
 .cellar__seal{
@@ -1160,6 +1411,7 @@ body.nav-mob-open{overflow:hidden}
   font-size:clamp(48px,6vw,80px);
   line-height:.95;
   margin-bottom:32px;
+  color:var(--bone);
 }
 .cellar__title em{font-style:italic;color:var(--gold)}
 .cellar__lead{
@@ -1226,9 +1478,9 @@ body.nav-mob-open{overflow:hidden}
   background:var(--ink);
   position:relative;overflow:hidden;
 }
-.article__img--1{background:radial-gradient(circle at 30% 40%,#3a0d10,#0E0B08)}
-.article__img--2{background:radial-gradient(circle at 70% 30%,#2b2620,#0e0b08)}
-.article__img--3{background:radial-gradient(circle at 50% 50%,#3a2814,#160d06)}
+.article__img--1{background:linear-gradient(145deg,#fef6f0,#e8ddd4)}
+.article__img--2{background:linear-gradient(145deg,#eef3ef,#d8e0db)}
+.article__img--3{background:linear-gradient(145deg,#fdf4e8,#e6d8c8)}
 .article__cat{
   font-family:"Manrope",sans-serif;
   font-size:10px;letter-spacing:.32em;text-transform:uppercase;
@@ -1255,9 +1507,9 @@ body.nav-mob-open{overflow:hidden}
    NEWSLETTER
    ================================================================ */
 .news{
-  padding:120px 0;
-  background:var(--ink);
-  border-top:1px solid var(--bone-hair);
+  padding:100px 0;
+  background:var(--shell);
+  border-top:1px solid var(--line);
   text-align:center;
 }
 .news__seal{
@@ -1269,7 +1521,7 @@ body.nav-mob-open{overflow:hidden}
   line-height:1;margin-bottom:24px;
   max-width:720px;margin-left:auto;margin-right:auto;
 }
-.news__title em{font-style:italic;color:var(--gold)}
+.news__title em{font-style:italic;color:var(--gold-deep)}
 .news__sub{
   font-family:"Cormorant Garamond",serif;
   font-style:italic;font-size:18px;color:var(--bone-mute);
@@ -1279,7 +1531,7 @@ body.nav-mob-open{overflow:hidden}
 .news__form{
   display:flex;gap:0;
   max-width:520px;margin:0 auto;
-  border-bottom:1px solid var(--bone-faint);
+  border-bottom:1px solid var(--line);
 }
 .news__input{
   flex:1;background:transparent;
@@ -1291,26 +1543,26 @@ body.nav-mob-open{overflow:hidden}
 .news__input:focus{outline:none}
 .news__input::placeholder{color:var(--bone-faint)}
 .news__form button{
-  font-family:"Manrope",sans-serif;
-  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--gold);padding:14px 0 14px 24px;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--clay);padding:14px 0 14px 24px;
   transition:color .3s;
 }
-.news__form button:hover{color:var(--bone)}
+.news__form button:hover{color:var(--gold-deep)}
 
 /* ================================================================
    FOOTER
    ================================================================ */
 .footer{
-  background:var(--ink);color:var(--bone-mute);
-  padding:100px 0 40px;
-  border-top:1px solid var(--bone-hair);
+  background:var(--shell-deep);color:var(--bone-mute);
+  padding:72px 0 40px;
+  border-top:1px solid var(--line);
 }
 .footer__top{
   display:grid;grid-template-columns:1.5fr repeat(4,1fr);
   gap:60px;
   padding-bottom:60px;
-  border-bottom:1px solid var(--bone-hair);
+  border-bottom:1px solid var(--line);
 }
 .footer__brand .logo{justify-content:flex-start;margin-bottom:16px}
 .footer__tagline{
@@ -1355,12 +1607,13 @@ body.nav-mob-open{overflow:hidden}
 .drawer{
   position:fixed;top:0;right:0;bottom:0;
   width:min(460px,100%);
-  background:var(--ink);
+  background:var(--card);
   z-index:100;
   transform:translateX(100%);
   transition:transform .5s cubic-bezier(.16,1,.3,1);
   display:flex;flex-direction:column;
-  border-left:1px solid var(--bone-hair);
+  border-left:1px solid var(--line);
+  box-shadow:-12px 0 48px rgba(41,36,36,.08);
 }
 .drawer.open{transform:translateX(0)}
 .drawer__head{
@@ -1477,10 +1730,11 @@ body.nav-mob-open{overflow:hidden}
 .drawer__age{
   display:flex;align-items:flex-start;gap:12px;
   margin-top:14px;padding:14px;
-  border:1px solid var(--bone-hair);
-  background:rgba(0,0,0,.18);
+  border:1px solid var(--line);
+  background:var(--shell-muted);
   font-size:12px;line-height:1.5;color:var(--bone-mute);
   cursor:pointer;user-select:none;
+  border-radius:12px;
   transition:border-color .2s ease,background .2s ease;
 }
 .drawer__age:hover{border-color:var(--gold-deep)}
@@ -1500,7 +1754,7 @@ body.nav-mob-open{overflow:hidden}
 .drawer__age input:checked ~ span{color:var(--bone)}
 .curr-note{
   font-family:"Cormorant Garamond",serif;font-style:italic;
-  font-size:10px;line-height:1.5;color:rgba(232,220,192,.58);
+  font-size:10px;line-height:1.5;color:var(--text-soft);
   letter-spacing:.025em;text-align:right;text-transform:none;
 }
 .modal__price-block{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
@@ -1515,27 +1769,29 @@ body.nav-mob-open{overflow:hidden}
    PRODUCT MODAL
    ================================================================ */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.85);
-  backdrop-filter:blur(8px);
+  position:fixed;inset:0;background:rgba(41,36,36,.35);
+  backdrop-filter:blur(10px);
   z-index:200;display:none;align-items:center;justify-content:center;
   padding:24px;
 }
 .modal-overlay.open{display:flex;animation:fadeIn .4s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{
-  background:var(--ink);
-  border:1px solid var(--bone-hair);
+  background:var(--card);
+  border:1px solid var(--line);
   max-width:1080px;width:100%;max-height:92vh;
   display:grid;grid-template-columns:1fr 1fr;
   overflow:hidden;
-  position:relative;
+  position:relative;border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-hover);
 }
 .modal__visual{
   position:relative;
   display:flex;align-items:center;justify-content:center;
-  border-right:1px solid var(--bone-hair);
+  border-right:1px solid var(--line);
   min-height:600px;
   overflow:hidden;
+  background:var(--shell-muted);
 }
 .modal__visual::before{
   content:"";position:absolute;top:32px;right:32px;
@@ -1552,8 +1808,8 @@ body.nav-mob-open{overflow:hidden}
   content:"";position:absolute;inset:0;
   z-index:3;pointer-events:none;
   background:
-    radial-gradient(ellipse at 18% 10%,rgba(184,153,104,.10),transparent 55%),
-    linear-gradient(180deg,rgba(14,11,8,.08) 0%,transparent 30%,transparent 70%,rgba(14,11,8,.4) 100%);
+    radial-gradient(ellipse at 18% 10%,rgba(160,120,69,.08),transparent 55%),
+    linear-gradient(180deg,rgba(250,248,245,.4) 0%,transparent 35%,transparent 70%,rgba(41,36,36,.12) 100%);
 }
 .modal__no{
   position:absolute;top:32px;left:32px;
@@ -1606,11 +1862,13 @@ body.nav-mob-open{overflow:hidden}
 .toast{
   position:fixed;bottom:32px;left:50%;
   transform:translateX(-50%) translateY(100px);
-  background:var(--bone);color:var(--ink);
+  background:var(--bone);color:#fffefb;
   padding:16px 32px;
-  font-family:"Manrope",sans-serif;
-  font-size:11px;letter-spacing:.32em;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;letter-spacing:.2em;
   text-transform:uppercase;
+  border-radius:999px;
+  box-shadow:var(--shadow-soft);
   z-index:300;opacity:0;
   transition:transform .5s ease,opacity .5s ease;
 }
@@ -1629,17 +1887,15 @@ body.nav-mob-open{overflow:hidden}
   .nav__inner{grid-template-columns:auto 1fr auto;gap:12px}
   .nav__menu-btn{display:flex}
   .nav__links{display:none}
-  .hero__media-img{object-position:center center}
   .grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
   .section-head{grid-template-columns:1fr;gap:24px}
   .provenance__inner{grid-template-columns:1fr;gap:48px}
-  .edit__head{grid-template-columns:1fr;gap:24px}
-  .edit__feature{grid-template-columns:1fr;gap:32px}
+  .spotlights__grid{grid-template-columns:1fr}
   .cellar__perks{grid-template-columns:1fr;gap:32px}
   .journal__grid{grid-template-columns:1fr;gap:48px}
   .footer__top{grid-template-columns:1fr 1fr;gap:40px}
   .modal{grid-template-columns:1fr;max-height:95vh}
-  .modal__visual{min-height:340px;border-right:none;border-bottom:1px solid var(--bone-hair)}
+  .modal__visual{min-height:340px;border-right:none;border-bottom:1px solid var(--line)}
   .modal__body{padding:40px 28px}
 }
 @media(max-width:560px){
@@ -1737,6 +1993,7 @@ body.nav-mob-open{overflow:hidden}
       </button>
       <ul class="nav__links">
         <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
+        <li><a href="#discover" data-i18n="nav.discover">Discover</a></li>
         <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
         <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
         <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
@@ -1766,6 +2023,7 @@ body.nav-mob-open{overflow:hidden}
   </div>
   <ul class="nav-mob__links">
     <li><a href="#collection" data-i18n="nav.collection">Collection</a></li>
+    <li><a href="#discover" data-i18n="nav.discover">Discover</a></li>
     <li><a href="#baijiu" data-i18n="nav.baijiu">Baijiu</a></li>
     <li><a href="#whisky" data-i18n="nav.whisky">Whisky</a></li>
     <li><a href="#cellar" data-i18n="nav.cellar">Cellar</a></li>
@@ -1777,43 +2035,120 @@ body.nav-mob-open{overflow:hidden}
 <!-- ================================================================
      HERO
      ================================================================ -->
-<section class="hero">
-  <div class="hero__media">
-    <img class="hero__media-img" src="images/hero-shelf.png" alt="Warm-lit shelf with Hibiki whisky and Kweichow Moutai" decoding="async" fetchpriority="high" width="964" height="470"/>
+<section class="hero" aria-labelledby="heroHeading">
+  <div class="hero__slides hero__media" aria-hidden="true">
+    <div class="hero__slide hero__slide--1"></div>
+    <div class="hero__slide hero__slide--2"></div>
+    <div class="hero__slide hero__slide--3"></div>
   </div>
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="hero__grain" aria-hidden="true"></div>
 
   <div class="container hero__inner">
     <div class="hero__left">
-      <div class="hero__no">№ 001 — A House of Rare Pours</div>
+      <p id="heroHeading" class="hero__no" data-i18n="hero.no">Rare pours · Everyday rituals</p>
       <h1 class="display hero__title">
-        <span class="hero__title-line"><span class="hero__title-inner">Bottles of</span></span>
-        <span class="hero__title-line"><span class="hero__title-inner"><em>consequence,</em></span></span>
-        <span class="hero__title-line"><span class="hero__title-inner">delivered.</span></span>
+        <span class="hero__title-line"><span class="hero__title-inner" data-i18n="hero.l1">Pour better</span></span>
+        <span class="hero__title-line"><span class="hero__title-inner" data-i18n="hero.l2">moments, <em>not just</em></span></span>
+        <span class="hero__title-line"><span class="hero__title-inner" data-i18n="hero.l3">better bottles.</span></span>
       </h1>
-      <p class="hero__sub" data-i18n="hero.sub">A private cellar of vintage Moutai and aged Japanese whisky — sourced direct, sealed to provenance, brought to a single table.</p>
+      <p class="hero__sub" data-i18n="hero.sub">Curated baijiu, whisky, Champagne and fine wine — hand-traced provenance with a softer, brighter house spirit.</p>
       <div class="hero__cta">
-        <a href="#collection" class="btn btn--gold" data-i18n="hero.cta1">View the Collection <span class="arr">→</span></a>
-        <a href="#cellar" class="btn" data-i18n="hero.cta2">Enter the Cellar</a>
+        <a href="#collection" class="btn btn--gold" data-i18n="hero.cta1">Shop the cellar <span class="arr">→</span></a>
+        <a href="#discover" class="btn btn--ink" data-i18n="hero.cta2">Explore by mood</a>
       </div>
     </div>
   </div>
 
-  <div class="hero__marquee">
+  <div class="hero__marquee" aria-hidden="true">
     <div class="hero__marquee__track">
-      <span>飞天茅台 1988</span>
-      <span>Yamazaki 25 Year</span>
-      <span>Hibiki 30 Year</span>
-      <span>Karuizawa 1984</span>
-      <span>Vintage Moutai 1995</span>
-      <span>Yoichi Single Cask</span>
-      <span>飞天茅台 1988</span>
-      <span>Yamazaki 25 Year</span>
-      <span>Hibiki 30 Year</span>
-      <span>Karuizawa 1984</span>
-      <span>Vintage Moutai 1995</span>
-      <span>Yoichi Single Cask</span>
+      <span data-i18n="hero.tick1">Dinner-table Burgundy</span>
+      <span data-i18n="hero.tick2">Gift-grade Japanese whisky</span>
+      <span data-i18n="hero.tick3">Celebration Champagne</span>
+      <span data-i18n="hero.tick4">Vintage baijiu · family cellars</span>
+      <span data-i18n="hero.tick5">Sake nights at home</span>
+      <span data-i18n="hero.tick6">Cognac after midnight</span>
+      <span data-i18n="hero.tick1">Dinner-table Burgundy</span>
+      <span data-i18n="hero.tick2">Gift-grade Japanese whisky</span>
+      <span data-i18n="hero.tick3">Celebration Champagne</span>
+      <span data-i18n="hero.tick4">Vintage baijiu · family cellars</span>
+      <span data-i18n="hero.tick5">Sake nights at home</span>
+      <span data-i18n="hero.tick6">Cognac after midnight</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     GUIDES — category stories → collection filters
+     ================================================================ -->
+<section class="guides" id="discover">
+  <div class="container">
+    <header class="guides__head reveal">
+      <p class="eyebrow guides__eyebrow" data-i18n="guides.eyebrow">Curated moods</p>
+      <h2 class="guides__title" data-i18n="guides.title">Shop by <em>story,</em><br />not showroom.</h2>
+      <p class="guides__lead" data-i18n="guides.lead">Pick a doorway into flavour — each lane opens onto bottles we would actually serve at our own tables.</p>
+    </header>
+    <div class="guides__grid">
+      <a href="#collection" class="guides__card reveal" data-collection-cat="whisky">
+        <div class="guides__media guides__media--w" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.w.cat">Spirit forward</span>
+          <h3 class="guides__name" data-i18n="guides.w.title">Explore world whisky</h3>
+          <p class="guides__desc" data-i18n="guides.w.body">Across Scotland, Kentucky, Tasmania and Kyushu — blends and single malts chosen for sipping, gifting and slow weekends.</p>
+          <p class="guides__brands" data-i18n="guides.w.brands">Representative pours · Yamazaki · Macallan · Hibiki · Karuizawa</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
+      <a href="#collection" class="guides__card reveal" data-collection-cat="wine">
+        <div class="guides__media guides__media--s" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.s.cat">Rice elegance</span>
+          <h3 class="guides__name" data-i18n="guides.s.title">Japanese sake &amp; fine rice wine</h3>
+          <p class="guides__desc" data-i18n="guides.s.body">Polished Ginjo pours for chilled appetizers, steaming clay pots or low-light vinyl nights.</p>
+          <p class="guides__brands" data-i18n="guides.s.brands">In the cellar · Kubota · Hakkaisan · Dassai-inspired releases</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
+      <a href="#collection" class="guides__card reveal" data-collection-cat="baijiu">
+        <div class="guides__media guides__media--b" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.b.cat">Heritage pours</span>
+          <h3 class="guides__name" data-i18n="guides.b.title">Chinese baijiu icons</h3>
+          <p class="guides__desc" data-i18n="guides.b.body">Sauce-aroma legends and ceremonial bottles sourced from distillery archives and guarded family collections.</p>
+          <p class="guides__brands" data-i18n="guides.b.brands">Featured · Kweichow Moutai · Wuliangye · Luzhou Laojiao</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
+      <a href="#collection" class="guides__card reveal" data-collection-cat="sparkling">
+        <div class="guides__media guides__media--c" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.c.cat">Celebrate louder</span>
+          <h3 class="guides__name" data-i18n="guides.c.title">Champagne &amp; sparkling</h3>
+          <p class="guides__desc" data-i18n="guides.c.body">From oyster brunches to midnight countdowns — small-grower Champagne meets classic grandes marques.</p>
+          <p class="guides__brands" data-i18n="guides.c.brands">In rotation · Salon · Jacques Selosse · Pol Roger · Krug family</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
+      <a href="#collection" class="guides__card reveal" data-collection-cat="wine">
+        <div class="guides__media guides__media--v" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.v.cat">Table wine</span>
+          <h3 class="guides__name" data-i18n="guides.v.title">Still wines we actually drink mid-week</h3>
+          <p class="guides__desc" data-i18n="guides.v.body">Burgundy, Bordeaux and Napa bottles that behave at dinner parties without a lecture.</p>
+          <p class="guides__brands" data-i18n="guides.v.brands">Somm picks · Leroy-aligned Burgundy vibes · Sassicaia moods</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
+      <a href="#collection" class="guides__card reveal" data-collection-cat="cognac">
+        <div class="guides__media guides__media--g" role="presentation"></div>
+        <div class="guides__body">
+          <span class="guides__cat" data-i18n="guides.g.cat">Liquid gifts</span>
+          <h3 class="guides__name" data-i18n="guides.g.title">Cognac &amp; collectible spirits</h3>
+          <p class="guides__desc" data-i18n="guides.g.body">Fireside pours, ornate decanters and house-warming trophies with paperwork that travels.</p>
+          <p class="guides__brands" data-i18n="guides.g.brands">Gifting lane · Rémy Martin · Hennessy Paradis moods · Tesseron</p>
+          <span class="guides__link" data-i18n="guides.shop">Browse lane →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -1892,101 +2227,30 @@ body.nav-mob-open{overflow:hidden}
   </div>
 </section>
 
-<!-- ================================================================
-     MAOTAI EDIT
-     ================================================================ -->
-<section class="edit edit--maotai" id="baijiu">
-  <div class="container">
-    <div class="edit__head reveal">
-      <div class="edit__chap cjk">茅</div>
-      <div class="edit__meta">
-        <div class="edit__no" data-i18n="maotai.no">— Chapter I —</div>
-        <h2 class="display edit__title" data-i18n="maotai.title">The House of <em>Moutai</em></h2>
-        <p class="edit__lead" data-i18n="maotai.lead">For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.</p>
-        <a href="#collection" class="btn btn--gold edit__cta" data-collection-cat="baijiu" data-i18n="maotai.cta">Browse baiju in the cellar <span class="arr">→</span></a>
+<!-- Featured cellars — compact storytelling (anchors #baijiu / #whisky unchanged) -->
+<section class="spotlights" aria-labelledby="spotlights-heading">
+  <span id="spotlights-heading" class="sr-only" data-i18n="spot.section">Featured cellar lanes</span>
+  <div class="container spotlights__grid">
+    <article class="spot-card reveal" id="baijiu">
+      <div class="spot-card__media spot-card__media--baijiu" role="presentation"></div>
+      <div class="spot-card__body">
+        <p class="spot-card__eyebrow" data-i18n="maotai.no">Chapter I</p>
+        <h3 class="spot-card__title" data-i18n="maotai.title">The House of <em>Moutai</em></h3>
+        <p class="spot-card__lead" data-i18n="maotai.lead">For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes like a place. We carry only the years that taste like memory.</p>
+        <p class="spot-card__brands" data-i18n="spot.brands.baijiu">Representative · Moutai Feitian vintage · Luzhou Laojiao · Guojiao 1573</p>
+        <a href="#collection" class="btn btn--gold" data-collection-cat="baijiu" data-i18n="maotai.cta">Browse baijiu lane <span class="arr">→</span></a>
       </div>
-    </div>
-
-    <div class="edit__feature reveal">
-      <div class="edit__feature-img">
-        <svg viewBox="0 0 360 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="product__bottle">
-          <text x="180" y="345" text-anchor="middle" font-family="Shippori Mincho, serif" font-size="380" fill="rgba(110,16,25,0.15)" font-weight="500">茅</text>
-          <line x1="148" y1="80" x2="212" y2="80" stroke="#B89968" stroke-width="0.6"/>
-          <text x="180" y="108" text-anchor="middle" font-family="Manrope, sans-serif" font-size="10" fill="#B89968" letter-spacing="5">VINTAGE RESERVE  ·  N° 047</text>
-          <text x="180" y="265" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="148" fill="#B89968" font-style="italic" font-weight="300" letter-spacing="-0.02em">1988</text>
-          <line x1="148" y1="298" x2="212" y2="298" stroke="#B89968" stroke-width="0.6"/>
-          <text x="180" y="328" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="20" fill="rgba(232,220,192,0.95)" letter-spacing="0.4em" font-weight="500">MOUTAI</text>
-          <text x="180" y="354" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="13" fill="rgba(232,220,192,0.55)" letter-spacing="0.25em" font-style="italic">FEITIAN  ·  53°  ·  500 ML</text>
-          <text x="180" y="430" text-anchor="middle" font-family="Manrope, sans-serif" font-size="9" fill="rgba(184,153,104,0.6)" letter-spacing="6">ONE OF SEVENTEEN  ·  PRIVATE HANDS</text>
-        </svg>
-        <img class="edit__feature-photo" src="images/maotai-vintage.png" alt="Moutai Feitian 1988" onerror="this.style.display='none'"/>
+    </article>
+    <article class="spot-card reveal" id="whisky">
+      <div class="spot-card__media spot-card__media--whisky" role="presentation"></div>
+      <div class="spot-card__body">
+        <p class="spot-card__eyebrow" data-i18n="japan.no">Chapter II</p>
+        <h3 class="spot-card__title" data-i18n="japan.title">The Edit from <em>Japan</em></h3>
+        <p class="spot-card__lead" data-i18n="japan.lead">Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.</p>
+        <p class="spot-card__brands" data-i18n="spot.brands.whisk">Representative · Hibiki · Yamazaki · Nikka · Ichiro · Karuizawa legend releases</p>
+        <a href="#collection" class="btn btn--gold" data-collection-cat="whisky" data-i18n="japan.cta">Browse whisky lane <span class="arr">→</span></a>
       </div>
-      <div class="edit__feature-info">
-        <div class="eyebrow">№ 047 — Hero Pour</div>
-        <h3 class="display edit__feature-name">Moutai <em>Feitian</em><br>1988 Vintage</h3>
-        <p class="edit__feature-sub" data-i18n="maotai.sub">Single-bottle reserve. One of seventeen in private hands.</p>
-        <p class="edit__feature-desc" data-i18n="maotai.desc">A pre-merger bottling from the original Maotai distillery, sealed under cellophane the week of the Seoul Olympics. Aged thirty-six years in a Guizhou family cellar before passing into our care. Sauce-aroma at its most patient — soy, dried plum, leather, honey, and a finish that holds for ten minutes after the glass is empty.</p>
-        <div class="spec-grid">
-          <div class="spec"><div class="spec__label" data-i18n="spec.abv">Strength</div><div class="spec__value">53° / 106 proof</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.vol">Volume</div><div class="spec__value">500 ml</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.origin">Origin</div><div class="spec__value">Maotai, Guizhou</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.year">Bottled</div><div class="spec__value">1988</div></div>
-        </div>
-        <div class="edit__feature-actions">
-          <span class="edit__feature-price" id="mfPrice">$24,800</span>
-          <button class="btn btn--gold" data-add="101" data-i18n="prod.add">Reserve Bottle <span class="arr">→</span></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================
-     JAPAN EDIT
-     ================================================================ -->
-<section class="edit edit--japan" id="whisky">
-  <div class="container">
-    <div class="edit__head reveal">
-      <div class="edit__chap cjk">響</div>
-      <div class="edit__meta">
-        <div class="edit__no" data-i18n="japan.no">— Chapter II —</div>
-        <h2 class="display edit__title" data-i18n="japan.title">The Edit from <em>Japan</em></h2>
-        <p class="edit__lead" data-i18n="japan.lead">Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.</p>
-        <a href="#collection" class="btn btn--gold edit__cta" data-collection-cat="whisky" data-i18n="japan.cta">Browse whisky in the cellar <span class="arr">→</span></a>
-      </div>
-    </div>
-
-    <div class="edit__feature reveal">
-      <div class="edit__feature-img" style="background:radial-gradient(circle at 50% 30%,#2b2620,#0e0b08 80%)">
-        <svg viewBox="0 0 360 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="product__bottle">
-          <text x="180" y="350" text-anchor="middle" font-family="Shippori Mincho, serif" font-size="380" fill="rgba(184,153,104,0.10)" font-weight="500">響</text>
-          <line x1="148" y1="80" x2="212" y2="80" stroke="#B89968" stroke-width="0.6"/>
-          <text x="180" y="108" text-anchor="middle" font-family="Manrope, sans-serif" font-size="10" fill="#B89968" letter-spacing="5">HOUSE SELECTION  ·  N° 062</text>
-          <text x="180" y="265" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="172" fill="#B89968" font-style="italic" font-weight="300" letter-spacing="-0.02em">21</text>
-          <line x1="148" y1="298" x2="212" y2="298" stroke="#B89968" stroke-width="0.6"/>
-          <text x="180" y="328" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="20" fill="rgba(232,220,192,0.95)" letter-spacing="0.4em" font-weight="500">HIBIKI</text>
-          <text x="180" y="354" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="13" fill="rgba(232,220,192,0.55)" letter-spacing="0.25em" font-style="italic">YEARS OLD  ·  43%  ·  700 ML</text>
-          <text x="180" y="430" text-anchor="middle" font-family="Manrope, sans-serif" font-size="9" fill="rgba(184,153,104,0.6)" letter-spacing="6">SUNTORY  ·  YAMAZAKI  ·  JAPAN</text>
-        </svg>
-        <img class="edit__feature-photo" src="images/hibiki-21.webp" alt="Hibiki 21" onerror="this.style.display='none'"/>
-      </div>
-      <div class="edit__feature-info">
-        <div class="eyebrow">№ 062 — House Selection</div>
-        <h3 class="display edit__feature-name">Hibiki <em>21</em><br>Years Old</h3>
-        <p class="edit__feature-sub" data-i18n="japan.sub">A vatting of malts aged in mizunara, sherry, and American white oak.</p>
-        <p class="edit__feature-desc" data-i18n="japan.desc">The crown of Suntory's blending art. Stone fruit, sandalwood, a slow ribbon of smoke that arrives only when the glass is half empty. Decanted in the company's faceted twenty-four-sided bottle — one face for each hour of the day, one hour for each pour. Increasingly rare since Suntory paused production in 2018.</p>
-        <div class="spec-grid">
-          <div class="spec"><div class="spec__label" data-i18n="spec.abv">Strength</div><div class="spec__value">43% ABV</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.vol">Volume</div><div class="spec__value">700 ml</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.origin">Origin</div><div class="spec__value">Yamazaki, Japan</div></div>
-          <div class="spec"><div class="spec__label" data-i18n="spec.year">Bottled</div><div class="spec__value">2022 release</div></div>
-        </div>
-        <div class="edit__feature-actions">
-          <span class="edit__feature-price" id="hbPrice">$3,400</span>
-          <button class="btn btn--gold" data-add="102" data-i18n="prod.add">Reserve Bottle <span class="arr">→</span></button>
-        </div>
-      </div>
-    </div>
+    </article>
   </div>
 </section>
 
@@ -2213,18 +2477,26 @@ const I18N={
 en:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"RARE POURS · SEALED TO PROVENANCE","age.sub":"This house serves only those of legal drinking age in their country of residence.","age.yearPrompt":"Please enter your year of birth:","age.remember":"Remember this device","age.disclaimer":"You confirm that you meet the minimum age to purchase alcohol where you live (this site requires 21+). Purchases are for personal use only. Selecting Remember stores only a confirmation flag in this browser so we may skip this step later — never your birth year.","age.privacyLink":"Privacy summary ·","age.privacyBody":"We collect only what is necessary to operate the storefront and Stripe checkout (for example cart state and anonymous age confirmation preferences). Messages you send via concierge flows are governed by applicable law. Replace this text with your final policy URL or counsel-approved copy when launching.","age.continue":"Continue","age.no":"Decline","age.footer":"DRINK WITH INTENTION · WE DO NOT SELL TO MINORS","age.errorYear":"Please enter a valid four-digit birth year.","age.errorYoung":"You must be at least 21 to enter Maison Han.",
   "top.1":"Hand-Verified Provenance","top.2":"Insured Worldwide Delivery","top.3":"Private Cellar Concierge",
-  "nav.collection":"Collection","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
-  "hero.no":"№ 001 — A House of Rare Pours","hero.sub":"A private cellar of vintage Moutai and aged Japanese whisky — sourced direct, sealed to provenance, brought to a single table.","hero.cta1":"View the Collection","hero.cta2":"Enter the Cellar",
-  "col.eyebrow":"№ 002 — Curated this season","col.title":"The <em>Collection</em>","col.lead":"Each pour in our house is hand-verified, vintage-confirmed, and accompanied by a certificate of provenance. We handle perhaps a hundred bottles a month — never more.","col.empty":"Nothing in this category yet.","catalog.empty":"The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
+  "nav.collection":"Collection","nav.discover":"Discover","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
+  "hero.no":"Living well · Drinking better","hero.l1":"Pour better","hero.l2":"moments, <em>not just</em>","hero.l3":"better bottles.",
+  "hero.tick1":"Dinner-party Burgundy","hero.tick2":"Gift-grade Japanese whisky","hero.tick3":"Celebration Champagne","hero.tick4":"Vintage baijiu finds","hero.tick5":"Chilled sake Fridays","hero.tick6":"Late-night Cognac","hero.sub":"Curated baijiu, whisky, Champagne &amp; wine with traceable provenance — presented in a lighter, sunnier Maison Han tone.","hero.cta1":"Shop the cellar","hero.cta2":"Explore moods",
+  "guides.eyebrow":"Curated moods","guides.title":"Shop by <em>story,</em><br />not showroom.","guides.lead":"Choose a doorway into flavour — everything here is something we pour at our own table.","guides.shop":"Browse lane →",
+  "guides.w.cat":"Spirit forward","guides.w.title":"Explore world whisky","guides.w.body":"Scotland to Kyushu, Kentucky to Tasmania — sippers, splashes and gifting malts alike.","guides.w.brands":"Representative pours · Yamazaki · Macallan · Hibiki · Karuizawa moods",
+  "guides.s.cat":"Rice elegance","guides.s.title":"Japanese sake &amp; curated rice wines","guides.s.body":"Cold Ginjo pours for small plates, hot tokkuri evenings, playlist nights at home.","guides.s.brands":"Cellar moods · Hakkaisan · Kubota silhouettes · Dassai-inspired releases",
+  "guides.b.cat":"Heritage pours","guides.b.title":"Chinese baijiu icons","guides.b.body":"Sauce-aroma collectibles and ceremonial bottlings traced to distilleries — not flea markets.","guides.b.brands":"Featured cues · Kweichow Moutai · Luzhou Laojiao · Wuliangye",
+  "guides.c.cat":"Celebrate louder","guides.c.title":"Champagne &amp; sparkling","guides.c.body":"Oyster lunches, countdowns on the balcony, studio-apartment victories.","guides.c.brands":"Names we rotate · Jacques Selosse · Salon energy · Grande marques &amp; grower gems",
+  "guides.v.cat":"Table wines","guides.v.title":"Mid-week pours that still feel special","guides.v.body":"Burgundy through Napa — bottles that behave at supper without needing a TED talk.","guides.v.brands":"Sommelier flirtations · Sassicaia mood · Leroy-aligned Burgundy hunts",
+  "guides.g.cat":"Liquid gifts","guides.g.title":"Cognac &amp; collectible spirits","guides.g.body":"Decanters, fireside cigars (where legal) and trophies with paperwork intact.","guides.g.brands":"Gifting shorthand · Tesseron stacks · Rémy/Hennessy Paradis moods",
+  "spot.section":"Featured cellar lanes","spot.brands.baijiu":"Representative pours · Vintage Moutai Feitian arcs · Luzhou Laojiao · Guojiao 1573 silhouettes","spot.brands.whisk":"Representative pours · Hibiki · Yamazaki · Yoichi · Nikka · Ichiro · Karuizawa mythologies","The catalog is empty. On Cloudflare Pages set STRIPE_SECRET_KEY (unless MAISON_HAN_API_BASE points to TaTa). In Stripe, products need metadata maison_han=true and maison_han_id > 0 with an active one-time USD price. Open /list-products to inspect JSON.",
   "filter.label":"Filter","filter.all":"All","filter.baijiu":"Chinese baijiu","filter.whisky":"Whisky","filter.wine":"Wine · still &amp; red","filter.sparkling":"Champagne &amp; sparkling","filter.cognac":"Cognac",
   "search.label":"Search collection","search.placeholder":"Name, distillery or №…","search.none":"No bottles match your search.",
   "prov.eyebrow":"№ 003 — Provenance","prov.title":"A bottle is only as<br>true as its journey.","prov.lead":"Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.","prov.cta":"Read the Provenance Standard",
   "prov.1.t":"Direct from the source","prov.1.d":"Distilleries, family cellars, and verified single owners. Never auction-house secondaries we cannot trace.",
   "prov.2.t":"Triple-seal authentication","prov.2.d":"Each bottle is verified against the producer's archive, photographed under UV, and sealed with a numbered house wax before dispatch.",
   "prov.3.t":"A certificate, by hand","prov.3.d":"Every order ships with a hand-numbered provenance card, signed by the house cellar master. Frame it. It is part of the story.",
-  "maotai.no":"— Chapter I —","maotai.title":"The House of <em>Moutai</em>","maotai.lead":"For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.","maotai.cta":"Browse baijiu in the cellar",
+  "maotai.no":"— Chapter I —","maotai.title":"The House of <em>Moutai</em>","maotai.lead":"For seven hundred years, the village of Maotai has bottled its red sorghum into something that tastes, somehow, like a place. We carry only the years that taste like memory.","maotai.cta":"Browse the baijiu lane",
   "maotai.sub":"Single-bottle reserve. One of seventeen in private hands.","maotai.desc":"A pre-merger bottling from the original Maotai distillery, sealed under cellophane the week of the Seoul Olympics. Aged thirty-six years in a Guizhou family cellar before passing into our care. Sauce-aroma at its most patient — soy, dried plum, leather, honey, and a finish that holds for ten minutes after the glass is empty.",
-  "japan.no":"— Chapter II —","japan.title":"The Edit from <em>Japan</em>","japan.lead":"Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.","japan.cta":"Browse whisky in the cellar",
+  "japan.no":"— Chapter II —","japan.title":"The Edit from <em>Japan</em>","japan.lead":"Hibiki, Yamazaki, Hakushu, Yoichi, Karuizawa. The houses that taught the world a single malt could whisper. We carry only the years that still do.","japan.cta":"Browse the whisky lane",
   "japan.sub":"A vatting of malts aged in mizunara, sherry, and American white oak.","japan.desc":"The crown of Suntory's blending art. Stone fruit, sandalwood, a slow ribbon of smoke that arrives only when the glass is half empty. Decanted in the company's faceted twenty-four-sided bottle — one face for each hour of the day, one hour for each pour. Increasingly rare since Suntory paused production in 2018.",
   "spec.abv":"Strength","spec.vol":"Volume","spec.origin":"Origin","spec.year":"Vintage",
   "cellar.eyebrow":"№ 005 — By invitation","cellar.title":"The <em>Private</em> Cellar","cellar.lead":"A standing arrangement for collectors who prefer the rarities to find them. Three tiers, by quiet introduction.","cellar.cta":"Request Introduction",
@@ -2244,9 +2516,16 @@ en:{
 "zh-CN":{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本馆仅服务于所在国家或地区已达法定饮酒年龄者。","age.yearPrompt":"请输入出生年份（四位）：","age.remember":"在本设备记住「已通过」确认","age.disclaimer":"您确认在您所在地已达可合法购买酒类之年龄（本站要求年满 21 周岁）。所选商品仅供个人合理使用。勾选「记住」时，我们仅在该浏览器写入匿名通关标记，恕不储存您的出生年份。","age.privacyLink":"隐私说明摘要 ·","age.privacyBody":"本前台仅留存运营独立站所需之最少数据（匿名年龄确认偏好、购物车与 Stripe 结算流程相关）。正式上线前请以法务审定的隐私政策替换本段示意文案。","age.continue":"继续","age.no":"离开","age.footer":"有意识地饮酒 · 绝不向未成年人销售","age.errorYear":"请输入有效的四位出生年份。","age.errorYoung":"须年满 21 周岁方可进入本馆线上橱窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保送达","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
-  "hero.sub":"陈年茅台与日本威士忌的私人酒窖——直采、封藏、亲手送达每一张餐桌。","hero.cta1":"浏览典藏","hero.cta2":"进入私窖",
-  "col.eyebrow":"№ 002 — 本季精选","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆经手工核验、年份确认，附带溯源证书。每月仅经手百余瓶——从不更多。","col.empty":"此分类暂无酒款。","catalog.empty":"商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
+  "nav.collection":"典藏","nav.discover":"主题导购","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
+  "hero.no":"认真对待生活 · 也认真对待酒杯","hero.l1":"倒出更好的","hero.l2":"时光，而不只是","hero.l3":"更贵的酒瓶。","hero.tick1":"晚宴上的勃艮第","hero.tick2":"可当礼物的日系威士忌","hero.tick3":"值得开瓶的香槟","hero.tick4":"家族窖藏陈年白酒","hero.tick5":"冰爽清酒的周五","hero.tick6":"深夜的干邑对白","hero.sub":"茅台、威士忌、香槟与红葡萄酒——仍可溯源甄选，以更轻盈明快的方式摆上你的餐桌。","hero.cta1":"进店选酒",  "hero.cta2":"按心情逛逛",
+  "guides.eyebrow":"主题甄选","guides.title":"先听 <em>故事，</em><br />再逛酒柜。","guides.lead":"六个入口六种心情——都是我们会倒给挚友尝的那条路。","guides.shop":"进店看看 →",
+  "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"苏格兰到九州，波本到塔斯马尼亚——慢酌小酌与豪气礼赠都能兼顾。","guides.w.brands":"代表之选 · Yamazaki · Macallan · Hibiki · Karuizawa 气质限量",
+  "guides.s.cat":"清酒稻米香","guides.s.title":"日本清酒 · 米酒精选","guides.s.body":"冷卸配小菜，或温一壶对坐听歌单，都适合周末在家完成。","guides.s.brands":"酒柜灵感 · Hakkaisan · 「久保田」系谱 · 「獭祭」风格精选",
+  "guides.b.cat":"国酒典藏","guides.b.title":"中国白酒名酿","guides.b.body":"酱香、浓香及礼赠与收藏级酒款——来自酒厂链路或可追溯私窖，拒绝来路成谜的低价诱惑。","guides.b.brands":"代表性线索 · 茅台飞天年份线 · 泸州老窖 · 五粮液",
+  "guides.c.cat":"派对起泡","guides.c.title":"香槟与起泡酒","guides.c.body":"生蚝早餐、露台倒数、升职加薪——小农香槟与经典名庄共事。","guides.c.brands":"轮换座次 · Jacques Selosse 美学 · Salon 情结 · grandes marques",
+  "guides.v.cat":"家常佐餐","guides.v.title":"我们真的会周中开的红葡萄酒","guides.v.body":"勃艮第、波尔多与美国精品——佐餐好喝，不靠长篇酒评撑场。","guides.v.brands":"侍酒师的偏爱 · Sassicaia 氛围 · 「Leroy 系」寻宝",
+  "guides.g.cat":"礼赠与收藏","guides.g.title":"干邑与限量烈酒","guides.g.body":"夜谈、雪茄角（在法律允许处）——附完整票据与运输体面的收藏级酒款。","guides.g.brands":"礼金暗示 · Tesseron · Rémy / Hennessy Paradis 级灵感",
+  "spot.section":"两大专题酒窖","spot.brands.baijiu":"代表性风格 · 茅台飞天年代封存 · 泸州老窖 · 国窖 1573 气质","spot.brands.whisk":"代表性风格 · 响 · 山崎 · 余市 · 一郎 · 「轻井泽」叙事款","商品目录为空。若在 Cloudflare Pages：请在环境变量中配置 STRIPE_SECRET_KEY（或使用 MAISON_HAN_API_BASE 指向 TaTa）。若走 Stripe：商品 metadata 需 maison_han=true、maison_han_id 为正整数，并有一条在用的单次 USD 价格。可在浏览器打开 /list-products 查看接口返回。",
   "filter.label":"筛选","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 红酒及其他","filter.sparkling":"香槟 · 起泡酒","filter.cognac":"干邑",
   "search.label":"搜寻典藏","search.placeholder":"名称、酒厂或编号…","search.none":"没有符合搜寻条件的酒款。",
   "prov.eyebrow":"№ 003 — 溯源","prov.title":"酒之真，<br>在于其行迹。","prov.lead":"市面上的假茅台，销量远胜真品。我们因此拒绝市面。","prov.cta":"阅读溯源标准",
@@ -2275,8 +2554,16 @@ en:{
 "zh-TW":{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本館僅服務所在國家或地區已達法定飲酒年齡者。","age.yearPrompt":"請輸入出生年份（四位）：","age.remember":"在此裝置記住「已通過」確認","age.disclaimer":"您確認在您所在地已達可合法購買酒類之年齡（本站要求年滿 21 周歲）。所選商品僅供個人合理使用。勾選「記住」時，我們僅在瀏覽器寫入匿名通關標記，恕不儲存您的出生年份。","age.privacyLink":"隱私說明摘要 ·","age.privacyBody":"此前台僅留存營運獨立站所需之最少數據（匿名年齡確認偏好、購物車與 Stripe 結算流程）。正式上線前請以法務核定之私隱政策替換本段示意文案。","age.continue":"繼續","age.no":"離開","age.footer":"有意識地飲酒 · 絕不向未成年人銷售","age.errorYear":"請輸入有效的四位出生年份。","age.errorYoung":"須年滿 21 周歲方可進入本館線上櫥窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保遞送","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
-  "hero.sub":"陳年茅台與日本威士忌的私人酒窖——直採、封藏、親手送達每一張餐桌。","hero.cta1":"瀏覽典藏","hero.cta2":"進入私窖",
+  "nav.collection":"典藏","nav.discover":"主題導購","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
+  "hero.no":"好好生活 · 也好好舉杯","hero.l1":"倒出更好的","hero.l2":"片刻，而不只是","hero.l3":"更昂貴的酒標。","hero.tick1":"晚宴上的布根地","hero.tick2":"當禮物也體面的日系威士忌","hero.tick3":"值得一開的香檳","hero.tick4":"家族窖藏的陳年白酒","hero.tick5":"冰鎮清酒的星期五","hero.tick6":"深夜對坐干邑","hero.sub":"茅台、威士忌、香檳與葡萄酒——仍然逐瓶溯源，但用更輕快溫暖的漢館口吻介紹給你。","hero.cta1":"進店選酒","hero.cta2":"依心情逛逛",
+  "guides.eyebrow":"主題精選","guides.title":"先選 <em>故事，</em><br />再逛酒櫃。","guides.lead":"六道入口、六種心境——也都是我們會倒給挚友的那條路。","guides.shop":"進店看看 →",
+  "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"蘇格蘭到九州，波本島到塔斯馬尼亞——慢飲與送禮都能找到落點。","guides.w.brands":"代表線索 · Yamazaki · Macallan · Hibiki · Karuizawa 叙事",
+  "guides.s.cat":"稻米清酒","guides.s.title":"日本清酒 · 米酒精選","guides.s.body":"冰飲配小菜，或熱一壺配黑膠，都適合居家週末。","guides.s.brands":"酒櫃線索 · Hakkaisan · 「久保田」系譜 · 「獺祭」語氣之选",
+  "guides.b.cat":"國酒典藏","guides.b.title":"中國白酒名醸","guides.b.body":"醬香、濃香與典藏禮盒——銜接酒廠或可核實私窖，拒絕來源撲朔的撿漏心態。","guides.b.brands":"代表提示 · 茅台飛天年代系譜 · 瀘州老窖 · 五粮液",
+  "guides.c.cat":"慶祝起泡","guides.c.title":"香檳與起泡酒","guides.c.body":"生蚝早午餐、露台倒數——小農香檳與 grandes marques 並陳。","guides.c.brands":"輪播靈感 · Jacques Selosse · Salon 情結",
+  "guides.v.cat":"家常佐餐","guides.v.title":"工作日也願意開的紅酒","guides.v.body":"布根地、波爾多與 Napa —— 不需要 TED 式酒評也能喝懂。","guides.v.brands":"侍酒偏愛 · Sassicaia 氛圍 · Leroy 語系尋寶",
+  "guides.g.cat":"禮藏烈酒","guides.g.title":"干邑與典藏烈酒","guides.g.body":"適合致贈、典藏與附完整文件的旅行酒禮。","guides.g.brands":"禮品暗示 · Tesseron · Rémy / Hennessy Paradis 級靈感",
+  "spot.section":"兩條專題酒窖動線","spot.brands.baijiu":"代表性風味 · 茅台飛天年代 · 瀘州老窖 · 國窖 1573 氣質","spot.brands.whisk":"代表性風味 · 響 · 山崎 · 餘市 · 一郎 · 「輕井澤」叙事",
   "col.eyebrow":"№ 002 — 本季精選","col.title":"典 <em>藏</em>","col.lead":"每一瓶皆經手工核驗、年份確認，附帶溯源證書。每月僅經手百餘瓶——從不更多。","col.empty":"此分類暫無酒款。",
   "filter.label":"篩選","filter.all":"全部","filter.baijiu":"白酒","filter.whisky":"威士忌","filter.wine":"葡萄酒 · 紅酒及其他","filter.sparkling":"香檳 · 氣泡酒","filter.cognac":"干邑",
   "search.label":"搜尋典藏","search.placeholder":"名稱、酒廠或編號…","search.none":"沒有符合搜尋條件的酒款。",
@@ -2306,8 +2593,16 @@ en:{
 ja:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀少な一杯 · 来歴を封じる館","age.sub":"当館は、お客様の居住国における法定飲酒年齢に達した方のみにお仕えいたします。","age.yearPrompt":"生まれ年を4桁でご入力ください。","age.remember":"この端末では次回から入力を省略","age.disclaimer":"お客様の地域で酒類購入に必要な年齢（当サイトでは21歳以上）を満たすこと、および個人利用のみを確認します。「記憶される」選択時、このブラウザには通過確認フラグのみを保存します。出生年そのものは保存しません。","age.privacyLink":"プライバシー概要 ·","age.privacyBody":"本方針文言はひな型です。本番運用時は適用法令に準拠した確定ポリシーに差し替えてください。","age.continue":"続ける","age.no":"辞退する","age.footer":"心意を持って飲むこと · 未成年への提供なし","age.errorYear":"4桁の妥当な出生年をご入力ください。","age.errorYoung":"21歳未満の方はご入館いただけません。",
   "top.1":"一瓶ごとの来歴確認","top.2":"全世界保険付き配送","top.3":"プライベート·コンシェルジュ",
-  "nav.collection":"コレクション","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
-  "hero.sub":"年代物の茅台と熟成日本ウイスキーの私的セラー — 直接仕入れ、来歴を封じ、あなたのテーブルへ。","hero.cta1":"コレクションを見る","hero.cta2":"私蔵庫へ",
+  "nav.collection":"コレクション","nav.discover":"テーマ","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
+  "hero.no":"暮らしと、乾杯の両方に誠実に","hero.l1":"もっと心地よい","hero.l2":"瞬間のために、単に","hero.l3":"高いボトルだけでなく。","hero.tick1":"晩餐のブルゴーニュ","hero.tick2":"ギフトに似合う日本ウイスキー","hero.tick3":"理由のあるシャンパーニュ","hero.tick4":"家族セラーの貴州老酒","hero.tick5":"冷やした日本酒の金曜","hero.tick6":"深夜のコニャック","hero.sub":"茅台、ウイスキー、シャンパン、ワインまで——来歴は明確に、トーンはより明るくライフスタイル寄りに。","hero.cta1":"セラーを見る","hero.cta2":"ムードで探す",
+  "guides.eyebrow":"テーマ別","guides.title":"<em>ストーリー</em>から入る<br />買い物。","guides.lead":"扉を六つ用意しました。すべて、私たちも自宅で友人に注ぎたいレーンです。","guides.shop":"レーンを見る →",
+  "guides.w.cat":"麦芽の旅","guides.w.title":"世界のウイスキーを探る","guides.w.body":"アイラから九州、ケンタッキーまで。夜更かし用から贈答まで。","guides.w.brands":"代表ネーム · Yamazaki · Macallan · Hibiki · Karuizawa級",
+  "guides.s.cat":"米の香り","guides.s.title":"日本酒と米造りのペアリング","guides.s.body":"冷酒のつまみセット、温燗の歌合わせ。","guides.s.brands":"蔵の気配 · Hakkaisan · 久保田の系譜 · 獺祭の空気感",
+  "guides.b.cat":"国酒の恒星","guides.b.title":"中国白酒の名醸","guides.b.body":"酱香・浓香、儀式ボトルまで。蒸留所または追跡できるプライベート蔵からのみ。","guides.b.brands":"象徴ブランド · 貴州茅台 · 瀘州老窖 · 五粮液",
+  "guides.c.cat":"泡の祝祭","guides.c.title":"シャンパーニュ＆スパークリング","guides.c.body":"朝食からミッドナイトまで。シャルドネの泡は正義。","guides.c.brands":"ローテーション · Selosse · Salon系譚 · grandes marques",
+  "guides.v.cat":"日常ワイン","guides.v.title":"平日ナイトでも嬉しいスティル","guides.v.body":"ブルゴーニュ、ボルドー、ナパ。説教は不要。","guides.v.brands":"ソムリエの偏愛 · Sassicaia級の感情 · Leroy系の旅",
+  "guides.g.cat":"贈答スピリッツ","guides.g.title":"コニャックとコレクション向け","guides.g.body":"キャンペファイア、合法な葉巻、証憑付きのギフト。","guides.g.brands":"贈り物の合図 · Tesseron · Rémy / Hennessy Paradis級",
+  "spot.section":"注目の二本柱","spot.brands.baijiu":"代表系譜 · vintage 茅台の系譜 · 瀘州老窖 · 国窖 1573","spot.brands.whisk":"代表系譜 · 響 · 山崎 · 余市 · イチローズ · 軽井沢神話",
   "col.eyebrow":"№ 002 — 今季の選り抜き","col.title":"コレ <em>クション</em>","col.lead":"当館の一本は、すべて手作業で照合され、年代を確認し、来歴証明書を添えてお届けします。一月に扱うのは百本ほど — それ以上は決して。","col.empty":"このカテゴリにはまだありません。",
   "filter.label":"絞り込み","filter.all":"全て","filter.baijiu":"白酒","filter.whisky":"ウィスキー","filter.wine":"ワイン・赤ワインほか","filter.sparkling":"シャンパーニュ・発泡ワイン","filter.cognac":"コニャック",
   "search.label":"コレクションを検索","search.placeholder":"名称、蒸留所、№…","search.none":"該当するボトルはございません。",
@@ -2739,8 +3034,10 @@ function handleNewsletter(){
 function updateFeaturedPrices(){
   const mf=PRODUCTS.find(p=>p.id===101);
   const hb=PRODUCTS.find(p=>p.id===102);
-  if(mf)document.getElementById("mfPrice").textContent=fmtPrice(mf.price);
-  if(hb)document.getElementById("hbPrice").textContent=fmtPrice(hb.price);
+  const elM=document.getElementById("mfPrice");
+  const elH=document.getElementById("hbPrice");
+  if(mf&&elM){elM.textContent=fmtPrice(mf.price)}
+  if(hb&&elH){elH.textContent=fmtPrice(hb.price)}
 }
 
 /* ============ REVEAL ============ */
