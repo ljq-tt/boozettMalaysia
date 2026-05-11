@@ -250,5 +250,26 @@ window.__CATALOG__ = [
     "badge": "",
     "desc": "Nikka's accessible monument to blended malt craft ?? orchard fruit, supple oak, restrained smoke.",
     "sortOrder": 120
+  },
+  {
+    "id": 113,
+    "productId": "",
+    "priceId": null,
+    "no": "SP1",
+    "cat": "sparkling",
+    "catLabel": "Sparkling",
+    "bv": "bv-wine",
+    "bottle": "sparkling",
+    "image": "images/lafite.jpg",
+    "name": "<em>Champagne</em> Brut Reserve",
+    "sub": "Classic celebratory sparkling.",
+    "price": 260,
+    "abv": "12%",
+    "vol": "750 ml",
+    "origin": "Champagne, France",
+    "year": "N.V.",
+    "badge": "",
+    "desc": "A bright, dry sparkling wine with fine mousse, citrus lift, and a clean mineral finish.",
+    "sortOrder": 115
   }
 ];

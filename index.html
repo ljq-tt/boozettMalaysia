@@ -2679,28 +2679,20 @@ async function loadProducts(){
   if(grid&&PRODUCTS.length===0){
     grid.innerHTML='<div class="grid-loading"><span class="cjk">候</span><p>Loading the cellar&hellip;</p></div>';
   }
-  const sources=["./catalog-data.js","/list-products","./catalog.json"];
+  if(Array.isArray(window.__CATALOG__)&&window.__CATALOG__.length){
+    catalogFetchSucceeded=true;
+    PRODUCTS=window.__CATALOG__;
+    state.page=1;
+    renderGrid();
+    updateFeaturedPrices();
+    updateCart();
+    syncNavCategoryLinks();
+    return;
+  }
+  const sources=["/list-products","./catalog.json"];
   let lastErr=null;
   for(const src of sources){
     try{
-      if(src.endsWith(".js")){
-        await new Promise((resolve,reject)=>{
-          const s=document.createElement("script");
-          s.src=src;
-          s.onload=()=>resolve();
-          s.onerror=()=>reject(new Error("Failed to load "+src));
-          document.head.appendChild(s);
-        });
-        const data=window.__CATALOG__;
-        if(!Array.isArray(data))throw new Error("Bad payload (expected JSON array)");
-        catalogFetchSucceeded=true;
-        PRODUCTS=data;
-        state.page=1;
-        renderGrid();
-        updateFeaturedPrices();
-        updateCart();
-        return;
-      }
       const res=await fetch(src,{headers:{Accept:"application/json"}});
       const data=await res.json().catch(()=>null);
       if(!res.ok){
@@ -2717,6 +2709,7 @@ async function loadProducts(){
       renderGrid();
       updateFeaturedPrices();
       updateCart();
+      syncNavCategoryLinks();
       return;
     }catch(err){
       lastErr=err;
@@ -2801,6 +2794,19 @@ function getCollectionFiltered(){
       });
 }
 
+function syncNavCategoryLinks(){
+  document.querySelectorAll(".nav__link[data-cat-link]").forEach(link=>{
+    const cat=link.dataset.catLink||"all";
+    const active=cat===state.cat;
+    link.classList.toggle("is-active",active);
+    if(active) link.setAttribute("aria-current","page");
+    else link.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".collection-nav__chip").forEach(chip=>{
+    chip.classList.toggle("is-active",(chip.dataset.cat||"all")===state.cat);
+  });
+}
+
 /* ============ CURRENCY ============ */
 function fmtPrice(usd){
   const c=CURRENCY[state.currency];
@@ -2828,6 +2834,7 @@ function bottleSVG(type){
     "lafite":        {char:"L",year:"1982",brand:"LAFITE",sub:"ROTHSCHILD · PAUILLAC",cjk:false},
     "hennessy":      {char:"H",year:"PARADIS",brand:"HENNESSY",sub:"EXTRA · COGNAC",cjk:false},
     "taketsuru":     {char:"竹",year:"PURE",brand:"TAKETSURU",sub:"MALT · NIKKA",cjk:true},
+    "sparkling":     {char:"泡",year:"BRUT",brand:"CHAMPAGNE",sub:"SPARKLING · CELLAR",cjk:true},
   };
   const v=V[type]||V["maotai-vintage"];
   const charFont=v.cjk?"Shippori Mincho, serif":"Cormorant Garamond, serif";
@@ -2846,7 +2853,7 @@ function bottleSVG(type){
 
 /* ============ MINI MARK FOR CART ============ */
 function cartMark(type){
-  const M={"maotai-vintage":"茅","maotai-flying":"飛","wuliangye":"五","hibiki-21":"響","yamazaki-18":"山","hakushu-12":"白","yoichi":"余","karuizawa":"軽","macallan":"M","lafite":"L","hennessy":"H","taketsuru":"竹"};
+  const M={"maotai-vintage":"茅","maotai-flying":"飛","wuliangye":"五","hibiki-21":"響","yamazaki-18":"山","hakushu-12":"白","yoichi":"余","karuizawa":"軽","macallan":"M","lafite":"L","hennessy":"H","taketsuru":"竹","sparkling":"泡"};
   const c=M[type]||"酒";
   const isCJK=!/[A-Z]/.test(c);
   const font=isCJK?"Shippori Mincho, serif":"Cormorant Garamond, serif";
@@ -2929,6 +2936,7 @@ function renderGrid(){
   if(state.page<1)state.page=1;
   const start=(state.page-1)*PRODUCTS_PER_PAGE;
   const pageItems=searchFiltered.slice(start,start+PRODUCTS_PER_PAGE);
+  syncNavCategoryLinks();
   if(pageItems.length===0&&filtered.length>0){
     state.page=1;
     return renderGrid();
@@ -3425,15 +3433,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
 
   // Category navigation
-  const filterBar=document.getElementById("filterBar");
-  if(filterBar){
-    filterBar.addEventListener("click",e=>{
-      const btn=e.target.closest(".filter-bar__btn");if(!btn)return;
-      document.querySelectorAll(".filter-bar__btn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      state.cat=btn.dataset.cat;state.page=1;renderGrid();
-    });
-  }
   document.querySelectorAll('a[data-collection-cat]').forEach(a=>{
     a.addEventListener("click",()=>{
       const c=a.getAttribute("data-collection-cat");
@@ -3443,7 +3442,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         b.classList.toggle("is-active",(b.dataset.cat||"")===c);
       });
       state.page=1;
-      queueMicrotask(()=>renderGrid());
+      queueMicrotask(()=>{renderGrid();syncNavCategoryLinks();});
     });
   });
 
@@ -3455,6 +3454,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       document.querySelectorAll(".collection-nav__chip").forEach(b=>b.classList.toggle("is-active",b===chip));
       state.page=1;
       renderGrid();
+      syncNavCategoryLinks();
       scrollToCollectionTop();
     });
   });
@@ -3465,6 +3465,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       state.search=collectionSearch.value;
       state.page=1;
       renderGrid();
+      syncNavCategoryLinks();
     });
   }
 
