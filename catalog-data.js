@@ -8,7 +8,7 @@ window.__CATALOG__ = [
     "catLabel": "Chinese baijiu",
     "bv": "bv-maotai",
     "bottle": "maotai-vintage",
-    "image": "images/maotai-vintage.png",
+    "image": "https://maisonhan-images.oss-cn-guangzhou.aliyuncs.com/products/feitianmaotai.jpg",
     "name": "<em>Moutai</em> Feitian &middot; 1988",
     "sub": "Single-bottle reserve. One of seventeen in private hands.",
     "price": 24800,
