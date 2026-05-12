@@ -2445,8 +2445,8 @@ body.nav-mob-open{overflow:hidden}
     <div class="collection-nav reveal" id="categoryNav" aria-label="Category navigation">
       <a href="#collection" class="collection-nav__chip is-active" data-cat="all" data-i18n="cat.all">All</a>
       <a href="#collection" class="collection-nav__chip" data-cat="spirits" data-i18n="cat.spirits">Spirits</a>
-      <a href="#collection" class="collection-nav__chip" data-cat="whisky" data-i18n="cat.whisky">Whisky</a>
       <a href="#collection" class="collection-nav__chip" data-cat="baijiu" data-i18n="cat.baijiu">Baijiu</a>
+      <a href="#collection" class="collection-nav__chip" data-cat="whisky" data-i18n="cat.whisky">Whisky</a>
       <a href="#collection" class="collection-nav__chip" data-cat="wine" data-i18n="cat.wine">Wine</a>
       <a href="#collection" class="collection-nav__chip" data-cat="sparkling" data-i18n="cat.sparkling">Sparkling</a>
       <a href="#collection" class="collection-nav__chip" data-cat="others" data-i18n="cat.others">Others</a>
@@ -3038,13 +3038,24 @@ function stripHtml(s){
   return String(s||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
 }
 
+function sortCatalog(items){
+  return [...items].sort((a,b)=>{
+    const ao=Number(a.sortOrder||9999);
+    const bo=Number(b.sortOrder||9999);
+    if(ao!==bo)return ao-bo;
+    return String(a.name||"").localeCompare(String(b.name||""),"zh-Hans-CN");
+  });
+}
+
 function getCollectionFiltered(){
-  return state.cat==="all"
+  const items=state.cat==="all"
     ? PRODUCTS
     : PRODUCTS.filter(p=>{
         if(state.cat==="spirits")return p.cat==="spirits"||p.cat==="baijiu";
+        if(state.cat==="baijiu")return p.cat==="baijiu";
         return p.cat===state.cat;
       });
+  return sortCatalog(items);
 }
 
 function syncNavCategoryLinks(){
