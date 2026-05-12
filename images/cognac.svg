@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Cognac mood illustration">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#150b08"/>
+      <stop offset="100%" stop-color="#5a3110"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <circle cx="890" cy="250" r="170" fill="#f1c98f" fill-opacity="0.15"/>
+  <circle cx="360" cy="520" r="250" fill="#fff1d6" fill-opacity="0.07"/>
+  <rect x="160" y="220" width="260" height="360" rx="26" fill="#fff1d6" fill-opacity="0.08"/>
+  <rect x="235" y="255" width="110" height="285" rx="55" fill="#f1c98f" fill-opacity="0.16"/>
+  <text x="600" y="730" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="118" fill="#f7edd9" fill-opacity="0.92" letter-spacing="12">COGNAC</text>
+</svg>

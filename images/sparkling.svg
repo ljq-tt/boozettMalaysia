@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Sparkling mood illustration">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1a1010"/>
+      <stop offset="100%" stop-color="#6b3b17"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <circle cx="910" cy="230" r="175" fill="#f9e9b5" fill-opacity="0.18"/>
+  <circle cx="390" cy="520" r="250" fill="#ffffff" fill-opacity="0.06"/>
+  <circle cx="820" cy="180" r="24" fill="#fff" fill-opacity="0.8"/>
+  <circle cx="860" cy="140" r="10" fill="#fff" fill-opacity="0.7"/>
+  <circle cx="950" cy="170" r="14" fill="#fff" fill-opacity="0.75"/>
+  <rect x="180" y="220" width="250" height="360" rx="26" fill="#fff" fill-opacity="0.08"/>
+  <rect x="250" y="255" width="105" height="285" rx="52" fill="#f9e9b5" fill-opacity="0.16"/>
+  <text x="600" y="730" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="118" fill="#f7edd9" fill-opacity="0.92" letter-spacing="14">SPARKLING</text>
+</svg>
