@@ -877,7 +877,7 @@ body.nav-mob-open{overflow:hidden}
 }
 .guides__grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(18px,2vw,24px);
 }
 .guides__card{
@@ -897,13 +897,9 @@ body.nav-mob-open{overflow:hidden}
 }
 .guides__media{
   position:relative;
-  min-height:300px;
+  aspect-ratio:16/10;
   background:linear-gradient(135deg,rgba(17,11,8,.98),rgba(68,27,18,.92));
   overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px;
 }
 .guides__media::after{
   content:"";position:absolute;inset:0;
@@ -912,11 +908,9 @@ body.nav-mob-open{overflow:hidden}
 }
 .guides__media img{
   display:block;
-  max-width:100%;
-  max-height:100%;
-  width:auto;
-  height:auto;
-  object-fit:contain;
+  width:100%;
+  height:100%;
+  object-fit:cover;
   object-position:center center;
   position:relative;
   z-index:1;
@@ -1978,7 +1972,6 @@ body.nav-mob-open{overflow:hidden}
   .modal{grid-template-columns:1fr;max-height:95vh}
   .modal__visual{min-height:340px;border-right:none;border-bottom:1px solid var(--line)}
   .modal__body{padding:40px 28px}
-  .guides__media{min-height:260px}
 }
 @media(max-width:560px){
   .topbar__msg{display:none}
@@ -1990,7 +1983,6 @@ body.nav-mob-open{overflow:hidden}
   .spec-grid{grid-template-columns:1fr}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
-  .guides__media{min-height:220px}
 }
 </style>
 </head>
@@ -2384,7 +2376,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="wine">
-        <div class="guides__media guides__media--s" role="presentation"><img src="images/sake.jpg" alt="Japanese sake" loading="lazy" /></div>
+        <div class="guides__media guides__media--s" role="presentation"><img src="images/e32133b93fb44c1dd512a98035f3f305.jpg" alt="Japanese sake" loading="lazy" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.s.cat">Rice elegance</span>
           <h3 class="guides__name" data-i18n="guides.s.title">Japanese sake &amp; fine rice wine</h3>
@@ -2394,7 +2386,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="baijiu">
-        <div class="guides__media guides__media--b" role="presentation"><img src="images/baijiu.jpg" alt="Baijiu bottles" loading="lazy" /></div>
+        <div class="guides__media guides__media--b" role="presentation"><img src="images/122278706fe74f6a9460c670736ec448.jpg" alt="Chinese baijiu" loading="lazy" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.b.cat">Heritage pours</span>
           <h3 class="guides__name" data-i18n="guides.b.title">Chinese baijiu icons</h3>
@@ -2404,7 +2396,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="sparkling">
-        <div class="guides__media guides__media--c" role="presentation"><img src="images/sparkling.jpg" alt="Champagne and sparkling wine" loading="lazy" /></div>
+        <div class="guides__media guides__media--c" role="presentation"><img src="images/0b9ed94d1ebc02d68a78e9646c06926f.jpg" alt="Champagne and sparkling wine" loading="lazy" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.c.cat">Celebrate louder</span>
           <h3 class="guides__name" data-i18n="guides.c.title">Champagne &amp; sparkling</h3>
@@ -2424,7 +2416,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="cognac">
-        <div class="guides__media guides__media--g" role="presentation"><img src="images/cognac.jpg" alt="Cognac and gift bottles" loading="lazy" /></div>
+        <div class="guides__media guides__media--g" role="presentation"><img src="images/6ee92f3d0723e47db3a8078545514163.jpg" alt="Cognac and gift bottles" loading="lazy" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.g.cat">Liquid gifts</span>
           <h3 class="guides__name" data-i18n="guides.g.title">Cognac &amp; collectible spirits</h3>
