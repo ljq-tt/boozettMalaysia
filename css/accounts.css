@@ -3,20 +3,28 @@
   --paper: #fcf8f1;
   --bone: #e8dcc0;
   --gold: #b89968;
+  --gold-deep: #8e6a3c;
+  --line: rgba(232, 220, 192, 0.16);
+  --shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
 }
 
 * {
   box-sizing: border-box;
 }
+
+html,
+body {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  font-family:
-    Manrope,
-    system-ui,
-    sans-serif;
-  background: radial-gradient(120% 90% at 50% -20%, rgba(184, 153, 104, 0.12), transparent),
-    linear-gradient(168deg, #1a0508 0%, #591018 40%, #0e0b08 100%);
+  font-family: Manrope, system-ui, sans-serif;
+  background:
+    radial-gradient(120% 90% at 50% -18%, rgba(184, 153, 104, 0.18), transparent 48%),
+    radial-gradient(80% 60% at 100% 100%, rgba(184, 153, 104, 0.08), transparent 60%),
+    linear-gradient(168deg, #1a0508 0%, #591018 42%, #0e0b08 100%);
   color: var(--bone);
   font-size: 15px;
   line-height: 1.55;
@@ -24,53 +32,75 @@ body {
 
 a {
   color: var(--gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f0dfbf;
 }
 
 .wrap {
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 48px 20px 64px;
+  padding: 56px 20px 72px;
 }
 
 .brand {
   text-align: center;
   margin-bottom: 28px;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 28px;
-  letter-spacing: 0.06em;
+  font-size: 30px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: #fff8ef;
 }
 
 .card {
-  background: rgba(14, 11, 8, 0.55);
-  border: 1px solid rgba(232, 220, 192, 0.18);
-  padding: 26px 22px;
+  position: relative;
+  background: rgba(14, 11, 8, 0.52);
+  border: 1px solid rgba(232, 220, 192, 0.14);
+  padding: 28px 22px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 20%);
 }
 
 label {
   display: block;
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.88;
   margin-bottom: 8px;
 }
+
 input[type='email'],
 input[type='password'],
 input[type='text'] {
   width: 100%;
-  padding: 12px 12px;
-  border: 1px solid rgba(232, 220, 192, 0.25);
-  background: rgba(252, 248, 241, 0.06);
+  padding: 13px 14px;
+  border: 1px solid rgba(232, 220, 192, 0.18);
+  background: rgba(252, 248, 241, 0.05);
   color: var(--paper);
   font-size: 15px;
   margin-bottom: 16px;
-  border-radius: 0;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 input:focus {
-  outline: none;
-  border-color: var(--gold);
+  border-color: rgba(184, 153, 104, 0.75);
+  box-shadow: 0 0 0 3px rgba(184, 153, 104, 0.14);
+  background: rgba(252, 248, 241, 0.08);
 }
 
 .btn {
@@ -78,28 +108,38 @@ input:focus {
   width: 100%;
   text-align: center;
   padding: 14px 18px;
-  border: 1px solid rgba(232, 220, 192, 0.35);
+  border: 1px solid rgba(232, 220, 192, 0.22);
   background: transparent;
   color: var(--bone);
   font-size: 12px;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
 }
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(184, 153, 104, 0.5);
+}
+
 .btn--solid {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--ink);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+  border-color: transparent;
+  color: #fffaf3;
   margin-top: 8px;
 }
-.btn:hover {
-  opacity: 0.92;
+
+.btn--solid:hover {
+  color: #fffaf3;
+  filter: brightness(1.04);
 }
 
 .muted {
   font-size: 13px;
-  opacity: 0.75;
+  opacity: 0.72;
 }
+
 .row-links {
   margin-top: 18px;
   font-size: 13px;
@@ -112,21 +152,24 @@ input:focus {
 .msg {
   font-size: 13px;
   margin-bottom: 14px;
-  padding: 10px;
-  border: 1px solid rgba(232, 220, 192, 0.2);
+  padding: 10px 12px;
+  border: 1px solid rgba(232, 220, 192, 0.14);
   display: none;
 }
+
 .msg.err {
   display: block;
-  border-color: #a66;
-  color: #f3caca;
+  border-color: rgba(196, 94, 66, 0.55);
+  color: #f4c9c0;
+  background: rgba(196, 94, 66, 0.08);
 }
 
 .api-box {
   margin-bottom: 20px;
   font-size: 12px;
-  opacity: 0.85;
+  opacity: 0.86;
 }
+
 .api-box input {
   margin-top: 6px;
 }

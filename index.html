@@ -898,20 +898,26 @@ body.nav-mob-open{overflow:hidden}
 .guides__media{
   position:relative;
   aspect-ratio:16/10;
-  background-size:cover;
-  background-position:center;
+  background:linear-gradient(135deg,rgba(17,11,8,.98),rgba(68,27,18,.92));
+  overflow:hidden;
 }
 .guides__media::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 35%,rgba(41,36,36,.45) 100%);
+  background:linear-gradient(180deg,transparent 28%,rgba(41,36,36,.55) 100%);
   pointer-events:none;
 }
-.guides__media--w{background-image:url("https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=900&q=80")}
-.guides__media--s{background-image:url("https://images.unsplash.com/photo-1584225064785-c62a8b54d138?auto=format&fit=crop&w=900&q=80")}
-.guides__media--b{background-image:url("https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=900&q=80")}
-.guides__media--c{background-image:url("https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80")}
-.guides__media--v{background-image:url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=80")}
-.guides__media--g{background-image:url("https://images.unsplash.com/photo-1542843137-8791a6904c14?auto=format&fit=crop&w=900&q=80")}
+.guides__media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.guides__media--w{background:linear-gradient(135deg,rgba(25,15,10,.96),rgba(78,34,20,.88))}
+.guides__media--s{background:linear-gradient(135deg,rgba(29,20,16,.96),rgba(82,40,24,.88))}
+.guides__media--b{background:linear-gradient(135deg,rgba(22,11,12,.96),rgba(82,29,29,.9))}
+.guides__media--c{background:linear-gradient(135deg,rgba(27,17,9,.96),rgba(88,48,19,.9))}
+.guides__media--v{background:linear-gradient(135deg,rgba(24,16,11,.96),rgba(74,45,24,.9))}
+.guides__media--g{background:linear-gradient(135deg,rgba(22,13,9,.96),rgba(80,36,18,.9))}
 .guides__body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1;gap:10px}
 .guides__cat{
   font-family:"DM Sans","Manrope",sans-serif;
@@ -1956,7 +1962,7 @@ body.nav-mob-open{overflow:hidden}
   .grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
   .section-head{grid-template-columns:1fr;gap:24px}
   .provenance__inner{grid-template-columns:1fr;gap:48px}
-  .spotlights__grid{grid-template-columns:1fr}
+  .guides__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cellar__perks{grid-template-columns:1fr;gap:32px}
   .journal__grid{grid-template-columns:1fr;gap:48px}
   .footer__top{grid-template-columns:1fr 1fr;gap:40px}
@@ -1967,6 +1973,7 @@ body.nav-mob-open{overflow:hidden}
 @media(max-width:560px){
   .topbar__msg{display:none}
   .grid{grid-template-columns:1fr}
+  .guides__grid{grid-template-columns:1fr}
   .footer__top{grid-template-columns:1fr;gap:32px}
   .collection-nav{gap:10px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:14px}
   .collection-nav__chip{white-space:nowrap;flex:0 0 auto}
@@ -2356,7 +2363,7 @@ body.nav-mob-open{overflow:hidden}
     </header>
     <div class="guides__grid">
       <a href="#collection" class="guides__card reveal" data-collection-cat="whisky">
-        <div class="guides__media guides__media--w" role="presentation"></div>
+        <div class="guides__media guides__media--w" role="presentation"><img src="https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=1200&q=82" alt="Whisky bottles" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.w.cat">Spirit forward</span>
           <h3 class="guides__name" data-i18n="guides.w.title">Explore world whisky</h3>
@@ -2366,7 +2373,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="wine">
-        <div class="guides__media guides__media--s" role="presentation"></div>
+        <div class="guides__media guides__media--s" role="presentation"><img src="https://images.unsplash.com/photo-1584225064785-c62a8b54d138?auto=format&fit=crop&w=1200&q=82" alt="Japanese sake" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.s.cat">Rice elegance</span>
           <h3 class="guides__name" data-i18n="guides.s.title">Japanese sake &amp; fine rice wine</h3>
@@ -2376,7 +2383,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="baijiu">
-        <div class="guides__media guides__media--b" role="presentation"></div>
+        <div class="guides__media guides__media--b" role="presentation"><img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=1200&q=82" alt="Baijiu bottles" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.b.cat">Heritage pours</span>
           <h3 class="guides__name" data-i18n="guides.b.title">Chinese baijiu icons</h3>
@@ -2386,7 +2393,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="sparkling">
-        <div class="guides__media guides__media--c" role="presentation"></div>
+        <div class="guides__media guides__media--c" role="presentation"><img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=82" alt="Champagne and sparkling wine" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.c.cat">Celebrate louder</span>
           <h3 class="guides__name" data-i18n="guides.c.title">Champagne &amp; sparkling</h3>
@@ -2396,7 +2403,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="wine">
-        <div class="guides__media guides__media--v" role="presentation"></div>
+        <div class="guides__media guides__media--v" role="presentation"><img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=82" alt="Still wine bottles" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.v.cat">Table wine</span>
           <h3 class="guides__name" data-i18n="guides.v.title">Still wines we actually drink mid-week</h3>
@@ -2406,7 +2413,7 @@ body.nav-mob-open{overflow:hidden}
         </div>
       </a>
       <a href="#collection" class="guides__card reveal" data-collection-cat="cognac">
-        <div class="guides__media guides__media--g" role="presentation"></div>
+        <div class="guides__media guides__media--g" role="presentation"><img src="https://images.unsplash.com/photo-1542843137-8791a6904c14?auto=format&fit=crop&w=1200&q=82" alt="Cognac and gift bottles" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.g.cat">Liquid gifts</span>
           <h3 class="guides__name" data-i18n="guides.g.title">Cognac &amp; collectible spirits</h3>
