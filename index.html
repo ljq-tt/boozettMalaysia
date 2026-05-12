@@ -2942,6 +2942,27 @@ async function loadProducts(){
     syncNavCategoryLinks();
     return;
   }
+  try{
+    await new Promise((resolve,reject)=>{
+      const s=document.createElement("script");
+      s.src="./catalog-data.js";
+      s.onload=()=>resolve();
+      s.onerror=()=>reject(new Error("Failed to load ./catalog-data.js"));
+      document.head.appendChild(s);
+    });
+    if(Array.isArray(window.__CATALOG__)&&window.__CATALOG__.length){
+      catalogFetchSucceeded=true;
+      PRODUCTS=window.__CATALOG__;
+      state.page=1;
+      renderGrid();
+      updateFeaturedPrices();
+      updateCart();
+      syncNavCategoryLinks();
+      return;
+    }
+  }catch(err){
+    lastErr=err;
+  }
   const sources=["/list-products","./catalog.json"];
   let lastErr=null;
   for(const src of sources){
