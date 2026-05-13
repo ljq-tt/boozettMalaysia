@@ -128,15 +128,21 @@ function tataCatalogUrl(apiBase) {
   }
 }
 
-async function loadFromTataBackend(apiBase) {
+async function loadFromTataBackend(apiBase, referer) {
   const url = tataCatalogUrl(apiBase);
   if (!url) return null;
+  const ref =
+    (typeof referer === 'string' && referer.trim()) ||
+    'https://www.boozett.top/';
   // Some Nginx/WAF stacks return 403 for Workers' default fetch fingerprint; a neutral browser UA often fixes it.
   const res = await fetch(url, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
-      'User-Agent': 'Mozilla/5.0 (compatible; MaisonHanCatalog/1.0)',
+      'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8',
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      Referer: ref,
     },
   });
   if (!res.ok) {
@@ -268,7 +274,10 @@ export async function onRequestGet(context) {
       }
     } else if (apiBase) {
       sourceTag = 'tata';
-      const raw = await loadFromTataBackend(apiBase);
+      const raw = await loadFromTataBackend(
+        apiBase,
+        new URL(context.request.url).origin + '/',
+      );
       if (!raw) {
         return jsonResponse(502, {
           error: 'Invalid catalog response from TaTa backend',

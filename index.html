@@ -10,6 +10,8 @@
 <meta name="description" content="Maison Han — curated baijiu, whisky, Champagne & wine for modern tables. Rare pours with traceable provenance, brighter lifestyle energy." />
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <meta name="theme-color" content="#FAF8F5" />
+<!-- 可选：HTTPS 直连 TaTa 目录（绕过 Cloudflare Worker→源站，避免部分 WAF 拦境外机房）。留空则按当前域名猜 https://api.{根域}/prod-api/storefront/products -->
+  <meta name="mh-tata-catalog-direct" content="https://api.boozett.top/storefront/products" />
 <title>MAISON HAN · A House of Rare Pours</title>
 
 <!-- 分享卡片：og:image 等须为完整 https 绝对地址（微信等爬虫对相对路径经常不解析）。
@@ -2928,6 +2930,7 @@ async function loadProducts(){
   const grid=document.getElementById("grid");
   const pager=document.getElementById("collectionPager");
   catalogFetchSucceeded = false;
+  let lastErr=null;
   if(pager){pager.hidden=true;pager.innerHTML=""}
   if(grid&&PRODUCTS.length===0){
     grid.innerHTML='<div class="grid-loading"><span class="cjk">候</span><p>Loading the cellar&hellip;</p></div>';
@@ -2963,8 +2966,48 @@ async function loadProducts(){
   }catch(err){
     lastErr=err;
   }
+  function resolveDirectTataCatalogUrl(){
+    const m=document.querySelector('meta[name="mh-tata-catalog-direct"]')?.getAttribute("content")?.trim();
+    if(m)return m;
+    const h=location.hostname;
+    if(!h||h==="localhost"||/^\d+\.\d+\.\d+\.\d+$/.test(h))return"";
+    const parts=h.split(".");
+    if(parts.length<2)return"";
+    const root=parts.slice(-2).join(".");
+    return`https://api.${root}/prod-api/storefront/products`;
+  }
+  function absolutizeProductImagesFromApiBase(rows,apiBase){
+    if(!apiBase||!Array.isArray(rows))return rows;
+    const b=String(apiBase).replace(/\/+$/,"");
+    return rows.map(p=>{
+      if(!p||typeof p!=="object")return p;
+      const im=p.image;
+      if(typeof im!=="string"||!im.trim())return p;
+      const s=im.trim();
+      if(/^https?:\/\//i.test(s)||s.startsWith("//"))return p;
+      return{...p,image:s.startsWith("/")?`${b}${s}`:`${b}/${s}`};
+    });
+  }
+  const directCatalog=resolveDirectTataCatalogUrl();
+  if(directCatalog){
+    try{
+      const res=await fetch(directCatalog,{headers:{Accept:"application/json"},mode:"cors",credentials:"omit"});
+      const data=await res.json().catch(()=>null);
+      if(res.ok&&Array.isArray(data)){
+        const imgBase=directCatalog.split("/storefront/products")[0].replace(/\/+$/,"")||directCatalog.replace(/\/storefront\/products\/?$/,"");
+        catalogFetchSucceeded=true;
+        PRODUCTS=absolutizeProductImagesFromApiBase(data,imgBase);
+        state.page=1;
+        renderGrid();
+        updateFeaturedPrices();
+        updateCart();
+        syncNavCategoryLinks();
+        return;
+      }
+    }catch(_e){/* fall through */}
+  }
   const sources=["/list-products","./catalog.json"];
-  let lastErr=null;
+  lastErr=null;
   for(const src of sources){
     try{
       const res=await fetch(src,{headers:{Accept:"application/json"}});
