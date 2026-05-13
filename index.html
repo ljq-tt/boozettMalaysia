@@ -3114,14 +3114,13 @@ function sortCatalog(items){
 function getCollectionFiltered(){
   // 前端 chip 的 cat 值 → 后端数据库实际 cat 值的映射
   const CAT_MAP = {
-    "all":      null,                          // 全部
-    "spirits":  ["maotai","cognac","scotch"],   // 烈酒大类
-    "baijiu":   ["maotai"],                    // 白酒（单独筛）
-    "whisky":   ["japan","scotch"],            // 威士忌
-    "wine":     ["wine"],                      // 葡萄酒
-    "sparkling":["sparkling"],                 // 起泡酒
-    "cognac":   ["cognac"],                    // 干邑
-    "others":   ["others"],                    // 其他
+    "all":      null,
+    "spirits":  ["cognac", "scotch"],
+    "baijiu":   ["baijiu", "maotai"],
+    "whisky":   ["whisky", "japan", "scotch"],
+    "wine":     ["wine"],
+    "sparkling":["sparkling"],
+    "others":   ["others"],
   };
 
   const allowed = CAT_MAP[state.cat];
