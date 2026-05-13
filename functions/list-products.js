@@ -117,9 +117,13 @@ async function loadFromTataBackend(apiBase) {
   const base = String(apiBase || '').replace(/\/$/, '');
   if (!base) return null;
   const url = `${base}/storefront/products`;
+  // Some Nginx/WAF stacks return 403 for Workers' default fetch fingerprint; a neutral browser UA often fixes it.
   const res = await fetch(url, {
     method: 'GET',
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'Mozilla/5.0 (compatible; MaisonHanCatalog/1.0)',
+    },
   });
   if (!res.ok) {
     throw new Error(`TaTa catalog HTTP ${res.status}`);
