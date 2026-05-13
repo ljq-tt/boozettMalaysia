@@ -4,7 +4,7 @@
 //
 // Env:
 //   MAISON_HAN_API_BASE - TaTa public origin + servlet context-path, NO trailing slash.
-//     Catalog URL is always: {MAISON_HAN_API_BASE}/storefront/products
+//     Catalog URL is resolved with URL() so stray slashes / whitespace do not become GET //storefront/products (seen as 84-byte wrong hits on api vhosts).
 //   STRIPE_SECRET_KEY - Stripe catalog when MAISON_HAN_API_BASE is unset and STATIC_CATALOG is off.
 //   STATIC_CATALOG - if "1"/"true"/"yes": always read site-root /catalog.json (lets you keep STRIPE_SECRET_KEY for checkout while browsing uses static rows).
 //   PRODUCT_IMAGE_BASE - optional; prefix relative image URLs (/profile/...) when using Stripe-only catalog
@@ -113,10 +113,24 @@ async function loadStaticCatalog(request) {
   return out.length ? out : null;
 }
 
+/** Single canonical TaTa catalog URL; avoids //storefront/products when base has trailing slash or hidden whitespace. */
+function tataCatalogUrl(apiBase) {
+  const raw = String(apiBase ?? '')
+    .trim()
+    .replace(/\s+/g, '');
+  const b = raw.replace(/\/+$/, '');
+  if (!b) return '';
+  const baseForResolve = b.endsWith('/') ? b : `${b}/`;
+  try {
+    return new URL('storefront/products', baseForResolve).href;
+  } catch {
+    return '';
+  }
+}
+
 async function loadFromTataBackend(apiBase) {
-  const base = String(apiBase || '').replace(/\/$/, '');
-  if (!base) return null;
-  const url = `${base}/storefront/products`;
+  const url = tataCatalogUrl(apiBase);
+  if (!url) return null;
   // Some Nginx/WAF stacks return 403 for Workers' default fetch fingerprint; a neutral browser UA often fixes it.
   const res = await fetch(url, {
     method: 'GET',

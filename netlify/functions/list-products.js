@@ -46,13 +46,30 @@ const json = (statusCode, body, extraHeaders = {}) => ({
   body: JSON.stringify(body),
 });
 
+/** Same as Cloudflare functions/list-products.js — avoid GET //storefront/products */
+function tataCatalogUrl(apiBase) {
+  const raw = String(apiBase ?? '')
+    .trim()
+    .replace(/\s+/g, '');
+  const b = raw.replace(/\/+$/, '');
+  if (!b) return '';
+  const baseForResolve = b.endsWith('/') ? b : `${b}/`;
+  try {
+    return new URL('storefront/products', baseForResolve).href;
+  } catch {
+    return '';
+  }
+}
+
 async function loadFromTataBackend(apiBase) {
-  const base = String(apiBase || '').replace(/\/$/, '');
-  if (!base) return null;
-  const url = `${base}/storefront/products`;
+  const url = tataCatalogUrl(apiBase);
+  if (!url) return null;
   const res = await fetch(url, {
     method: 'GET',
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'Mozilla/5.0 (compatible; MaisonHanCatalog/1.0)',
+    },
   });
   if (!res.ok) {
     throw new Error(`TaTa catalog HTTP ${res.status}`);
