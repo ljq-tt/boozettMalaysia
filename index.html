@@ -2120,6 +2120,61 @@ body.nav-mob-open{overflow:hidden}
 
 /* 隐藏原始 selects（保留功能用于兼容） */
 #langSelect,#currSelect{display:none!important}
+
+/* ================================================================
+   移动端兼容补丁 — 安卓自带浏览器半透明渲染修正
+   贴在 index.html 的 </style> 标签前面
+   ================================================================ */
+@media(max-width:980px){
+  /* ① 关掉所有毛玻璃，旧浏览器不支持会发黑发灰 */
+  .nav,.nav-mob,.age-gate__card,.hero__marquee,.lang-dropdown{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .nav{background:#FAF8F5!important}
+  .nav-mob{background:#FAF8F5!important}
+  .hero__marquee{background:#FFFFFF!important}
+  .age-gate__card{background:#FFFFFF!important}
+  .lang-dropdown{background:#FAF8F5!important}
+
+  /* ② 半透明文字 → 实色，避免多层叠加发灰 */
+  body{color:#5A534C!important}
+  .topbar,.nav__center,.nav__cta{color:#5A534C!important}
+  .nav__link,.nav-mob__links--compact a{color:#5A534C!important}
+  .nav__link:hover,.nav__link.is-active{color:#292420!important}
+  .product__sub{color:#6B635B!important}
+  .product__cat{color:#A07845!important}
+  .guides__desc,.spot-card__lead,.section-head__right,
+  .provenance__lead,.cellar__lead,.hero__sub{color:#5A534C!important}
+  .guides__brands,.spot-card__brands{color:#8A8278!important}
+  .footer,.footer__col li,.footer__tagline,.footer__bottom{color:#6B635B!important}
+  .article__excerpt{color:#5A534C!important}
+
+  /* ③ 半透明边框 → 实色浅灰 */
+  .nav,.topbar,.collection,.collection-nav,
+  .product__row,.guides__card,.spot-card,
+  .footer__top,.footer__bottom,.nav-mob__section,
+  .provenance,.cellar,.news{
+    border-color:#E5DFD6!important;
+  }
+  .nav__mega{border-color:#E5DFD6!important;background:#FAF8F5!important}
+
+  /* ④ 抽屉菜单文字明确实色 */
+  .nav-mob__section-title,.nav-mob__eyebrow{color:#A07845!important}
+  .nav-mob__close{color:#5A534C!important;border-color:#E5DFD6!important}
+  .nav-mob__links--compact a{border-color:#EEE8DF!important}
+
+  /* ⑤ 语言下拉面板文字 */
+  .lang-option__name{color:#292420!important}
+  .lang-option__sub{color:#8A8278!important}
+  .lang-trigger__name{color:#5A534C!important}
+  .lang-trigger__region{color:#8A8278!important}
+  .curr-pill{color:#5A534C!important;border-color:#E5DFD6!important}
+  .curr-pill.is-active{background:#292420!important;color:#FAF8F5!important}
+
+  /* ⑥ 顶栏分隔符实色 */
+  .topbar__msg span+span{border-color:#E5DFD6!important}
+}
 </style>
 </head>
 <body>
@@ -4244,20 +4299,31 @@ document.addEventListener("DOMContentLoaded",()=>{
     const btn=drop.querySelector("[data-mega]");
     const panel=drop.querySelector(".nav__mega");
     if(!btn||!panel)return;
+    let hideTimer=null;
     const open=()=>{
-      document.querySelectorAll(".nav__mega.open").forEach(p=>{if(p!==panel)p.classList.remove("open")});
+      clearTimeout(hideTimer);
+      document.querySelectorAll(".nav__mega.open").forEach(p=>{
+        if(p!==panel){p.classList.remove("open");p.setAttribute("aria-hidden","true");}
+      });
       panel.classList.add("open");
       panel.setAttribute("aria-hidden","false");
     };
     const close=()=>{
-      panel.classList.remove("open");
-      panel.setAttribute("aria-hidden","true");
+      hideTimer=setTimeout(()=>{
+        panel.classList.remove("open");
+        panel.setAttribute("aria-hidden","true");
+      },180);
     };
-    btn.addEventListener("mouseenter",open);
     drop.addEventListener("mouseenter",open);
     drop.addEventListener("mouseleave",close);
+    panel.addEventListener("mouseenter",()=>clearTimeout(hideTimer));
     btn.addEventListener("focus",open);
-    btn.addEventListener("click",e=>{e.preventDefault();panel.classList.toggle("open");panel.setAttribute("aria-hidden",panel.classList.contains("open")?"false":"true")});
+    btn.addEventListener("click",e=>{
+      e.preventDefault();
+      const isOpen=panel.classList.contains("open");
+      if(isOpen){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}
+      else open();
+    });
   });
   document.addEventListener("click",e=>{
     if(!e.target.closest(".nav__dropdown")){
