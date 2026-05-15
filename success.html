@@ -129,28 +129,29 @@ body::after{
   letter-spacing:.12em;color:var(--age-highlight);
 }
 </style>
+<script src="i18n.js"></script>
 </head>
 <body>
   <div class="card">
-    <div class="eyebrow">Reservation confirmed</div>
+    <div class="eyebrow" data-i18n="ok.eyebrow">Reservation confirmed</div>
     <div class="mark">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12l5 5L20 7"/>
       </svg>
     </div>
-    <h1 class="display">Thank you<span style="color:rgba(184,153,104,.95)">.</span></h1>
-    <p class="sub">Your bottles have been set aside.</p>
+    <h1 class="display"><span data-i18n="ok.title">Thank you</span><span style="color:rgba(184,153,104,.95)">.</span></h1>
+    <p class="sub" data-i18n="ok.sub">Your bottles have been set aside.</p>
     <span class="rule"></span>
-    <p class="lead">
+    <p class="lead" data-i18n="ok.lead">
       We have received your order and a confirmation has been sent to your inbox.
       A member of our cellar team will write personally within one business day to
       confirm provenance, schedule insured shipment, and arrange the recipient identity check.
     </p>
     <div class="detail" id="orderRef" style="display:none">
-      <strong>ORDER REF</strong> <span id="orderId"></span>
+      <strong data-i18n="ok.orderRef">ORDER REF</strong> <span id="orderId"></span>
     </div>
-    <a class="cta" href="/">Return to the cellar</a>
-    <div class="foot"><em>Maison Han</em> · A House of Rare Pours</div>
+    <a class="cta" href="/" data-i18n="ok.cta">Return to the cellar</a>
+    <div class="foot"><em>Maison Han</em> · <span data-i18n="foot.house">A House of Rare Pours</span></div>
   </div>
 <script>
   const params = new URLSearchParams(location.search);

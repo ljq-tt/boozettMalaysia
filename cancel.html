@@ -120,18 +120,19 @@ body::after{
   letter-spacing:.12em;color:var(--age-highlight);
 }
 </style>
+<script src="i18n.js"></script>
 </head>
 <body>
   <div class="card">
-    <div class="eyebrow">No charge made</div>
-    <h1 class="display">Your cellar <em>waits</em>.</h1>
-    <p class="sub">The bottles remain in your cart.</p>
+    <div class="eyebrow" data-i18n="cancel.eyebrow">No charge made</div>
+    <h1 class="display"><span data-i18n="cancel.title1">Your cellar </span><em data-i18n="cancel.titleEm">waits</em>.</h1>
+    <p class="sub" data-i18n="cancel.sub">The bottles remain in your cart.</p>
     <span class="rule"></span>
-    <p class="lead">
+    <p class="lead" data-i18n="cancel.lead">
       No payment was processed. Your selections are preserved — return whenever you wish to complete the reservation.
     </p>
-    <a class="cta" href="/">Back to the shelves</a>
-    <div class="foot"><em>Maison Han</em> · A House of Rare Pours</div>
+    <a class="cta" href="/" data-i18n="cancel.cta">Back to the shelves</a>
+    <div class="foot"><em>Maison Han</em> · <span data-i18n="foot.house">A House of Rare Pours</span></div>
   </div>
 </body>
 </html>
