@@ -2973,6 +2973,10 @@ body.nav-mob-open{overflow:hidden}
       <span class="drawer__total-value" id="cartTotal">$0</span>
     </div>
     <p class="drawer__usd" id="cartUsdNote"></p>
+    <div style="margin-bottom:12px">
+      <input type="email" id="checkoutEmail" placeholder="Your email"
+        style="width:100%;border:1px solid var(--line);background:transparent;padding:10px 14px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--bone);border-radius:8px;outline:none"/>
+    </div>
     <label class="drawer__age">
       <input type="checkbox" id="ageConfirm" />
       <span class="drawer__age-mark" aria-hidden="true"></span>
@@ -4415,7 +4419,11 @@ document.addEventListener("DOMContentLoaded",()=>{
       const res=await fetch("/create-checkout-session",{ // Netlify: `/.netlify/functions/create-checkout-session`
         method:"POST",
         headers:hdr,
-        body:JSON.stringify({items,ageConfirmed:true})
+        body:JSON.stringify({
+          items,
+          ageConfirmed:true,
+          email:document.getElementById("checkoutEmail")?.value?.trim()||undefined
+        })
       });
       const data=await res.json();
       if(!res.ok||!data.url) throw new Error(data.error||"checkout failed");

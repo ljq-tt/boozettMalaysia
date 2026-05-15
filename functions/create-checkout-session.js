@@ -92,6 +92,35 @@ export async function onRequestPost(context) {
     `https://${request.headers.get('host') || 'example.com'}`;
 
   try {
+    // 创建或查找 Stripe Customer（让买家成为正式 Customer，而非访客）
+    let customerId = null;
+    if (payload.email) {
+      const email = String(payload.email).trim().toLowerCase();
+      try {
+        const searchRes = await fetch(
+          `https://api.stripe.com/v1/customers/search?query=email:'${email.replace(/'/g,"\\'")}'&limit=1`,
+          { headers: { Authorization: `Bearer ${secretKey}` } }
+        );
+        const searchData = await searchRes.json();
+        if (searchData.data && searchData.data.length > 0) {
+          customerId = searchData.data[0].id;
+        } else {
+          const createRes = await fetch('https://api.stripe.com/v1/customers', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${secretKey}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ email }).toString(),
+          });
+          const createData = await createRes.json();
+          if (createData.id) customerId = createData.id;
+        }
+      } catch (e) {
+        console.warn('Customer lookup failed:', e);
+      }
+    }
+
     const mhMemberId = await resolveMhMemberIdFromPortal(env, request);
     const md = {
       site: 'maison-han',
@@ -102,6 +131,8 @@ export async function onRequestPost(context) {
 
     const session = await stripeCheckoutSessionCreate(secretKey, {
       mode: 'payment',
+      customer: customerId || undefined,
+      customer_email: customerId ? undefined : (payload.email || undefined),
       payment_method_types: ['card'],
       line_items,
       billing_address_collection: 'required',
