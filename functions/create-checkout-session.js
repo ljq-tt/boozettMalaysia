@@ -131,6 +131,7 @@ export async function onRequestPost(context) {
 
     const session = await stripeCheckoutSessionCreate(secretKey, {
       mode: 'payment',
+      customer_creation: 'always',
       customer: customerId || undefined,
       customer_email: customerId ? undefined : (payload.email || undefined),
       payment_method_types: ['card'],
