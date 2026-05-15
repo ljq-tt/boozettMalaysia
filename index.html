@@ -2123,9 +2123,9 @@ body.nav-mob-open{overflow:hidden}
 
 /* ================================================================
    移动端兼容补丁 — 安卓自带浏览器半透明渲染修正
-   贴在 index.html 的 </style> 标签前面
+   仅在窄屏生效；原 980px 过宽，PC 缩窗/分屏也会命中，观感像“被降级”
    ================================================================ */
-@media(max-width:980px){
+@media(max-width:768px){
   /* ① 关掉所有毛玻璃，旧浏览器不支持会发黑发灰 */
   .nav,.nav-mob,.age-gate__card,.hero__marquee,.lang-dropdown{
     backdrop-filter:none!important;
