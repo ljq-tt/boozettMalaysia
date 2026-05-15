@@ -2520,9 +2520,9 @@ body.nav-mob-open{overflow:hidden}
     <div class="nav-mob__section-title" data-i18n="mob.quick.title">Quick links</div>
     <div class="nav-mob__links nav-mob__links--compact">
       <a href="#collection" data-cat-link="all" data-i18n="mob.quick.link1">All collection</a>
-      <a href="#collection" data-cat-link="sparkling" data-i18n="mob.quick.link2">Celebration gifts</a>
-      <a href="#collection" data-cat-link="whisky" data-i18n="mob.quick.link3">Gift whisky</a>
-      <a href="#collection" data-cat-link="spirits" data-i18n="mob.quick.link4">Premium baijiu</a>
+      <a href="#provenance" data-i18n="nav.about.link1">Provenance standard</a>
+      <a href="#cellar" data-i18n="nav.about.link2">Private cellar</a>
+      <a href="#journal" data-i18n="nav.about.link3">Journal</a>
       <a href="account.html" data-i18n="mob.quick.link5">Account</a>
     </div>
   </div>
@@ -2681,7 +2681,7 @@ body.nav-mob-open{overflow:hidden}
 <!-- ================================================================
      PROVENANCE
      ================================================================ -->
-<section class="provenance">
+<section class="provenance" id="provenance">
   <div class="provenance__char cjk">真</div>
   <div class="container">
     <div class="provenance__inner">
@@ -4341,6 +4341,23 @@ document.addEventListener("DOMContentLoaded",()=>{
   updateAgeContinueBtn();
   loadProducts();
   updateCart();
+  // ── mega menu + 移动端 cat-link 联动 collection ──
+  document.querySelectorAll("[data-cat-link]").forEach(link=>{
+    link.addEventListener("click",e=>{
+      e.preventDefault();
+      const cat=link.dataset.catLink||"all";
+      state.cat=cat;
+      state.page=1;
+      document.querySelectorAll(".nav__mega.open").forEach(p=>{
+        p.classList.remove("open");
+        p.setAttribute("aria-hidden","true");
+      });
+      closeNavMob();
+      document.getElementById("collection")?.scrollIntoView({behavior:"smooth",block:"start"});
+      renderGrid();
+      syncNavCategoryLinks();
+    });
+  });
   setupReveal();
 });
 
