@@ -77,3 +77,8 @@ export async function onRequestPost(context) {
     return json(500, { error: err.message || 'Internal error' });
   }
 }
+export async function onRequestGet() {
+  return new Response(JSON.stringify({ ok: true, method: 'GET', route: '/create-portal-session' }), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
