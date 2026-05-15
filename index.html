@@ -2533,6 +2533,7 @@ body.nav-mob-open{overflow:hidden}
       </div>
     </div>
     <div class="nav__cta">
+      <button type="button" class="nav__search" id="portalBtn" data-i18n="nav.orders">Orders</button>
       <button type="button" class="nav__search" id="navSearch" data-i18n="nav.search">Search</button>
       <span class="nav__cart" id="cartOpen">
         <span data-i18n="nav.cart">Cart</span>
@@ -3024,7 +3025,7 @@ const I18N={
 en:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"RARE POURS · SEALED TO PROVENANCE","age.sub":"This house serves only those of legal drinking age in their country of residence.","age.yearPrompt":"Please enter your year of birth:","age.remember":"Remember this device","age.disclaimer":"You confirm that you meet the minimum age to purchase alcohol where you live (this site requires 21+). Purchases are for personal use only. Selecting Remember stores only a confirmation flag in this browser so we may skip this step later — never your birth year.","age.privacyLink":"Privacy summary ·","age.privacyBody":"We collect only what is necessary to operate the storefront and Stripe checkout (for example cart state and anonymous age confirmation preferences). Messages you send via concierge flows are governed by applicable law. Replace this text with your final policy URL or counsel-approved copy when launching.","age.continue":"Continue","age.no":"Decline","age.footer":"DRINK WITH INTENTION · WE DO NOT SELL TO MINORS","age.errorYear":"Please enter a valid four-digit birth year.","age.errorYoung":"You must be at least 21 to enter Maison Han.",
   "top.1":"Hand-Verified Provenance","top.2":"Insured Worldwide Delivery","top.3":"Private Cellar Concierge",
-  "nav.collection":"Collection","nav.discover":"Discover","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
+  "nav.collection":"Collection","nav.discover":"Discover","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.orders":"Orders","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
   "hero.no":"Living well · Drinking better","hero.l1":"Pour better","hero.l2":"moments, <em>not just</em>","hero.l3":"better bottles.",
   "hero.tick1":"Dinner-party Burgundy","hero.tick2":"Gift-grade Japanese whisky","hero.tick3":"Celebration Champagne","hero.tick4":"Vintage baijiu finds","hero.tick5":"Chilled sake Fridays","hero.tick6":"Late-night Cognac","hero.sub":"Curated baijiu, whisky, Champagne &amp; wine with traceable provenance — presented in a lighter, sunnier Maison Han tone.","hero.cta1":"Shop the cellar","hero.cta2":"Explore moods",
   "guides.eyebrow":"Curated moods","guides.title":"Shop by <em>story,</em><br />not showroom.","guides.lead":"Choose a doorway into flavour — everything here is something we pour at our own table.","guides.shop":"Browse lane →",
@@ -3074,7 +3075,7 @@ en:{
 "zh-CN":{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本馆仅服务于所在国家或地区已达法定饮酒年龄者。","age.yearPrompt":"请输入出生年份（四位）：","age.remember":"在本设备记住「已通过」确认","age.disclaimer":"您确认在您所在地已达可合法购买酒类之年龄（本站要求年满 21 周岁）。所选商品仅供个人合理使用。勾选「记住」时，我们仅在该浏览器写入匿名通关标记，恕不储存您的出生年份。","age.privacyLink":"隐私说明摘要 ·","age.privacyBody":"本前台仅留存运营独立站所需之最少数据（匿名年龄确认偏好、购物车与 Stripe 结算流程相关）。正式上线前请以法务审定的隐私政策替换本段示意文案。","age.continue":"继续","age.no":"离开","age.footer":"有意识地饮酒 · 绝不向未成年人销售","age.errorYear":"请输入有效的四位出生年份。","age.errorYoung":"须年满 21 周岁方可进入本馆线上橱窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保送达","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.discover":"主题导购","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
+  "nav.collection":"典藏","nav.discover":"主题导购","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.orders":"我的订单","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
   "hero.no":"认真对待生活 · 也认真对待酒杯","hero.l1":"倒出更好的","hero.l2":"时光，而不只是","hero.l3":"更贵的酒瓶。","hero.tick1":"晚宴上的勃艮第","hero.tick2":"可当礼物的日系威士忌","hero.tick3":"值得开瓶的香槟","hero.tick4":"家族窖藏陈年白酒","hero.tick5":"冰爽清酒的周五","hero.tick6":"深夜的干邑对白","hero.sub":"茅台、威士忌、香槟与红葡萄酒——仍可溯源甄选，以更轻盈明快的方式摆上你的餐桌。","hero.cta1":"进店选酒",  "hero.cta2":"按心情逛逛",
   "guides.eyebrow":"主题甄选","guides.title":"先听 <em>故事，</em><br />再逛酒柜。","guides.lead":"六个入口六种心情——都是我们会倒给挚友尝的那条路。","guides.shop":"进店看看 →",
   "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"苏格兰到九州，波本到塔斯马尼亚——慢酌小酌与豪气礼赠都能兼顾。","guides.w.brands":"代表之选 · Yamazaki · Macallan · Hibiki · Karuizawa 气质限量",
@@ -3123,7 +3124,7 @@ en:{
 "zh-TW":{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本館僅服務所在國家或地區已達法定飲酒年齡者。","age.yearPrompt":"請輸入出生年份（四位）：","age.remember":"在此裝置記住「已通過」確認","age.disclaimer":"您確認在您所在地已達可合法購買酒類之年齡（本站要求年滿 21 周歲）。所選商品僅供個人合理使用。勾選「記住」時，我們僅在瀏覽器寫入匿名通關標記，恕不儲存您的出生年份。","age.privacyLink":"隱私說明摘要 ·","age.privacyBody":"此前台僅留存營運獨立站所需之最少數據（匿名年齡確認偏好、購物車與 Stripe 結算流程）。正式上線前請以法務核定之私隱政策替換本段示意文案。","age.continue":"繼續","age.no":"離開","age.footer":"有意識地飲酒 · 絕不向未成年人銷售","age.errorYear":"請輸入有效的四位出生年份。","age.errorYoung":"須年滿 21 周歲方可進入本館線上櫥窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保遞送","top.3":"私人酒窖管家",
-  "nav.collection":"典藏","nav.discover":"主題導購","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
+  "nav.collection":"典藏","nav.discover":"主題導購","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.orders":"我的訂單","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
   "hero.no":"好好生活 · 也好好舉杯","hero.l1":"倒出更好的","hero.l2":"片刻，而不只是","hero.l3":"更昂貴的酒標。","hero.tick1":"晚宴上的布根地","hero.tick2":"當禮物也體面的日系威士忌","hero.tick3":"值得一開的香檳","hero.tick4":"家族窖藏的陳年白酒","hero.tick5":"冰鎮清酒的星期五","hero.tick6":"深夜對坐干邑","hero.sub":"茅台、威士忌、香檳與葡萄酒——仍然逐瓶溯源，但用更輕快溫暖的漢館口吻介紹給你。","hero.cta1":"進店選酒","hero.cta2":"依心情逛逛",
   "guides.eyebrow":"主題精選","guides.title":"先選 <em>故事，</em><br />再逛酒櫃。","guides.lead":"六道入口、六種心境——也都是我們會倒給挚友的那條路。","guides.shop":"進店看看 →",
   "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"蘇格蘭到九州，波本島到塔斯馬尼亞——慢飲與送禮都能找到落點。","guides.w.brands":"代表線索 · Yamazaki · Macallan · Hibiki · Karuizawa 叙事",
@@ -3173,7 +3174,7 @@ en:{
 ja:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀少な一杯 · 来歴を封じる館","age.sub":"当館は、お客様の居住国における法定飲酒年齢に達した方のみにお仕えいたします。","age.yearPrompt":"生まれ年を4桁でご入力ください。","age.remember":"この端末では次回から入力を省略","age.disclaimer":"お客様の地域で酒類購入に必要な年齢（当サイトでは21歳以上）を満たすこと、および個人利用のみを確認します。「記憶される」選択時、このブラウザには通過確認フラグのみを保存します。出生年そのものは保存しません。","age.privacyLink":"プライバシー概要 ·","age.privacyBody":"本方針文言はひな型です。本番運用時は適用法令に準拠した確定ポリシーに差し替えてください。","age.continue":"続ける","age.no":"辞退する","age.footer":"心意を持って飲むこと · 未成年への提供なし","age.errorYear":"4桁の妥当な出生年をご入力ください。","age.errorYoung":"21歳未満の方はご入館いただけません。",
   "top.1":"一瓶ごとの来歴確認","top.2":"全世界保険付き配送","top.3":"プライベート·コンシェルジュ",
-  "nav.collection":"コレクション","nav.discover":"テーマ","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
+  "nav.collection":"コレクション","nav.discover":"テーマ","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.orders":"注文履歴","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
   "hero.no":"暮らしと、乾杯の両方に誠実に","hero.l1":"もっと心地よい","hero.l2":"瞬間のために、単に","hero.l3":"高いボトルだけでなく。","hero.tick1":"晩餐のブルゴーニュ","hero.tick2":"ギフトに似合う日本ウイスキー","hero.tick3":"理由のあるシャンパーニュ","hero.tick4":"家族セラーの貴州老酒","hero.tick5":"冷やした日本酒の金曜","hero.tick6":"深夜のコニャック","hero.sub":"茅台、ウイスキー、シャンパン、ワインまで——来歴は明確に、トーンはより明るくライフスタイル寄りに。","hero.cta1":"セラーを見る","hero.cta2":"ムードで探す",
   "guides.eyebrow":"テーマ別","guides.title":"<em>ストーリー</em>から入る<br />買い物。","guides.lead":"扉を六つ用意しました。すべて、私たちも自宅で友人に注ぎたいレーンです。","guides.shop":"レーンを見る →",
   "guides.w.cat":"麦芽の旅","guides.w.title":"世界のウイスキーを探る","guides.w.body":"アイラから九州、ケンタッキーまで。夜更かし用から贈答まで。","guides.w.brands":"代表ネーム · Yamazaki · Macallan · Hibiki · Karuizawa級",
@@ -4459,6 +4460,68 @@ document.addEventListener("DOMContentLoaded",()=>{
       syncNavCategoryLinks();
     });
   });
+
+  // Customer Portal (Stripe Billing Portal by checkout email)
+  const portalBtn = document.getElementById('portalBtn');
+  const portalOverlay = document.getElementById('portalOverlay');
+  const portalEmail = document.getElementById('portalEmail');
+  const portalError = document.getElementById('portalError');
+  const portalSubmit = document.getElementById('portalSubmit');
+  const portalCancel = document.getElementById('portalCancel');
+
+  if (portalBtn && portalOverlay && portalEmail && portalError) {
+    portalBtn.onclick = () => {
+      portalOverlay.style.display = 'flex';
+      portalEmail.value = '';
+      portalError.textContent = '';
+      setTimeout(() => portalEmail.focus(), 100);
+    };
+  }
+  if (portalCancel) {
+    portalCancel.onclick = () => {
+      if (portalOverlay) portalOverlay.style.display = 'none';
+    };
+  }
+  if (portalOverlay) {
+    portalOverlay.addEventListener('click', (e) => {
+      if (e.target === portalOverlay) portalOverlay.style.display = 'none';
+    });
+  }
+  if (portalSubmit && portalEmail && portalError) {
+    const portalSubmitDefault = portalSubmit.textContent;
+    portalSubmit.onclick = async () => {
+      const email = portalEmail.value.trim();
+      if (!email || !email.includes('@')) {
+        portalError.textContent = 'Please enter a valid email address.';
+        return;
+      }
+      portalError.textContent = '';
+      portalSubmit.textContent = 'Looking up your orders…';
+      portalSubmit.disabled = true;
+      try {
+        const res = await fetch('/create-portal-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.url) {
+          portalError.textContent = res.status === 404
+            ? 'No orders found for this email. Please check and try again.'
+            : (data.error || 'Something went wrong. Please try again.');
+          portalSubmit.textContent = portalSubmitDefault;
+          portalSubmit.disabled = false;
+          return;
+        }
+        window.location.href = data.url;
+      } catch (err) {
+        portalError.textContent = 'Connection error. Please try again.';
+        portalSubmit.textContent = portalSubmitDefault;
+        portalSubmit.disabled = false;
+      }
+    };
+  }
+
   setupReveal();
 });
 
@@ -4488,5 +4551,18 @@ document.addEventListener("DOMContentLoaded",()=>{
   }catch(e){}
 })();
 </script>
+
+<!-- Portal email modal (Stripe Customer Portal) -->
+<div id="portalOverlay" style="display:none;position:fixed;inset:0;background:rgba(41,36,36,.5);backdrop-filter:blur(6px);z-index:500;align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--shell);border:1px solid var(--line);border-radius:16px;padding:40px 36px;max-width:420px;width:100%;text-align:center">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:8px;color:var(--bone)">View Your Orders</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--bone-mute);margin-bottom:28px">Enter the email address used at checkout</p>
+    <input type="email" id="portalEmail" placeholder="your@email.com"
+      style="width:100%;border:1px solid var(--line);background:transparent;padding:12px 16px;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--bone);border-radius:8px;margin-bottom:12px;outline:none"/>
+    <p id="portalError" style="font-size:12px;color:var(--clay);margin-bottom:12px;min-height:1.2em"></p>
+    <button id="portalSubmit" class="btn btn--gold" style="width:100%;justify-content:center">Send my link →</button>
+    <button id="portalCancel" style="margin-top:16px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-faint);background:none;border:none;cursor:pointer">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
