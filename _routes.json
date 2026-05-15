@@ -1,9 +1,10 @@
 {
-    "version": 1,
-    "include": [
-      "/create-checkout-session",
-      "/create-portal-session",
-      "/list-products"
-    ],
-    "exclude": []
-  }
+  "version": 1,
+  "include": [
+    "/create-checkout-session",
+    "/create-portal-session",
+    "/list-products",
+    "/stripe-webhook"
+  ],
+  "exclude": []
+}
