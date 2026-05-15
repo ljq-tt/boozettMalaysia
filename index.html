@@ -1986,6 +1986,138 @@ body.nav-mob-open{overflow:hidden}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
 }
+/* ================================================================
+   LANG + CURRENCY SELECTOR — Claude-style custom dropdown
+   ================================================================ */
+.topbar__controls{position:relative}
+
+/* 触发按钮 */
+.lang-trigger{
+  display:flex;align-items:center;gap:8px;
+  background:transparent;border:none;
+  padding:4px 8px 4px 4px;
+  cursor:pointer;
+  border-radius:6px;
+  transition:background .2s ease;
+  color:var(--bone-mute);
+  white-space:nowrap;
+}
+.lang-trigger:hover{background:rgba(41,36,36,.06)}
+.lang-trigger__flag{font-size:16px;line-height:1;flex-shrink:0}
+.lang-trigger__text{display:flex;flex-direction:column;align-items:flex-start;gap:1px}
+.lang-trigger__name{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bone-mute);
+  line-height:1;
+}
+.lang-trigger__region{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:9px;letter-spacing:.1em;
+  color:var(--bone-faint);
+  line-height:1;
+  text-transform:uppercase;
+}
+.lang-trigger__chevron{
+  font-size:9px;color:var(--bone-faint);
+  margin-left:2px;flex-shrink:0;
+  transition:transform .25s ease;
+}
+.lang-trigger.open .lang-trigger__chevron{transform:rotate(180deg)}
+
+/* 下拉面板 */
+.lang-dropdown{
+  position:absolute;
+  top:calc(100% + 10px);
+  right:0;
+  z-index:200;
+  width:260px;
+  background:var(--shell);
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 16px 48px rgba(41,36,36,.14);
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-8px);
+  pointer-events:none;
+  transition:opacity .22s ease,transform .22s cubic-bezier(.16,1,.3,1);
+}
+.lang-dropdown.open{
+  opacity:1;transform:translateY(0);pointer-events:auto;
+}
+
+/* 语言列表 */
+.lang-list{padding:6px}
+.lang-option{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .15s ease;
+  gap:10px;
+}
+.lang-option:hover{background:var(--shell-deep)}
+.lang-option.is-active{background:var(--shell-muted)}
+.lang-option__left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.lang-option__flag{font-size:18px;line-height:1;flex-shrink:0}
+.lang-option__info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lang-option__name{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--bone);
+  line-height:1.2;
+}
+.lang-option__sub{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:11px;color:var(--bone-faint);
+  line-height:1.2;letter-spacing:.02em;
+}
+.lang-option__check{
+  font-size:13px;color:var(--gold);
+  font-weight:700;flex-shrink:0;
+  opacity:0;transition:opacity .15s ease;
+  width:14px;text-align:center;
+}
+.lang-option.is-active .lang-option__check{opacity:1}
+
+/* 分隔线 */
+.lang-divider{
+  height:1px;background:var(--line);
+  margin:4px 12px;
+}
+
+/* 货币 pills */
+.lang-curr-section{padding:10px 12px 12px}
+.lang-curr-label{
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:9px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--bone-faint);
+  margin-bottom:8px;
+}
+.lang-curr-pills{display:flex;gap:5px;flex-wrap:wrap}
+.curr-pill{
+  padding:4px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-family:"DM Sans","Manrope",sans-serif;
+  font-size:10px;font-weight:500;
+  letter-spacing:.08em;
+  color:var(--bone-mute);
+  cursor:pointer;
+  transition:all .18s ease;
+  background:transparent;
+}
+.curr-pill:hover{
+  border-color:var(--gold-deep);color:var(--bone);
+}
+.curr-pill.is-active{
+  background:var(--bone);color:var(--shell);
+  border-color:var(--bone);
+}
+
+/* 隐藏原始 selects（保留功能用于兼容） */
+#langSelect,#currSelect{display:none!important}
 </style>
 </head>
 <body>
@@ -2029,30 +2161,109 @@ body.nav-mob-open{overflow:hidden}
       <span data-i18n="top.2">Insured Worldwide Delivery</span>
       <span data-i18n="top.3">Private Cellar Concierge</span>
     </div>
-    <div class="topbar__controls">
-      <div class="topbar__curr">
-        <select class="selector" id="langSelect" aria-label="Language">
-          <option value="en">EN</option>
-          <option value="zh-CN">中文</option>
-          <option value="zh-TW">繁體</option>
-          <option value="ja">日本語</option>
-          <option value="ko">한국어</option>
-          <option value="fr">FR</option>
-          <option value="es">ES</option>
-          <option value="vi">VN</option>
-          <option value="th">TH</option>
-          <option value="ar">عربي</option>
-        </select>
-        <select class="selector" id="currSelect" aria-label="Currency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-          <option value="JPY">JPY</option>
-          <option value="HKD">HKD</option>
-          <option value="SGD">SGD</option>
-          <option value="CNY">CNY</option>
-        </select>
-      </div>
+    <div class="topbar__controls" id="langCurrRoot">
+      <!-- 隐藏的原生 select（保持 JS 兼容，不显示） -->
+      <select id="langSelect" aria-hidden="true" tabindex="-1">
+        <option value="en">EN</option>
+        <option value="zh-CN">中文</option>
+        <option value="zh-TW">繁體</option>
+        <option value="ja">日本語</option>
+      </select>
+      <select id="currSelect" aria-hidden="true" tabindex="-1">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+        <option value="HKD">HKD</option>
+        <option value="SGD">SGD</option>
+        <option value="CNY">CNY</option>
+      </select>
+
+      <!-- 自定义触发按钮 -->
+      <button
+        type="button"
+        class="lang-trigger"
+        id="langTrigger"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-label="Select language and currency"
+      >
+        <span class="lang-trigger__flag" id="ltFlag">🇬🇧</span>
+        <span class="lang-trigger__text">
+          <span class="lang-trigger__name" id="ltName">English</span>
+          <span class="lang-trigger__region" id="ltRegion">EN · USD</span>
+        </span>
+        <span class="lang-trigger__chevron" aria-hidden="true">▾</span>
+      </button>
+
+      <!-- 下拉面板 -->
+      <div class="lang-dropdown" id="langDropdown" role="listbox" aria-label="Language and currency">
+
+        <!-- 语言选项：只保留4种有翻译的语言 -->
+        <div class="lang-list">
+          <div class="lang-option is-active" data-lang="en" role="option" aria-selected="true" tabindex="0">
+            <div class="lang-option__left">
+              <span class="lang-option__flag">🇬🇧</span>
+              <div class="lang-option__info">
+                <span class="lang-option__name">English</span>
+                <span class="lang-option__sub">United States · Australia</span>
+              </div>
+            </div>
+            <span class="lang-option__check" aria-hidden="true">✓</span>
+          </div>
+
+          <div class="lang-option" data-lang="zh-CN" role="option" aria-selected="false" tabindex="0">
+            <div class="lang-option__left">
+              <span class="lang-option__flag">🇨🇳</span>
+              <div class="lang-option__info">
+                <span class="lang-option__name">中文（简体）</span>
+                <span class="lang-option__sub">Chinese Simplified</span>
+              </div>
+            </div>
+            <span class="lang-option__check" aria-hidden="true">✓</span>
+          </div>
+
+          <div class="lang-option" data-lang="zh-TW" role="option" aria-selected="false" tabindex="0">
+            <div class="lang-option__left">
+              <span class="lang-option__flag">🇹🇼</span>
+              <div class="lang-option__info">
+                <span class="lang-option__name">繁體中文</span>
+                <span class="lang-option__sub">Chinese Traditional</span>
+              </div>
+            </div>
+            <span class="lang-option__check" aria-hidden="true">✓</span>
+          </div>
+
+          <div class="lang-option" data-lang="ja" role="option" aria-selected="false" tabindex="0">
+            <div class="lang-option__left">
+              <span class="lang-option__flag">🇯🇵</span>
+              <div class="lang-option__info">
+                <span class="lang-option__name">日本語</span>
+                <span class="lang-option__sub">Japanese</span>
+              </div>
+            </div>
+            <span class="lang-option__check" aria-hidden="true">✓</span>
+          </div>
+        </div>
+
+        <div class="lang-divider"></div>
+
+        <!-- 货币 pills -->
+        <div class="lang-curr-section">
+          <div class="lang-curr-label">Currency</div>
+          <div class="lang-curr-pills">
+            <button type="button" class="curr-pill is-active" data-curr="USD">$ USD</button>
+            <button type="button" class="curr-pill" data-curr="EUR">€ EUR</button>
+            <button type="button" class="curr-pill" data-curr="GBP">£ GBP</button>
+            <button type="button" class="curr-pill" data-curr="JPY">¥ JPY</button>
+            <button type="button" class="curr-pill" data-curr="HKD">HK$ HKD</button>
+            <button type="button" class="curr-pill" data-curr="SGD">S$ SGD</button>
+            <button type="button" class="curr-pill" data-curr="CNY">¥ CNY</button>
+          </div>
+        </div>
+
+      </div><!-- /lang-dropdown -->
+
       <p class="curr-note" id="currFxNote" role="note"></p>
     </div>
   </div>
@@ -3816,16 +4027,119 @@ document.addEventListener("DOMContentLoaded",()=>{
     agePrivacyBtn.onclick=()=>agePrivacy.classList.toggle("is-open");
   }
 
-  // Lang & currency
-  document.getElementById("langSelect").onchange=e=>{
-    state.lang=e.target.value;applyI18N();updateAgeContinueBtn();renderGrid();updateCart();updateFeaturedPrices();
+  // ── 自定义语言 + 货币选择器 ──
+  const LANG_META={
+    "en":    {flag:"🇬🇧",name:"English",        region:"United States · Australia"},
+    "zh-CN": {flag:"🇨🇳",name:"中文（简体）",    region:"Chinese Simplified"},
+    "zh-TW": {flag:"🇹🇼",name:"繁體中文",        region:"Chinese Traditional"},
+    "ja":    {flag:"🇯🇵",name:"日本語",          region:"Japanese"},
+  };
+
+  function updateTriggerDisplay(){
+    const m=LANG_META[state.lang]||LANG_META["en"];
+    const ltFlag=document.getElementById("ltFlag");
+    const ltName=document.getElementById("ltName");
+    const ltRegion=document.getElementById("ltRegion");
+    if(ltFlag)ltFlag.textContent=m.flag;
+    if(ltName)ltName.textContent=m.name;
+    const langCode={"en":"EN","zh-CN":"中文","zh-TW":"繁體","ja":"日本語"}[state.lang]||String(state.lang).toUpperCase();
+    if(ltRegion)ltRegion.textContent=langCode+" · "+state.currency;
+  }
+
+  function applyLangOption(lang){
+    state.lang=lang;
+    const ls=document.getElementById("langSelect");
+    if(ls)ls.value=lang;
+    document.querySelectorAll(".lang-option").forEach(el=>{
+      const active=el.dataset.lang===lang;
+      el.classList.toggle("is-active",active);
+      el.setAttribute("aria-selected",active?"true":"false");
+    });
+    updateTriggerDisplay();
+    applyI18N();
+    updateAgeContinueBtn();
+    renderGrid();
+    updateCart();
+    updateFeaturedPrices();
     const ae=document.getElementById("ageError");if(ae)ae.textContent="";
-    try{localStorage.setItem("han_lang",state.lang)}catch(err){}
-  };
-  document.getElementById("currSelect").onchange=e=>{
-    state.currency=e.target.value;paintCheckoutCurrencyCopy();renderGrid();updateCart();updateFeaturedPrices();
-    try{localStorage.setItem("han_curr",state.currency)}catch(err){}
-  };
+    try{localStorage.setItem("han_lang",lang)}catch(err){}
+  }
+
+  function applyCurrOption(curr){
+    state.currency=curr;
+    const cs=document.getElementById("currSelect");
+    if(cs)cs.value=curr;
+    document.querySelectorAll(".curr-pill").forEach(el=>{
+      el.classList.toggle("is-active",el.dataset.curr===curr);
+    });
+    updateTriggerDisplay();
+    paintCheckoutCurrencyCopy();
+    renderGrid();
+    updateCart();
+    updateFeaturedPrices();
+    try{localStorage.setItem("han_curr",curr)}catch(err){}
+  }
+
+  document.querySelectorAll(".lang-option").forEach(el=>{
+    el.addEventListener("click",()=>{
+      applyLangOption(el.dataset.lang);
+      const dd=document.getElementById("langDropdown");
+      const tr=document.getElementById("langTrigger");
+      if(dd)dd.classList.remove("open");
+      if(tr){tr.classList.remove("open");tr.setAttribute("aria-expanded","false");}
+    });
+    el.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();el.click();}
+    });
+  });
+
+  document.querySelectorAll(".curr-pill").forEach(el=>{
+    el.addEventListener("click",()=>applyCurrOption(el.dataset.curr));
+  });
+
+  const langTrigger=document.getElementById("langTrigger");
+  const langDropdown=document.getElementById("langDropdown");
+  if(langTrigger&&langDropdown){
+    langTrigger.addEventListener("click",e=>{
+      e.stopPropagation();
+      const isOpen=langDropdown.classList.toggle("open");
+      langTrigger.classList.toggle("open",isOpen);
+      langTrigger.setAttribute("aria-expanded",isOpen?"true":"false");
+    });
+  }
+
+  document.addEventListener("click",e=>{
+    if(!e.target.closest("#langCurrRoot")){
+      if(langDropdown)langDropdown.classList.remove("open");
+      if(langTrigger){langTrigger.classList.remove("open");langTrigger.setAttribute("aria-expanded","false");}
+    }
+  });
+
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"&&langDropdown&&langDropdown.classList.contains("open")){
+      langDropdown.classList.remove("open");
+      if(langTrigger){langTrigger.classList.remove("open");langTrigger.setAttribute("aria-expanded","false");langTrigger.focus();}
+    }
+  });
+
+  document.querySelectorAll(".lang-option").forEach(el=>{
+    const active=el.dataset.lang===state.lang;
+    el.classList.toggle("is-active",active);
+    el.setAttribute("aria-selected",active?"true":"false");
+  });
+  document.querySelectorAll(".curr-pill").forEach(el=>{
+    el.classList.toggle("is-active",el.dataset.curr===state.currency);
+  });
+  const _ls0=document.getElementById("langSelect");
+  const _cs0=document.getElementById("currSelect");
+  if(_ls0)_ls0.value=state.lang;
+  if(_cs0)_cs0.value=state.currency;
+  updateTriggerDisplay();
+
+  const _ls=document.getElementById("langSelect");
+  const _cs=document.getElementById("currSelect");
+  if(_ls)_ls.onchange=e=>applyLangOption(e.target.value);
+  if(_cs)_cs.onchange=e=>applyCurrOption(e.target.value);
 
   // Category navigation
   document.querySelectorAll('a[data-collection-cat]').forEach(a=>{
@@ -4020,13 +4334,15 @@ document.addEventListener("DOMContentLoaded",()=>{
 // Browser-detect default language & restore prefs
 (function(){
   try{
+    const SUPPORTED_LANG=new Set(["en","zh-CN","zh-TW","ja"]);
     const sl=localStorage.getItem("han_lang");
-    if(sl&&I18N[sl]){state.lang=sl}
+    if(sl&&SUPPORTED_LANG.has(sl)){state.lang=sl}
     else{
       const nav=(navigator.language||"en").toLowerCase();
-      const map={"zh-cn":"zh-CN","zh-hans":"zh-CN","zh-tw":"zh-TW","zh-hant":"zh-TW","ja":"ja","ko":"ko","vi":"vi","th":"th","es":"es","fr":"fr","ar":"ar"};
+      const map={"zh-cn":"zh-CN","zh-hans":"zh-CN","zh-tw":"zh-TW","zh-hant":"zh-TW","ja":"ja"};
       for(const k in map){if(nav.startsWith(k)){state.lang=map[k];break}}
     }
+    if(!SUPPORTED_LANG.has(state.lang))state.lang="en";
     const sc=localStorage.getItem("han_curr");
     if(sc&&CURRENCY[sc])state.currency=sc;
     const cc=localStorage.getItem("han_cart");
