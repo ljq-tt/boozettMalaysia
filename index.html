@@ -4368,7 +4368,17 @@ document.addEventListener("DOMContentLoaded",()=>{
     checkBtn.innerHTML=(dict["cart.processing"]||I18N.en["cart.processing"]);
     try{
       const items=state.cart
-        .map(x=>{const p=PRODUCTS.find(p=>p.id===x.id);return p&&p.priceId?{priceId:p.priceId,qty:x.qty}:null})
+        .map(x=>{
+          const p=PRODUCTS.find(p=>p.id===x.id);
+          if(!p)return null;
+          return {
+            name:p.name.replace(/<[^>]+>/g,""),
+            sub:p.sub||"",
+            priceUsd:p.price,
+            image:p.image||"",
+            qty:x.qty,
+          };
+        })
         .filter(Boolean);
       if(items.length===0)throw new Error("No valid items in cart");
       const hdr={"Content-Type":"application/json"};

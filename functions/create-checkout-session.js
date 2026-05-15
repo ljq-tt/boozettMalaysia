@@ -1,22 +1,13 @@
-// MAISON HAN  Stripe Checkout Session (Cloudflare Pages Function).
+// MAISON HAN - Stripe Checkout Session (Cloudflare Pages Function)
 // Route: POST /create-checkout-session
-// Netlify backup: netlify/functions/create-checkout-session.js (kept; do not delete).
-// Stripe via REST + fetch only (no npm `stripe`) so Pages can bundle without `npm install`.
-//
-// Env: STRIPE_SECRET_KEY (required).
-// Env: MAISON_HAN_API_BASE (optional): TaTa API root as used by storefront, including context path e.g. https://host/prod-api
-//       so server-side Checkout can call GET ${MAISON_HAN_API_BASE}/portal/me with the browser Authorization header.
+// Dynamic line_items via price_data (storefront prices in USD); no Stripe price IDs required.
 
-import {
-  stripePriceRetrieve,
-  stripeProductRetrieve,
-  stripeCheckoutSessionCreate,
-} from './_lib/stripeRest.js';
+import { stripeCheckoutSessionCreate } from './_lib/stripeRest.js';
 
 const SHIPPING_COUNTRIES = [
-  'US', 'CA', 'GB', 'AU', 'NZ', 'JP', 'HK', 'SG', 'TW', 'MO',
-  'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'SE', 'DK', 'FI', 'NO',
-  'CH', 'AT', 'IE', 'PT', 'LU', 'PL',
+  'US','CA','GB','AU','NZ','JP','HK','SG','TW','MO',
+  'DE','FR','IT','ES','NL','BE','SE','DK','FI','NO',
+  'CH','AT','IE','PT','LU','PL',
 ];
 
 function jsonResponse(status, body) {
@@ -26,55 +17,21 @@ function jsonResponse(status, body) {
   });
 }
 
-function isMaisonHan(meta) {
-  const v = String(meta?.maison_han || '')
-    .trim()
-    .toLowerCase();
-  return v === 'true' || v === '1' || v === 'yes';
-}
-
-async function assertValidStorefrontPrice(secretKey, priceId) {
-  const pr = await stripePriceRetrieve(secretKey, priceId);
-  let prod = pr.product;
-  if (typeof prod === 'string') {
-    prod = await stripeProductRetrieve(secretKey, prod);
-  }
-  if (!pr.active) throw new Error(`Price inactive: ${priceId}`);
-  if (!prod || !prod.active) throw new Error(`Product inactive: ${priceId}`);
-  if (!isMaisonHan(prod.metadata)) {
-    throw new Error(`Price not linked to a Maison Han product: ${priceId}`);
-  }
-  if (pr.type !== 'one_time') {
-    throw new Error(`Only one-time prices are supported: ${priceId}`);
-  }
-  if (String(pr.currency).toLowerCase() !== 'usd') {
-    throw new Error(`Only USD prices are supported: ${priceId}`);
-  }
-}
-
 async function resolveMhMemberIdFromPortal(env, request) {
   const base = String(env.MAISON_HAN_API_BASE || '').trim().replace(/\/+$/, '');
   const rawAuth = request.headers.get('Authorization') || request.headers.get('authorization') || '';
   const auth = rawAuth.trim();
-  if (!base || !/^Bearer\s+\S+/i.test(auth)) {
-    return null;
-  }
+  if (!base || !/^Bearer\s+\S+/i.test(auth)) return null;
   try {
     const r = await fetch(`${base}/portal/me`, {
       method: 'GET',
       headers: { Authorization: auth, Accept: 'application/json' },
     });
-    if (!r.ok) {
-      return null;
-    }
+    if (!r.ok) return null;
     const j = await r.json();
-    if (Number(j.code) !== 200 || !j.data) {
-      return null;
-    }
+    if (Number(j.code) !== 200 || !j.data) return null;
     const mid = j.data.memberId ?? j.data.member_id;
-    if (mid == null) {
-      return null;
-    }
+    if (mid == null) return null;
     const s = String(mid).trim();
     return s.length ? s : null;
   } catch (err) {
@@ -89,8 +46,7 @@ export async function onRequestPost(context) {
   const secretKey = env.STRIPE_SECRET_KEY;
   if (!secretKey) {
     return jsonResponse(500, {
-      error:
-        'Server is missing STRIPE_SECRET_KEY. Set it in Cloudflare Pages (Settings -> Environment variables), then redeploy.',
+      error: 'Server is missing STRIPE_SECRET_KEY.',
     });
   }
 
@@ -105,28 +61,34 @@ export async function onRequestPost(context) {
   if (items.length === 0) return jsonResponse(400, { error: 'Cart is empty' });
   if (items.length > 50) return jsonResponse(400, { error: 'Too many items' });
 
+  // Build line_items with price_data (no catalog price IDs).
   const line_items = [];
   for (const it of items) {
-    const priceId = it && it.priceId ? String(it.priceId) : '';
-    const qty = Math.max(1, Math.min(99, parseInt(it && it.qty, 10) || 0));
-    if (!priceId) {
-      return jsonResponse(400, { error: 'Missing price in cart line' });
-    }
-    try {
-      await assertValidStorefrontPrice(secretKey, priceId);
-    } catch (err) {
-      console.error('Price validation failed:', err);
-      return jsonResponse(400, {
-        error: err.message || `Invalid price: ${priceId}`,
-      });
-    }
-    line_items.push({ price: priceId, quantity: qty });
+    const name = String(it.name || '').trim().slice(0, 250);
+    const priceUsd = Number(it.priceUsd);
+    const qty = Math.max(1, Math.min(99, parseInt(it.qty, 10) || 1));
+
+    if (!name) return jsonResponse(400, { error: 'Missing item name' });
+    if (!priceUsd || priceUsd <= 0) return jsonResponse(400, { error: `Invalid price for: ${name}` });
+    if (priceUsd > 50000) return jsonResponse(400, { error: `Price exceeds limit: ${name}` });
+
+    const product_data = { name };
+    if (it.sub) product_data.description = String(it.sub).slice(0, 500);
+    if (it.image && /^https?:\/\//.test(it.image)) product_data.images = [it.image];
+
+    line_items.push({
+      price_data: {
+        currency: 'usd',
+        unit_amount: Math.round(priceUsd * 100),
+        product_data,
+      },
+      quantity: qty,
+    });
   }
 
   const origin =
     request.headers.get('origin') ||
-    (request.headers.get('referer') &&
-      request.headers.get('referer').replace(/(.*?:\/\/[^/]+).*/, '$1')) ||
+    (request.headers.get('referer') || '').replace(/(.*?:\/\/[^/]+).*/, '$1') ||
     `https://${request.headers.get('host') || 'example.com'}`;
 
   try {
@@ -136,9 +98,7 @@ export async function onRequestPost(context) {
       age_confirmed: payload.ageConfirmed ? 'true' : 'false',
       item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
     };
-    if (mhMemberId) {
-      md.mh_member_id = mhMemberId;
-    }
+    if (mhMemberId) md.mh_member_id = mhMemberId;
 
     const session = await stripeCheckoutSessionCreate(secretKey, {
       mode: 'payment',
@@ -162,12 +122,10 @@ export async function onRequestPost(context) {
       ],
       custom_text: {
         shipping_address: {
-          message:
-            'Insured, signature-required delivery. Recipient must be 21+ and present valid ID at handover.',
+          message: 'Insured, signature-required delivery. Recipient must be 21+ and present valid ID at handover.',
         },
         submit: {
-          message:
-            'By placing this order you confirm you are of legal drinking age in your jurisdiction.',
+          message: 'By placing this order you confirm you are of legal drinking age in your jurisdiction.',
         },
       },
       metadata: md,
