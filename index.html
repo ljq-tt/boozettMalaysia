@@ -2188,7 +2188,7 @@ body.nav-mob-open{overflow:hidden}
         aria-expanded="false"
         aria-label="Select language and currency"
       >
-        <span class="lang-trigger__flag" id="ltFlag">🇬🇧</span>
+        <span id="ltFlag" style="width:24px;height:17px;border-radius:3px;background:#012169;color:#fff;font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">EN</span>
         <span class="lang-trigger__text">
           <span class="lang-trigger__name" id="ltName">English</span>
           <span class="lang-trigger__region" id="ltRegion">EN · USD</span>
@@ -2203,7 +2203,7 @@ body.nav-mob-open{overflow:hidden}
         <div class="lang-list">
           <div class="lang-option is-active" data-lang="en" role="option" aria-selected="true" tabindex="0">
             <div class="lang-option__left">
-              <span class="lang-option__flag">🇬🇧</span>
+              <span class="lang-option__flag" style="width:28px;height:20px;border-radius:4px;background:#012169;color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;letter-spacing:.04em;flex-shrink:0">EN</span>
               <div class="lang-option__info">
                 <span class="lang-option__name">English</span>
                 <span class="lang-option__sub">United States · Australia</span>
@@ -2214,7 +2214,7 @@ body.nav-mob-open{overflow:hidden}
 
           <div class="lang-option" data-lang="zh-CN" role="option" aria-selected="false" tabindex="0">
             <div class="lang-option__left">
-              <span class="lang-option__flag">🇨🇳</span>
+              <span class="lang-option__flag" style="width:28px;height:20px;border-radius:4px;background:#DE2910;color:#FFDE00;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">中</span>
               <div class="lang-option__info">
                 <span class="lang-option__name">中文（简体）</span>
                 <span class="lang-option__sub">Chinese Simplified</span>
@@ -2225,7 +2225,7 @@ body.nav-mob-open{overflow:hidden}
 
           <div class="lang-option" data-lang="zh-TW" role="option" aria-selected="false" tabindex="0">
             <div class="lang-option__left">
-              <span class="lang-option__flag">🇹🇼</span>
+              <span class="lang-option__flag" style="width:28px;height:20px;border-radius:4px;background:#000095;color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">繁</span>
               <div class="lang-option__info">
                 <span class="lang-option__name">繁體中文</span>
                 <span class="lang-option__sub">Chinese Traditional</span>
@@ -2236,7 +2236,7 @@ body.nav-mob-open{overflow:hidden}
 
           <div class="lang-option" data-lang="ja" role="option" aria-selected="false" tabindex="0">
             <div class="lang-option__left">
-              <span class="lang-option__flag">🇯🇵</span>
+              <span class="lang-option__flag" style="width:28px;height:20px;border-radius:4px;background:#fff;border:1px solid #e5e5e5;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><span style="width:8px;height:8px;border-radius:50%;background:#BC002D;display:block"></span></span>
               <div class="lang-option__info">
                 <span class="lang-option__name">日本語</span>
                 <span class="lang-option__sub">Japanese</span>
@@ -4036,14 +4036,25 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
 
   function updateTriggerDisplay(){
-    const m=LANG_META[state.lang]||LANG_META["en"];
+    const BADGE={
+      "en":   {bg:"#012169",color:"#fff",text:"EN"},
+      "zh-CN":{bg:"#DE2910",color:"#FFDE00",text:"中"},
+      "zh-TW":{bg:"#000095",color:"#fff",text:"繁"},
+      "ja":   {bg:"#fff",color:"#BC002D",text:"●",border:"1px solid #e5e5e5"},
+    };
+    const b=BADGE[state.lang]||BADGE["en"];
     const ltFlag=document.getElementById("ltFlag");
+    if(ltFlag){
+      ltFlag.style.background=b.bg;
+      ltFlag.style.color=b.color;
+      ltFlag.style.border=b.border||"none";
+      ltFlag.textContent=b.text;
+    }
+    const langCode={"en":"EN","zh-CN":"中文","zh-TW":"繁體","ja":"日本語"}[state.lang]||state.lang.toUpperCase();
     const ltName=document.getElementById("ltName");
     const ltRegion=document.getElementById("ltRegion");
-    if(ltFlag)ltFlag.textContent=m.flag;
-    if(ltName)ltName.textContent=m.name;
-    const langCode={"en":"EN","zh-CN":"中文","zh-TW":"繁體","ja":"日本語"}[state.lang]||String(state.lang).toUpperCase();
-    if(ltRegion)ltRegion.textContent=langCode+" · "+state.currency;
+    if(ltName)ltName.textContent=langCode;
+    if(ltRegion)ltRegion.textContent=state.currency;
   }
 
   function applyLangOption(lang){
