@@ -3435,21 +3435,26 @@ function sortCatalog(items){
 }
 
 function getCollectionFiltered(){
-  // 前端 chip 的 cat 值 → 后端数据库实际 cat 值的映射
   const CAT_MAP = {
     "all":      null,
     "spirits":  ["cognac", "scotch"],
     "baijiu":   ["baijiu", "maotai"],
-    "whisky":   ["whisky", "japan", "scotch"],
-    "wine":     ["wine"],
-    "sparkling":["sparkling"],
+    "whisky":   ["whisky-japan", "whisky-scotland", "whisky-usa", "japan", "scotch"],
+    "wine":     ["redwine", "wine"],
+    "sparkling":["sparkling", "champagne"],
     "others":   ["others"],
+    "new":      "new",
   };
 
   const allowed = CAT_MAP[state.cat];
-  const items = (allowed === null)
-          ? PRODUCTS
-          : PRODUCTS.filter(p => allowed.includes(p.cat));
+  let items;
+  if (state.cat === "new") {
+    items = PRODUCTS.filter(p => p.badge && p.badge.trim());
+  } else if (allowed === null) {
+    items = PRODUCTS;
+  } else {
+    items = PRODUCTS.filter(p => allowed.includes(p.cat));
+  }
 
   return sortCatalog(items);
 }
