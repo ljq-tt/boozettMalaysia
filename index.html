@@ -3244,6 +3244,23 @@ let catalogFetchSucceeded = false;
 
 const PRODUCTS_PER_PAGE = 12;
 
+function normalizeStorefrontProducts(rows){
+  if(!Array.isArray(rows))return rows;
+  return rows.map(p=>({
+    ...p,
+    id:       p.legacyId    ?? p.id,
+    no:       p.displayNo   ?? p.no    ?? "",
+    name:     p.nameHtml    ?? p.name  ?? "",
+    sub:      p.subText     ?? p.sub   ?? "",
+    image:    p.imageUrl    ?? p.image ?? "",
+    price:    p.priceUsd != null ? Number(p.priceUsd) : (p.price ?? 0),
+    catLabel: p.catLabel    ?? "",
+    sortOrder:p.sortOrder   ?? 9999,
+    stockQty: p.stockQty    ?? -1,
+    onlineStatus: p.onlineStatus ?? "0",
+  }));
+}
+
 async function loadProducts(){
   const grid=document.getElementById("grid");
   const pager=document.getElementById("collectionPager");
@@ -3255,7 +3272,7 @@ async function loadProducts(){
   }
   if(Array.isArray(window.__CATALOG__)&&window.__CATALOG__.length){
     catalogFetchSucceeded=true;
-    PRODUCTS=window.__CATALOG__;
+    PRODUCTS=normalizeStorefrontProducts(window.__CATALOG__);
     state.page=1;
     renderGrid();
     updateFeaturedPrices();
@@ -3273,7 +3290,7 @@ async function loadProducts(){
     });
     if(Array.isArray(window.__CATALOG__)&&window.__CATALOG__.length){
       catalogFetchSucceeded=true;
-      PRODUCTS=window.__CATALOG__;
+      PRODUCTS=normalizeStorefrontProducts(window.__CATALOG__);
       state.page=1;
       renderGrid();
       updateFeaturedPrices();
@@ -3314,7 +3331,8 @@ async function loadProducts(){
       if(res.ok&&Array.isArray(data)){
         const imgBase=directCatalog.split("/storefront/products")[0].replace(/\/+$/,"")||directCatalog.replace(/\/storefront\/products\/?$/,"");
         catalogFetchSucceeded=true;
-        PRODUCTS=absolutizeProductImagesFromApiBase(data,imgBase);
+        PRODUCTS=normalizeStorefrontProducts(data);
+        PRODUCTS=absolutizeProductImagesFromApiBase(PRODUCTS,imgBase);
         state.page=1;
         renderGrid();
         updateFeaturedPrices();
@@ -3339,7 +3357,7 @@ async function loadProducts(){
         throw new Error(hint);
       }
       catalogFetchSucceeded=true;
-      PRODUCTS=data;
+      PRODUCTS=normalizeStorefrontProducts(data);
       state.page=1;
       renderGrid();
       updateFeaturedPrices();
@@ -3443,7 +3461,6 @@ function getCollectionFiltered(){
     "wine":     ["redwine", "wine"],
     "sparkling":["sparkling", "champagne"],
     "others":   ["others"],
-    "new":      "new",
   };
 
   const allowed = CAT_MAP[state.cat];
@@ -3455,7 +3472,10 @@ function getCollectionFiltered(){
   } else {
     items = PRODUCTS.filter(p => allowed.includes(p.cat));
   }
-
+  items = items.filter(p =>
+    p.onlineStatus !== "1" &&
+    p.stockQty !== 0
+  );
   return sortCatalog(items);
 }
 
