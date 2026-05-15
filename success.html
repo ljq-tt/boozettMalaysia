@@ -4,142 +4,156 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="robots" content="noindex"/>
-<meta name="theme-color" content="#2c080d"/>
+<meta name="theme-color" content="#FAF8F5"/>
 <title>Order received · MAISON HAN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --age-burgundy:#591018;
-  --age-burgundy-deep:#2c080d;
-  --age-highlight:rgba(254,246,238,.94);
-  --age-muted:rgba(254,246,238,.76);
-  --age-soft:rgba(254,246,238,.52);
-  --age-wire:rgba(184,153,104,.42);
+  --shell:#FAF8F5;
+  --shell-deep:#F3EDE6;
+  --shell-muted:#EDE6DD;
+  --card:#FFFFFF;
+  --bone:#292420;
+  --bone-mute:rgba(41,36,36,.72);
+  --bone-faint:rgba(41,36,36,.4);
+  --line:rgba(41,36,36,.09);
   --gold:#A07845;
   --gold-deep:#7E5F38;
-  --ink:#0E0B08;
+  --clay:#C45E42;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
 body{
-  position:relative;
   font-family:"Manrope",system-ui,sans-serif;
-  color:var(--age-highlight);
+  background:
+    radial-gradient(120% 80% at 50% -10%,rgba(160,120,69,.06),transparent 55%),
+    linear-gradient(168deg,var(--shell) 0%,var(--shell-deep) 38%,var(--shell-muted) 100%);
+  background-color:var(--shell);
+  color:var(--bone-mute);
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:clamp(24px,5vw,56px) clamp(18px,4vw,32px);
-  font-weight:400;
-  letter-spacing:.02em;
-  background:
-    radial-gradient(120% 80% at 50% -10%,rgba(184,153,104,.14),transparent 55%),
-    radial-gradient(80% 50% at 100% 100%,rgba(110,16,25,.65),transparent 60%),
-    linear-gradient(168deg,var(--age-burgundy-deep) 0%,var(--age-burgundy) 38%,#3e0a10 100%);
-  background-color:var(--age-burgundy-deep);
+  position:relative;
 }
 body::before{
   content:"";position:fixed;inset:0;z-index:0;
-  opacity:.065;pointer-events:none;
+  opacity:.03;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-}
-body::after{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  opacity:.09;
-  background-image:
-    radial-gradient(ellipse 90% 40% at 15% 20%,transparent 50%,rgba(184,153,104,.22) 51%,transparent 53%),
-    radial-gradient(ellipse 70% 55% at 85% 30%,transparent 62%,rgba(254,246,238,.06) 63%,transparent 65%);
 }
 .card{
   position:relative;z-index:2;
   max-width:640px;width:100%;
-  border:1px solid var(--age-wire);
-  border-radius:2px;
-  background:rgba(14,11,8,.42);
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(255,255,255,.82);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 28px 90px rgba(0,0,0,.4);
-  padding:clamp(40px,7vw,72px) clamp(26px,5vw,52px);
+  box-shadow:0 22px 64px rgba(41,36,36,.07);
+  padding:clamp(40px,7vw,72px) clamp(26px,5vw,56px);
   text-align:center;
 }
 .eyebrow{
-  font-size:10px;font-weight:500;text-transform:uppercase;
-  letter-spacing:.36em;color:var(--age-soft);
-  margin-bottom:clamp(22px,4vw,28px);
+  font-size:10px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.32em;color:var(--gold-deep);
+  margin-bottom:clamp(20px,4vw,28px);
 }
 .mark{
   display:inline-flex;align-items:center;justify-content:center;
   width:64px;height:64px;border-radius:50%;
-  border:1px solid rgba(184,153,104,.55);
-  margin-bottom:clamp(22px,4vw,28px);
-  background:rgba(14,11,8,.35);
+  border:1px solid rgba(160,120,69,.35);
+  margin-bottom:clamp(20px,4vw,28px);
+  background:rgba(160,120,69,.06);
 }
 .mark svg{width:22px;height:22px;color:var(--gold);stroke:currentColor}
 .display{
   font-family:"Cormorant Garamond",serif;
-  font-weight:400;font-size:clamp(36px,5.2vw,52px);
-  line-height:1.08;letter-spacing:.04em;
-  margin-bottom:10px;color:var(--age-highlight);
+  font-weight:400;font-size:clamp(36px,5.2vw,56px);
+  line-height:1.05;letter-spacing:-.01em;
+  margin-bottom:10px;color:var(--bone);
 }
-.display em{font-style:italic;color:rgba(184,153,104,.95)}
+.display em{font-style:italic;color:var(--gold)}
 .sub{
-  font-family:"Manrope",sans-serif;
-  font-size:13px;font-weight:300;letter-spacing:.06em;
-  color:var(--age-muted);
-  margin-bottom:clamp(26px,4vw,34px);
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;
+  font-size:clamp(15px,2vw,18px);
+  color:var(--bone-mute);
+  margin-bottom:clamp(24px,4vw,32px);
+  font-weight:300;
 }
-.rule{width:40px;height:1px;background:rgba(184,153,104,.55);margin:0 auto clamp(24px,4vw,32px)}
+.rule{
+  width:40px;height:1px;
+  background:var(--gold);
+  margin:0 auto clamp(24px,4vw,32px);
+}
 .lead{
-  font-size:14.5px;line-height:1.74;
-  color:var(--age-muted);
-  max-width:48ch;margin:0 auto clamp(24px,4vw,30px);
+  font-size:14.5px;line-height:1.78;
+  color:var(--bone-mute);
+  max-width:48ch;margin:0 auto clamp(24px,4vw,32px);
   font-weight:300;
 }
 .detail{
   display:inline-block;padding:14px 22px;
-  border:1px solid rgba(184,153,104,.28);
-  background:rgba(14,11,8,.55);
-  font-family:"Cormorant Garamond",serif;font-style:italic;font-size:13px;
-  color:var(--age-soft);margin-bottom:clamp(26px,4vw,32px);
-  word-break:break-all;border-radius:2px;
+  border:1px solid var(--line);
+  background:var(--shell-muted);
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:13px;
+  color:var(--bone-mute);
+  margin-bottom:clamp(24px,4vw,32px);
+  word-break:break-all;border-radius:10px;
 }
-.detail strong{color:var(--age-highlight);font-style:normal;font-weight:500;letter-spacing:.08em;font-family:"Manrope",sans-serif;font-size:10px}
+.detail strong{
+  color:var(--gold-deep);font-style:normal;font-weight:600;
+  letter-spacing:.1em;font-family:"Manrope",sans-serif;font-size:10px;
+  display:block;margin-bottom:4px;
+}
 .cta{
-  display:inline-block;padding:13px 32px;
-  background:var(--gold);color:var(--ink)!important;border:1px solid var(--gold);
-  text-transform:uppercase;letter-spacing:.24em;font-size:10px;font-weight:600;
+  display:inline-block;padding:14px 36px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-deep) 100%);
+  color:#fffefb!important;
+  border:none;border-radius:999px;
+  text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:600;
   transition:filter .22s ease,transform .22s ease,box-shadow .22s ease;
   text-decoration:none;font-family:"Manrope",sans-serif;
-  box-shadow:0 12px 40px rgba(160,120,69,.35);
+  box-shadow:0 10px 32px rgba(160,120,69,.35);
 }
 .cta:hover{
   filter:brightness(1.07);
   transform:translateY(-1px);
-  box-shadow:0 14px 48px rgba(160,120,69,.42);
+  box-shadow:0 14px 48px rgba(160,120,69,.45);
 }
 .foot{
-  margin-top:clamp(32px,5vw,42px);padding-top:22px;
-  border-top:1px solid rgba(184,153,104,.22);
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--age-soft);
+  margin-top:clamp(28px,5vw,40px);padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-faint);
 }
 .foot em{
-  font-family:"Cormorant Garamond",serif;font-style:italic;text-transform:none;
-  letter-spacing:.12em;color:var(--age-highlight);
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  text-transform:none;letter-spacing:.1em;color:var(--bone-mute);
+}
+.seal{
+  font-family:"Shippori Mincho",serif;
+  font-size:32px;color:var(--gold);
+  opacity:.35;margin-bottom:16px;
+  display:block;
 }
 </style>
 <script src="i18n.js"></script>
 </head>
 <body>
   <div class="card">
+    <span class="seal">漢</span>
     <div class="eyebrow" data-i18n="ok.eyebrow">Reservation confirmed</div>
     <div class="mark">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12l5 5L20 7"/>
       </svg>
     </div>
-    <h1 class="display"><span data-i18n="ok.title">Thank you</span><span style="color:rgba(184,153,104,.95)">.</span></h1>
+    <h1 class="display"><span data-i18n="ok.title">Thank you</span><span style="color:var(--gold)">.</span></h1>
     <p class="sub" data-i18n="ok.sub">Your bottles have been set aside.</p>
     <span class="rule"></span>
     <p class="lead" data-i18n="ok.lead">
@@ -148,10 +162,13 @@ body::after{
       confirm provenance, schedule insured shipment, and arrange the recipient identity check.
     </p>
     <div class="detail" id="orderRef" style="display:none">
-      <strong data-i18n="ok.orderRef">ORDER REF</strong> <span id="orderId"></span>
+      <strong data-i18n="ok.orderRef">ORDER REF</strong>
+      <span id="orderId"></span>
     </div>
     <a class="cta" href="/" data-i18n="ok.cta">Return to the cellar</a>
-    <div class="foot"><em>Maison Han</em> · <span data-i18n="foot.house">A House of Rare Pours</span></div>
+    <div class="foot">
+      <em>Maison Han</em> · <span data-i18n="foot.house">A House of Rare Pours</span>
+    </div>
   </div>
 <script>
   const params = new URLSearchParams(location.search);
