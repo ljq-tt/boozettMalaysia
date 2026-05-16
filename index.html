@@ -1707,6 +1707,16 @@ body.nav-mob-open{overflow:hidden}
   font-family:"Manrope",sans-serif;font-size:11px;
 }
 .drawer__close:hover{color:var(--bone)}
+.drawer__continue{
+  font-family:"Manrope",sans-serif;
+  font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold-deep);
+  background:none;border:none;cursor:pointer;
+  padding:4px 0;
+  border-bottom:1px solid var(--gold-deep);
+  transition:color .3s,border-color .3s;
+}
+.drawer__continue:hover{color:var(--bone);border-color:var(--bone)}
 .drawer__body{flex:1;overflow-y:auto;padding:24px 32px}
 .drawer__empty{text-align:center;padding:80px 20px;color:var(--bone-mute)}
 .drawer__empty .empty-mark{
@@ -1753,6 +1763,29 @@ body.nav-mob-open{overflow:hidden}
   font-size:14px;transition:all .3s;
 }
 .qty-btn:hover{border-color:var(--bone);color:var(--bone)}
+.qty-input{
+  width:48px;
+  height:24px;
+  border:1px solid var(--bone-faint);
+  background:transparent;
+  color:var(--bone);
+  font-family:"Cormorant Garamond",serif;
+  font-size:16px;
+  text-align:center;
+  border-radius:4px;
+  padding:0 4px;
+  outline:none;
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+.qty-input:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 1px rgba(160,120,69,.2);
+}
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
 .cart-item__price{
   font-family:"Cormorant Garamond";font-size:17px;
 }
@@ -1950,6 +1983,124 @@ body.nav-mob-open{overflow:hidden}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 /* ================================================================
+   PRODUCT DETAIL PAGE — hash router
+   ================================================================ */
+.pdp-overlay{
+  position:fixed;inset:0;
+  background:var(--shell);
+  z-index:150;
+  overflow-y:auto;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .4s ease;
+}
+.pdp-overlay.open{opacity:1;pointer-events:auto}
+.pdp-nav{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px clamp(20px,4vw,56px);
+  background:rgba(250,248,245,.94);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.pdp-back{
+  display:flex;align-items:center;gap:10px;
+  font-family:"Manrope",sans-serif;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bone-mute);
+  background:none;border:none;cursor:pointer;
+  transition:color .3s;
+}
+.pdp-back:hover{color:var(--bone)}
+.pdp-back::before{content:"←";font-size:14px}
+.pdp-body{
+  max-width:1080px;margin:0 auto;
+  padding:clamp(40px,6vw,80px) clamp(20px,4vw,56px);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(40px,6vw,80px);align-items:start;
+}
+.pdp-visual{
+  position:sticky;top:100px;
+  aspect-ratio:4/5;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.pdp-visual .product__bottle{width:100%;height:100%}
+.pdp-visual-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.88) contrast(1.08) saturate(.7) sepia(.14) hue-rotate(-4deg);
+}
+.pdp-visual::after{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 18% 10%,rgba(184,153,104,.1),transparent 55%),
+    linear-gradient(180deg,rgba(14,11,8,.1) 0%,transparent 25%,transparent 65%,rgba(14,11,8,.5) 100%);
+}
+.pdp-info{padding-top:20px}
+.pdp-cat{
+  font-family:"Manrope",sans-serif;
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.pdp-name{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(36px,4.5vw,56px);
+  font-weight:400;line-height:1;letter-spacing:-.01em;
+  color:var(--bone);margin-bottom:8px;
+}
+.pdp-name em{font-style:italic;color:var(--gold)}
+.pdp-sub{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:18px;
+  color:var(--bone-mute);margin-bottom:32px;
+}
+.pdp-rule{width:48px;height:1px;background:var(--gold);margin-bottom:32px}
+.pdp-desc{font-size:14px;line-height:1.85;color:var(--bone-mute);margin-bottom:40px}
+.pdp-specs{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  border-top:1px solid var(--bone-hair);
+  margin-bottom:40px;
+}
+.pdp-spec{padding:16px 0;border-bottom:1px solid var(--bone-hair)}
+.pdp-spec:nth-child(odd){padding-right:20px;border-right:1px solid var(--bone-hair)}
+.pdp-spec:nth-child(even){padding-left:20px}
+.pdp-spec__label{
+  font-family:"Manrope",sans-serif;
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.pdp-spec__value{
+  font-family:"Cormorant Garamond",serif;
+  font-size:20px;font-weight:400;color:var(--bone);
+}
+.pdp-price-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:32px;border-top:1px solid var(--bone-hair);
+  flex-wrap:wrap;gap:16px;
+}
+.pdp-price{
+  font-family:"Cormorant Garamond",serif;
+  font-size:40px;font-weight:400;color:var(--bone);
+}
+.pdp-share{
+  display:flex;align-items:center;gap:8px;
+  font-family:"Manrope",sans-serif;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-faint);
+  background:none;border:none;cursor:pointer;
+  transition:color .3s;margin-top:16px;
+}
+.pdp-share:hover{color:var(--bone)}
+@media(max-width:768px){
+  .pdp-body{grid-template-columns:1fr;gap:32px}
+  .pdp-visual{position:relative;top:0;aspect-ratio:3/2}
+  .pdp-name{font-size:clamp(32px,8vw,48px)}
+}
+
+/* ================================================================
    REVEAL ANIMATION
    ================================================================ */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity 1s ease,transform 1s cubic-bezier(.16,1,.3,1)}
@@ -1985,6 +2136,23 @@ body.nav-mob-open{overflow:hidden}
   .spec-grid{grid-template-columns:1fr}
   .spec:nth-child(odd){padding-right:0;border-right:none}
   .spec:nth-child(even){padding-left:0}
+  .drawer{width:100%}
+  .drawer__foot{
+    position:sticky;
+    bottom:0;
+    background:var(--card);
+    box-shadow:0 -8px 24px rgba(41,36,36,.06);
+    padding:20px 24px;
+    border-radius:0;
+  }
+  .drawer__head{padding:24px 24px 20px}
+  .drawer__body{padding:16px 24px}
+  .drawer__check{
+    padding:16px 24px;
+    font-size:13px;
+  }
+  .cart-item{gap:14px;padding:18px 0}
+  .cart-item__visual{width:64px;height:64px;flex-shrink:0}
 }
 /* ================================================================
    LANG + CURRENCY SELECTOR — Claude-style custom dropdown
@@ -2950,13 +3118,69 @@ body.nav-mob-open{overflow:hidden}
 </footer>
 
 <!-- ================================================================
+     PRODUCT DETAIL PAGE (hash router)
+     ================================================================ -->
+<div class="pdp-overlay" id="pdpOverlay" role="region" aria-label="Product detail">
+  <div class="pdp-nav">
+    <button class="pdp-back" id="pdpBack" data-i18n="pdp.back">Back to collection</button>
+    <a href="/" class="logo" style="font-size:18px;letter-spacing:.22em">
+      <span class="logo__mark cjk" style="font-size:18px">漢</span>
+      <span>Maison Han</span>
+    </a>
+    <span class="nav__cart" id="pdpCartOpen" style="font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-mute);cursor:pointer">
+      <span data-i18n="nav.cart">Cart</span>
+      <span class="cart-count" id="pdpCartCount">0</span>
+    </span>
+  </div>
+  <div class="pdp-body">
+    <div class="pdp-visual bv-maotai" id="pdpVisual"></div>
+    <div class="pdp-info">
+      <div class="pdp-cat" id="pdpCat"></div>
+      <h1 class="pdp-name" id="pdpName"></h1>
+      <p class="pdp-sub" id="pdpSub"></p>
+      <div class="pdp-rule"></div>
+      <p class="pdp-desc" id="pdpDesc"></p>
+      <div class="pdp-specs">
+        <div class="pdp-spec">
+          <div class="pdp-spec__label" data-i18n="spec.abv">Strength</div>
+          <div class="pdp-spec__value" id="pdpAbv"></div>
+        </div>
+        <div class="pdp-spec">
+          <div class="pdp-spec__label" data-i18n="spec.vol">Volume</div>
+          <div class="pdp-spec__value" id="pdpVol"></div>
+        </div>
+        <div class="pdp-spec">
+          <div class="pdp-spec__label" data-i18n="spec.origin">Origin</div>
+          <div class="pdp-spec__value" id="pdpOrigin"></div>
+        </div>
+        <div class="pdp-spec">
+          <div class="pdp-spec__label" data-i18n="spec.year">Vintage</div>
+          <div class="pdp-spec__value" id="pdpYear"></div>
+        </div>
+      </div>
+      <div class="pdp-price-row">
+        <div class="pdp-price" id="pdpPrice"></div>
+        <button class="btn btn--gold" id="pdpAdd" data-i18n="prod.add">Reserve Bottle →</button>
+      </div>
+      <button class="pdp-share" id="pdpShare">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span data-i18n="pdp.share">Share this bottle</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
      CART DRAWER
      ================================================================ -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <aside class="drawer" id="drawer">
   <div class="drawer__head">
     <h3 class="drawer__title" data-i18n="cart.title">Your Cart</h3>
-    <button class="drawer__close" id="cartClose" data-i18n="cart.close">Close</button>
+    <div style="display:flex;align-items:center;gap:16px">
+        <button class="drawer__continue" id="cartContinue" data-i18n="cart.continue">Continue Shopping</button>
+        <button class="drawer__close" id="cartClose" data-i18n="cart.close">Close</button>
+    </div>
   </div>
   <div class="drawer__body" id="drawerBody"></div>
   <div class="drawer__foot" id="drawerFoot">
@@ -3062,7 +3286,7 @@ en:{
   "news.title":"A quarterly <em>letter,</em><br>from the cellar master.","news.sub":"New arrivals, vintage notes, the occasional glass-side correspondence. Sent four times a year. Never to be forwarded.","news.btn":"Subscribe →","news.thanks":"You are on the list.",
   "footer.tagline":"A house of rare pours. Sourced direct, sealed to provenance, brought to a single table — wherever in the world that table happens to stand.",
   "footer.shop":"Shop","footer.house":"The House","footer.help":"Service","footer.legal":"Legal","footer.story":"Our Story","footer.standard":"Provenance Standard","footer.cellar":"Private Cellar","footer.journal":"Journal","footer.shipping":"Shipping &amp; Customs","footer.payment":"Payment &amp; Escrow","footer.returns":"Returns Policy","footer.contact":"Concierge","footer.terms":"Terms","footer.privacy":"Privacy","footer.compliance":"Import Compliance","footer.cookies":"Cookies","footer.rights":"All rights reserved","footer.responsible":"Drink with intention",
-  "cart.title":"Your Cart","cart.close":"Close","cart.empty":"The cellar is quiet.","cart.empty.sub":"Reserve a bottle to begin.","cart.subtotal":"Subtotal","cart.shipping":"Shipping &amp; insurance","cart.calc":"At checkout","cart.total":"Total","cart.check":"Proceed to Checkout","cart.remove":"Remove","curr.top.usd":"Prices in USD · shipping & customs settled at Stripe checkout.","curr.top.fx":"{code} is for browsing only (illustrative FX from USD) · charged in USD at checkout.","cart.check.usd":"All amounts are in USD · shipping & insurance added at Stripe checkout.","cart.check.fx":"Totals show in {code} using a fixed illustrative rate from USD, not a live bank quote · your card is charged in USD at Stripe. Shipping & insurance at checkout.","curr.modal.fx":"Reference conversion from USD · billed in USD at checkout.","cart.age":"I confirm I am 21+ and may legally purchase alcohol where I live.","cart.processing":"Connecting to secure checkout&hellip;","cart.error":"Could not start checkout. Please try again or contact concierge.","pager.prev":"Previous page","pager.next":"Next page",
+  "cart.title":"Your Cart","cart.close":"Close","cart.continue":"Continue Shopping","cart.empty":"The cellar is quiet.","cart.empty.sub":"Reserve a bottle to begin.","cart.subtotal":"Subtotal","cart.shipping":"Shipping &amp; insurance","cart.calc":"At checkout","cart.total":"Total","cart.check":"Proceed to Checkout","cart.remove":"Remove","curr.top.usd":"Prices in USD · shipping & customs settled at Stripe checkout.","curr.top.fx":"{code} is for browsing only (illustrative FX from USD) · charged in USD at checkout.","cart.check.usd":"All amounts are in USD · shipping & insurance added at Stripe checkout.","cart.check.fx":"Totals show in {code} using a fixed illustrative rate from USD, not a live bank quote · your card is charged in USD at Stripe. Shipping & insurance at checkout.","curr.modal.fx":"Reference conversion from USD · billed in USD at checkout.","cart.age":"I confirm I am 21+ and may legally purchase alcohol where I live.","cart.processing":"Connecting to secure checkout&hellip;","cart.error":"Could not start checkout. Please try again or contact concierge.","pager.prev":"Previous page","pager.next":"Next page","pdp.back":"← Back to collection","pdp.share":"Share this bottle", 
   "prod.add":"Reserve Bottle","prod.added":"Added to cellar","prod.cta":"Reserve","modal.close":"Close ✕",
   "nav.cat":"Categories","nav.cat.col1":"Spirits & Baijiu","nav.cat.link1":"Baijiu / Spirits","nav.cat.link2":"Sake / Premix / Others","nav.cat.link3":"All Collection","nav.cat.col2":"Whisky & Wine","nav.cat.link4":"Japanese Whisky","nav.cat.link5":"Red Wine","nav.cat.link6":"Champagne","nav.cat.col3":"Browse by","nav.cat.link7":"By category","nav.cat.link8":"By occasion","nav.cat.link9":"Special editions",
   "nav.scene":"By Occasion","nav.scene.col1":"Gift","nav.scene.link1":"Business gifts","nav.scene.link2":"Holiday gifts","nav.scene.link3":"Celebration gifts","nav.scene.col2":"Personal","nav.scene.link4":"Dinner pairings","nav.scene.link5":"Solo whisky nights","nav.scene.link6":"Easy sipping","nav.scene.col3":"Collect","nav.scene.link7":"Vintage baijiu","nav.scene.link8":"Rare whisky","nav.scene.link9":"Special casks",
@@ -3111,7 +3335,7 @@ en:{
   "news.title":"窖藏总监的<br>季度<em>来信。</em>","news.sub":"新到酒款、年份札记，偶尔的杯边只言片语。一年四封。请勿转寄。","news.btn":"订阅 →","news.thanks":"您已在名单之上。",
   "footer.tagline":"稀世佳酿之馆。直采、封藏、亲手送达——无论那张餐桌，停在世界的哪一角。",
   "footer.shop":"购藏","footer.house":"本馆","footer.help":"服务","footer.legal":"法务","footer.story":"我们的故事","footer.standard":"溯源标准","footer.cellar":"私人酒窖","footer.journal":"酒志","footer.shipping":"运输与清关","footer.payment":"付款与托管","footer.returns":"退换政策","footer.contact":"管家联络","footer.terms":"条款","footer.privacy":"隐私","footer.compliance":"进口合规","footer.cookies":"Cookies","footer.rights":"版权所有","footer.responsible":"有意识地饮酒",
-  "cart.title":"您的酒篮","cart.close":"关闭","cart.empty":"酒窖一时寂静。","cart.empty.sub":"请先认领一瓶。","cart.subtotal":"小计","cart.shipping":"运输与保险","cart.calc":"结算时计算","cart.total":"合计","cart.check":"前往结算","cart.remove":"移除","curr.top.usd":"标价均以美元为准；运费及报关相关费用于 Stripe 结算页处理。","curr.top.fx":"便于浏览已将美元折算为 {code}（示意汇率）· 结账仍以美元通过 Stripe 扣款。","cart.check.usd":"购物车金额均以美元计；运费与保险费在 Stripe 结账时计入。","cart.check.fx":"小计以固定示意汇率从美元换算为 {code}，非银行实时牌价 · 银行卡仍以美元扣款（Stripe）。运费与保险费于结账时计入。","curr.modal.fx":"由美元换算仅供参考 · 最终以美元结账。","cart.age":"我确认已年满 21 周岁，且所在地区允许合法购买酒类。","cart.processing":"正在连接安全支付&hellip;","cart.error":"结算暂时无法连接，请稍后重试或联系管家。","pager.prev":"上一页","pager.next":"下一页",
+  "cart.title":"您的酒篮","cart.close":"关闭","cart.continue":"继续选酒","cart.empty":"酒窖一时寂静。","cart.empty.sub":"请先认领一瓶。","cart.subtotal":"小计","cart.shipping":"运输与保险","cart.calc":"结算时计算","cart.total":"合计","cart.check":"前往结算","cart.remove":"移除","curr.top.usd":"标价均以美元为准；运费及报关相关费用于 Stripe 结算页处理。","curr.top.fx":"便于浏览已将美元折算为 {code}（示意汇率）· 结账仍以美元通过 Stripe 扣款。","cart.check.usd":"购物车金额均以美元计；运费与保险费在 Stripe 结账时计入。","cart.check.fx":"小计以固定示意汇率从美元换算为 {code}，非银行实时牌价 · 银行卡仍以美元扣款（Stripe）。运费与保险费于结账时计入。","curr.modal.fx":"由美元换算仅供参考 · 最终以美元结账。","cart.age":"我确认已年满 21 周岁，且所在地区允许合法购买酒类。","cart.processing":"正在连接安全支付&hellip;","cart.error":"结算暂时无法连接，请稍后重试或联系管家。","pager.prev":"上一页","pager.next":"下一页","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
   "prod.add":"认领此瓶","prod.added":"已存入您的酒窖","prod.cta":"认领","modal.close":"关闭 ✕",
   "nav.cat":"酒水分类","nav.cat.col1":"中国与烈酒","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獭祭 / 预调 / 其他","nav.cat.link3":"全部典藏","nav.cat.col2":"威士忌与葡萄酒","nav.cat.link4":"日本威士忌 / Whisky","nav.cat.link5":"红酒 / Wine","nav.cat.link6":"香槟 / Sparkling","nav.cat.col3":"筛选思路","nav.cat.link7":"按大类浏览","nav.cat.link8":"按节庆场景","nav.cat.link9":"按特殊款式",
   "nav.scene":"场景选酒","nav.scene.col1":"送礼","nav.scene.link1":"商务送礼","nav.scene.link2":"节日送礼","nav.scene.link3":"庆祝送礼","nav.scene.col2":"自饮","nav.scene.link4":"晚餐佐餐","nav.scene.link5":"独酌威士忌","nav.scene.link6":"轻松微醺","nav.scene.col3":"收藏","nav.scene.link7":"年份白酒","nav.scene.link8":"稀有威士忌","nav.scene.link9":"特别收录",
@@ -3161,7 +3385,7 @@ en:{
   "news.title":"窖藏總監的<br>季度<em>來信。</em>","news.sub":"新到酒款、年份札記，偶爾的杯邊隻言片語。一年四封。請勿轉寄。","news.btn":"訂閱 →","news.thanks":"您已在名單之上。",
   "footer.tagline":"稀世佳釀之館。直採、封藏、親手送達——無論那張餐桌，停在世界的哪一角。",
   "footer.shop":"購藏","footer.house":"本館","footer.help":"服務","footer.legal":"法務","footer.story":"我們的故事","footer.standard":"溯源標準","footer.cellar":"私人酒窖","footer.journal":"酒誌","footer.shipping":"運輸與清關","footer.payment":"付款與託管","footer.returns":"退換政策","footer.contact":"管家聯絡","footer.terms":"條款","footer.privacy":"隱私","footer.compliance":"進口合規","footer.cookies":"Cookies","footer.rights":"版權所有","footer.responsible":"有意識地飲酒",
-  "cart.title":"您的酒籃","cart.close":"關閉","cart.empty":"酒窖一時寂靜。","cart.empty.sub":"請先認領一瓶。","cart.subtotal":"小計","cart.shipping":"運輸與保險","cart.calc":"結算時計算","cart.total":"合計","cart.check":"前往結算","cart.remove":"移除","curr.top.usd":"標價均以美元為準；運費及報關相關費用於 Stripe 結算頁處理。","curr.top.fx":"僅為便於閱覽將美元折算為 {code}（示意匯率）· 結帳以美元於 Stripe 扣款。","cart.check.usd":"金額均以美元計；運費與保險於 Stripe 結帳時一併計入。","cart.check.fx":"小計係以固定示意匯率自美元換算為 {code}，並非銀行即時牌價 · 信用卡仍以美元於 Stripe 扣款。運費與保險於結帳時計入。","curr.modal.fx":"美元換算僅供參考 · 最終仍以美元結帳。","cart.age":"本人確認已達法定購買酒精年齡，且居住地允許網購酒類。","cart.processing":"正在連線至安全結帳&hellip;","cart.error":"結帳暫時無法連線，請稍後再試或聯絡管家。","pager.prev":"上一頁","pager.next":"下一頁",
+  "cart.title":"您的酒籃","cart.close":"關閉","cart.continue":"繼續選酒","cart.empty":"酒窖一時寂靜。","cart.empty.sub":"請先認領一瓶。","cart.subtotal":"小計","cart.shipping":"運輸與保險","cart.calc":"結算時計算","cart.total":"合計","cart.check":"前往結算","cart.remove":"移除","curr.top.usd":"標價均以美元為準；運費及報關相關費用於 Stripe 結算頁處理。","curr.top.fx":"僅為便於閱覽將美元折算為 {code}（示意匯率）· 結帳以美元於 Stripe 扣款。","cart.check.usd":"金額均以美元計；運費與保險於 Stripe 結帳時一併計入。","cart.check.fx":"小計係以固定示意匯率自美元換算為 {code}，並非銀行即時牌價 · 信用卡仍以美元於 Stripe 扣款。運費與保險於結帳時計入。","curr.modal.fx":"美元換算僅供參考 · 最終仍以美元結帳。","cart.age":"本人確認已達法定購買酒精年齡，且居住地允許網購酒類。","cart.processing":"正在連線至安全結帳&hellip;","cart.error":"結帳暫時無法連線，請稍後再試或聯絡管家。","pager.prev":"上一頁","pager.next":"下一頁","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
   "prod.add":"認領此瓶","prod.added":"已存入您的酒窖","prod.cta":"認領","modal.close":"關閉 ✕",
   "nav.cat":"酒水分類","nav.cat.col1":"中國與烈酒","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獺祭 / 預調 / 其他","nav.cat.link3":"全部典藏","nav.cat.col2":"威士忌與葡萄酒","nav.cat.link4":"日本威士忌 / Whisky","nav.cat.link5":"紅酒 / Wine","nav.cat.link6":"香檳 / Sparkling","nav.cat.col3":"篩選思路","nav.cat.link7":"按大類瀏覽","nav.cat.link8":"按節慶場景","nav.cat.link9":"按特殊款式",
   "nav.scene":"場景選酒","nav.scene.col1":"送禮","nav.scene.link1":"商務送禮","nav.scene.link2":"節日送禮","nav.scene.link3":"慶祝送禮","nav.scene.col2":"自飲","nav.scene.link4":"晚餐佐餐","nav.scene.link5":"獨酌威士忌","nav.scene.link6":"輕鬆微醺","nav.scene.col3":"收藏","nav.scene.link7":"年份白酒","nav.scene.link8":"稀有威士忌","nav.scene.link9":"特別收錄",
@@ -3211,7 +3435,7 @@ ja:{
   "news.title":"セラーマスターからの<br>四半期 <em>書信。</em>","news.sub":"新着、ヴィンテージのメモ、時折のグラス越しの便り。年に四度。転送はご遠慮ください。","news.btn":"購読 →","news.thanks":"名簿にお加えしました。",
   "footer.tagline":"稀少な一本の家。直接仕入れ、来歴を封じ、ただ一卓へ — その卓が世界のどこにあろうとも。",
   "footer.shop":"ショップ","footer.house":"当館","footer.help":"サービス","footer.legal":"法務","footer.story":"私たちの物語","footer.standard":"来歴基準","footer.cellar":"プライベートセラー","footer.journal":"酒誌","footer.shipping":"配送·通関","footer.payment":"決済·エスクロー","footer.returns":"返品ポリシー","footer.contact":"コンシェルジュ","footer.terms":"利用規約","footer.privacy":"プライバシー","footer.compliance":"輸入コンプライアンス","footer.cookies":"Cookies","footer.rights":"All rights reserved","footer.responsible":"心して飲み給え",
-  "cart.title":"お籠","cart.close":"閉じる","cart.empty":"酒蔵は静か。","cart.empty.sub":"一本予約することから。","cart.subtotal":"小計","cart.shipping":"配送 & 保険","cart.calc":"決済時に計算","cart.total":"合計","cart.check":"決済へ進む","cart.remove":"削除","curr.top.usd":"表示の基準は米ドルです。配送・関税等は Stripe のチェックアウトで確定します。","curr.top.fx":"参照用に USD から {code} へ換算表示（固定の目安レート）。お支払いは米ドルで Stripe にて請求されます。","cart.check.usd":"合計は米ドル表示です。配送・保険はチェックアウトで加算されます。","cart.check.fx":"{code} 表示は USD からの固定レート換算（参考）· カードの請求は米ドル（Stripe）。配送・保険はチェックアウトで。","curr.modal.fx":"USD からの換算は目安です。請求は米ドル。","cart.age":"居住国の法令上、酒類を合法的に購入できる年齢であることを確認します。","cart.processing":"安全な決済へ接続中&hellip;","cart.error":"決済を開始できませんでした。しばらくしてからお試しになるか、コンシェルジュへご連絡ください。","pager.prev":"前へ","pager.next":"次へ",
+  "cart.title":"お籠","cart.close":"閉じる","cart.continue":"買い物を続ける","cart.empty":"酒蔵は静か。","cart.empty.sub":"一本予約することから。","cart.subtotal":"小計","cart.shipping":"配送 & 保険","cart.calc":"決済時に計算","cart.total":"合計","cart.check":"決済へ進む","cart.remove":"削除","curr.top.usd":"表示の基準は米ドルです。配送・関税等は Stripe のチェックアウトで確定します。","curr.top.fx":"参照用に USD から {code} へ換算表示（固定の目安レート）。お支払いは米ドルで Stripe にて請求されます。","cart.check.usd":"合計は米ドル表示です。配送・保険はチェックアウトで加算されます。","cart.check.fx":"{code} 表示は USD からの固定レート換算（参考）· カードの請求は米ドル（Stripe）。配送・保険はチェックアウトで。","curr.modal.fx":"USD からの換算は目安です。請求は米ドル。","cart.age":"居住国の法令上、酒類を合法的に購入できる年齢であることを確認します。","cart.processing":"安全な決済へ接続中&hellip;","cart.error":"決済を開始できませんでした。しばらくしてからお試しになるか、コンシェルジュへご連絡ください。","pager.prev":"前へ","pager.next":"次へ","pdp.back":"← コレクションに戻る","pdp.share":"このボトルをシェア", 
   "prod.add":"この瓶を予約","prod.added":"あなたのセラーへ加えました","prod.cta":"予約","modal.close":"閉じる ✕",
   "nav.cat":"カテゴリー","nav.cat.col1":"中国酒・スピリッツ","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獺祭 / プレミックス / その他","nav.cat.link3":"全コレクション","nav.cat.col2":"ウイスキー・ワイン","nav.cat.link4":"日本ウイスキー / Whisky","nav.cat.link5":"赤ワイン / Wine","nav.cat.link6":"シャンパーニュ / Sparkling","nav.cat.col3":"絞り込み","nav.cat.link7":"カテゴリー別","nav.cat.link8":"シーン別","nav.cat.link9":"スペシャル版",
   "nav.scene":"シーン別","nav.scene.col1":"ギフト","nav.scene.link1":"ビジネスギフト","nav.scene.link2":"季節ギフト","nav.scene.link3":"お祝いギフト","nav.scene.col2":"自分用","nav.scene.link4":"ディナーペアリング","nav.scene.link5":"一人ウイスキー","nav.scene.link6":"軽飲み","nav.scene.col3":"コレクション","nav.scene.link7":"ヴィンテージ白酒","nav.scene.link8":"レアウイスキー","nav.scene.link9":"スペシャルカスク",
@@ -3695,7 +3919,15 @@ function updateCart(){
         <div class="cart-item__row">
           <div class="cart-item__qty">
             <button class="qty-btn" data-qty="${item.id}" data-d="-1">−</button>
-            <span>${item.qty}</span>
+            <input
+              class="qty-input"
+              type="number"
+              inputmode="numeric"
+              min="1" max="99"
+              value="${item.qty}"
+              data-qty-input="${item.id}"
+              aria-label="Quantity"
+            />
             <button class="qty-btn" data-qty="${item.id}" data-d="1">+</button>
           </div>
           <div class="cart-item__price">${fmtPrice(p.price*item.qty)}</div>
@@ -4304,7 +4536,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   // Grid
   document.getElementById("grid").addEventListener("click",e=>{
-    const card=e.target.closest(".product");if(card)openModal(+card.dataset.id);
+    const card=e.target.closest(".product");if(card)openPDP(+card.dataset.id);
   });
 
   // Direct add buttons (in feature sections)
@@ -4373,12 +4605,38 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("drawerOverlay").classList.remove("open");
   };
   document.getElementById("cartClose").onclick=closeDrawer;
+  document.getElementById("cartContinue").onclick=closeDrawer;
   document.getElementById("drawerOverlay").onclick=closeDrawer;
   document.getElementById("drawerBody").addEventListener("click",e=>{
     const q=e.target.closest("[data-qty]");
     if(q){changeQty(+q.dataset.qty,+q.dataset.d);return}
     const r=e.target.closest("[data-remove]");
     if(r){removeFromCart(+r.dataset.remove)}
+  });
+
+  document.getElementById("drawerBody").addEventListener("focus",e=>{
+    const inp=e.target.closest(".qty-input");
+    if(inp)inp.select();
+  },true);
+
+  document.getElementById("drawerBody").addEventListener("change",e=>{
+    const inp=e.target.closest(".qty-input");
+    if(!inp)return;
+    const id=+inp.dataset.qtyInput;
+    let val=parseInt(inp.value,10);
+    if(isNaN(val)||val<1)val=1;
+    if(val>99)val=99;
+    inp.value=val;
+    const item=state.cart.find(x=>x.id===id);
+    if(!item)return;
+    item.qty=val;
+    updateCart();
+  });
+
+  document.getElementById("drawerBody").addEventListener("keydown",e=>{
+    const inp=e.target.closest(".qty-input");
+    if(!inp)return;
+    if(e.key==="Enter"){inp.blur();}
   });
 
   // Age gate -> enables Checkout
@@ -4531,6 +4789,71 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   setupReveal();
+
+  /* ============ HASH ROUTER — PDP ============ */
+  function openPDP(id){
+    const p=PRODUCTS.find(x=>x.id===id);
+    if(!p)return;
+    const dict=I18N[state.lang]||I18N.en;
+    document.getElementById("pdpCat").textContent=p.catLabel;
+    document.getElementById("pdpName").innerHTML=p.name;
+    document.getElementById("pdpSub").textContent=p.sub;
+    document.getElementById("pdpDesc").textContent=p.desc;
+    document.getElementById("pdpAbv").textContent=p.abv;
+    document.getElementById("pdpVol").textContent=p.vol;
+    document.getElementById("pdpOrigin").textContent=p.origin;
+    document.getElementById("pdpYear").textContent=p.year;
+    document.getElementById("pdpPrice").textContent=fmtPrice(p.price);
+    const vis=document.getElementById("pdpVisual");
+    vis.className="pdp-visual "+p.bv;
+    vis.innerHTML=bottleSVG(p.bottle)+`<img class="pdp-visual-img" src="${p.image}" alt="${p.name.replace(/<[^>]+>/g,'')}" onerror="this.style.display='none'" loading="eager"/>`;
+    document.getElementById("pdpAdd").onclick=()=>{addToCart(id);showToast((dict["prod.added"]||I18N.en["prod.added"]));};
+    document.getElementById("pdpShare").onclick=()=>{
+      const url=location.origin+"/#/product/"+id;
+      if(navigator.share){navigator.share({title:p.name.replace(/<[^>]+>/g,""),url});}
+      else{navigator.clipboard?.writeText(url);showToast("Link copied");}
+    };
+    syncPDPCartCount();
+    location.hash="/product/"+id;
+    document.getElementById("pdpOverlay").classList.add("open");
+    document.body.style.overflow="hidden";
+    window.scrollTo(0,0);
+  }
+  function closePDP(){
+    document.getElementById("pdpOverlay").classList.remove("open");
+    document.body.style.overflow="";
+    if(location.hash.startsWith("#/product/")){
+      history.pushState(null,"",location.pathname+location.search);
+    }
+  }
+  function syncPDPCartCount(){
+    const count=state.cart.reduce((s,x)=>s+x.qty,0);
+    const el=document.getElementById("pdpCartCount");
+    if(el)el.textContent=count;
+  }
+  window.addEventListener("hashchange",()=>{
+    if(!location.hash.startsWith("#/product/")){closePDP();}
+    else{
+      const id=parseInt(location.hash.replace("#/product/",""),10);
+      if(!isNaN(id)&&PRODUCTS.length>0)openPDP(id);
+    }
+  });
+  if(location.hash.startsWith("#/product/")){
+    const id=parseInt(location.hash.replace("#/product/",""),10);
+    if(!isNaN(id)){
+      const waitAndOpen=setInterval(()=>{
+        if(PRODUCTS.length>0){clearInterval(waitAndOpen);openPDP(id);}
+      },100);
+    }
+  }
+  document.getElementById("pdpBack").onclick=closePDP;
+  document.getElementById("pdpCartOpen").onclick=()=>{
+    closePDP();
+    setTimeout(()=>{
+      document.getElementById("drawer").classList.add("open");
+      document.getElementById("drawerOverlay").classList.add("open");
+    },300);
+  };
 });
 
 // Browser-detect default language & restore prefs
