@@ -126,6 +126,7 @@ export async function onRequestPost(context) {
       site: 'maison-han',
       age_confirmed: payload.ageConfirmed ? 'true' : 'false',
       item_count: String(items.reduce((s, x) => s + (parseInt(x.qty, 10) || 0), 0)),
+      lang: ['en','zh-CN','zh-TW','ja'].includes(payload.lang) ? payload.lang : 'en',
     };
     if (mhMemberId) md.mh_member_id = mhMemberId;
 

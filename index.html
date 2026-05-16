@@ -3257,6 +3257,16 @@ body.nav-mob-open{overflow:hidden}
      ================================================================ -->
 <div class="toast" id="toast"></div>
 
+<!-- 预加载当前语言字典 -->
+<script>
+(function(){
+  // 提前读取语言偏好，给后续异步加载准备
+  try{
+    var l=localStorage.getItem('han_lang')||'en';
+    document.documentElement.setAttribute('data-lang-hint',l);
+  }catch(e){}
+})();
+</script>
 <script data-cfasync="false" defer>
 /* ============ I18N ============ */
 const I18N={
@@ -4706,7 +4716,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         body:JSON.stringify({
           items,
           ageConfirmed:true,
-          email:document.getElementById("checkoutEmail")?.value?.trim()||undefined
+          email:document.getElementById("checkoutEmail")?.value?.trim()||undefined,
+          lang:state.lang||"en"
         })
       });
       const data=await res.json();
