@@ -3992,10 +3992,26 @@ function showToast(msg){
 }
 
 /* ============ NEWSLETTER ============ */
-function handleNewsletter(){
-  const v=document.getElementById("newsInput").value;if(!v)return;
-  document.getElementById("newsInput").value="";
-  showToast((I18N[state.lang]||I18N.en)["news.thanks"]);
+async function handleNewsletter(){
+  const input=document.getElementById("newsInput");
+  const email=input.value.trim();
+  if(!email)return;
+  try{
+    const res=await fetch("/newsletter-subscribe",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email}),
+    });
+    const data=await res.json();
+    if(res.ok&&data.success){
+      input.value="";
+      showToast((I18N[state.lang]||I18N.en)["news.thanks"]);
+    }else{
+      showToast(data.error||"Something went wrong.");
+    }
+  }catch(err){
+    showToast("Connection error. Please try again.");
+  }
 }
 
 /* ============ FEATURED PRICE UPDATE ============ */
