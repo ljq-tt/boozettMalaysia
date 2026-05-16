@@ -1,4 +1,4 @@
-// MAISON HAN · Stripe Webhook Handler
+// MAISON HAN ?? Stripe Webhook Handler
 // Route: POST /stripe-webhook
 
 export async function onRequestPost(context) {
@@ -40,7 +40,7 @@ export async function onRequestPost(context) {
     const amountTotal = session.amount_total;
     const currency = session.currency?.toUpperCase() || 'USD';
 
-    // ── 1. 建档逻辑（原有）──
+    // ???? 1. ??????????????????
     if (email && !existingCustomerId) {
       try {
         const searchRes = await fetch(
@@ -86,7 +86,7 @@ export async function onRequestPost(context) {
       }
     }
 
-    // ── 2. 发确认邮件 ──
+    // ???? 2. ???????? ????
     if (email && resendKey) {
       try {
         const amount = amountTotal
@@ -94,7 +94,7 @@ export async function onRequestPost(context) {
               style: 'currency',
               currency,
             })
-          : '—';
+          : '??';
 
         const firstName = name ? name.split(' ')[0] : 'Valued Guest';
         const html = buildEmailHtml({
@@ -114,7 +114,7 @@ export async function onRequestPost(context) {
           body: JSON.stringify({
             from: 'MAISON HAN <orders@boozett.top>',
             to: [email],
-            subject: 'Your reservation is confirmed · Maison Han',
+            subject: 'Your reservation is confirmed - Maison Han',
             html,
           }),
         });
@@ -140,7 +140,7 @@ function buildEmailHtml({ firstName, email, sessionId, amount, currency }) {
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Reservation confirmed · Maison Han</title>
+<title>Reservation confirmed ?? Maison Han</title>
 </head>
 <body style="margin:0;padding:0;background:#FAF8F5;font-family:'Helvetica Neue',Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF8F5;padding:48px 0;">
@@ -158,7 +158,7 @@ function buildEmailHtml({ firstName, email, sessionId, amount, currency }) {
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center" style="padding-bottom:28px;">
-                  <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(160,120,69,0.35);background:rgba(160,120,69,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:56px;">?</div>
+                  <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(160,120,69,0.35);background:rgba(160,120,69,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:56px;">&#10003;</div>
                 </td>
               </tr>
             </table>
@@ -182,7 +182,7 @@ function buildEmailHtml({ firstName, email, sessionId, amount, currency }) {
                   <div style="height:1px;background:rgba(41,36,36,0.09);margin-bottom:20px;"></div>
                   <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#A07845;">Amount Charged</p>
                   <p style="margin:0;font-family:Georgia,serif;font-size:20px;color:#292420;">${amount}</p>
-                  <p style="margin:10px 0 0;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(41,36,36,0.4);">Currency · ${currency}</p>
+                  <p style="margin:10px 0 0;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(41,36,36,0.4);">Currency ?? ${currency}</p>
                 </td>
               </tr>
             </table>
@@ -198,7 +198,7 @@ function buildEmailHtml({ firstName, email, sessionId, amount, currency }) {
         </tr>
         <tr>
           <td align="center" style="padding-top:32px;">
-            <p style="margin:0;font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(41,36,36,0.35);">? MMXXVI MAISON HAN · Drink with intention</p>
+            <p style="margin:0;font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(41,36,36,0.35);">? MMXXVI MAISON HAN ?? Drink with intention</p>
           </td>
         </tr>
       </table>

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.boozett.top/sitemap.xml
+
+Disallow: /success.html
+Disallow: /cancel.html
+Disallow: /account.html
+Disallow: /account-verify.html
+Disallow: /account-reset.html
+Disallow: /functions/
