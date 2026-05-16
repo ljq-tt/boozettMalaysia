@@ -4,7 +4,8 @@
     "/create-checkout-session",
     "/create-portal-session",
     "/list-products",
-    "/stripe-webhook"
+    "/stripe-webhook",
+    "/newsletter-subscribe"
   ],
   "exclude": []
 }
