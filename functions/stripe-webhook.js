@@ -58,6 +58,7 @@ export async function onRequestPost(context) {
   const secretKey = env.STRIPE_SECRET_KEY;
   const webhookSecret = env.STRIPE_WEBHOOK_SECRET;
   const resendKey = env.RESEND_API_KEY;
+  const apiBase = String(env.MAISON_HAN_API_BASE || '').trim().replace(/\/+$/, '');
 
   if (!secretKey || !webhookSecret) {
     return json(500, { error: 'Missing environment variables' });
@@ -90,6 +91,7 @@ export async function onRequestPost(context) {
     const amountTotal = session.amount_total;
     const currency = session.currency?.toUpperCase() || 'USD';
     const lang = session.metadata?.lang || 'en';
+    const metadata = session.metadata || {};
 
     // 1. 建档逻辑
     if (email && !existingCustomerId) {
@@ -137,7 +139,32 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 2. 发确认邮件
+    // 2. 写入 TaTa 订单记录
+    if (apiBase) {
+      try {
+        const mhMemberId = metadata.mh_member_id ? Number(metadata.mh_member_id) : null;
+        const orderPayload = {
+          memberId: mhMemberId,
+          stripeSessionId: sessionId,
+          stripePaymentIntent: session.payment_intent || '',
+          amountTotalCents: amountTotal || 0,
+          currency: (session.currency || 'usd').toLowerCase(),
+          paymentStatus: session.payment_status || 'paid',
+          metadata: metadata,
+        };
+        const orderRes = await fetch(`${apiBase}/storefront/webhook/order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload),
+        });
+        const orderData = await orderRes.json();
+        console.log('TaTa order recorded:', orderData);
+      } catch (err) {
+        console.error('TaTa order recording failed:', err);
+      }
+    }
+
+    // 3. 发确认邮件
     if (email && resendKey) {
       try {
         const amount = amountTotal
