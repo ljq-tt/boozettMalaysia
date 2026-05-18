@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
+<meta name="theme-color" content="#FAF8F5"/>
+<title>Page not found · MAISON HAN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --shell:#FAF8F5;--shell-deep:#F3EDE6;--shell-muted:#EDE6DD;
+  --bone:#292420;--bone-mute:rgba(41,36,36,.72);--bone-faint:rgba(41,36,36,.4);
+  --line:rgba(41,36,36,.09);--gold:#A07845;--gold-deep:#7E5F38;--clay:#C45E42;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{
+  font-family:"Manrope",system-ui,sans-serif;
+  background:
+    radial-gradient(120% 80% at 50% -10%,rgba(160,120,69,.06),transparent 55%),
+    linear-gradient(168deg,var(--shell) 0%,var(--shell-deep) 38%,var(--shell-muted) 100%);
+  background-color:var(--shell);
+  color:var(--bone-mute);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(24px,5vw,56px) clamp(18px,4vw,32px);
+  position:relative;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;opacity:.03;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+.card{
+  position:relative;z-index:2;
+  max-width:520px;width:100%;
+  border:1px solid var(--line);border-radius:20px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 22px 64px rgba(41,36,36,.07);
+  padding:clamp(40px,7vw,68px) clamp(24px,5vw,48px);
+  text-align:center;
+}
+.seal{
+  font-family:"Shippori Mincho",serif;
+  font-size:72px;color:var(--gold);opacity:.15;
+  margin-bottom:8px;display:block;line-height:1;
+  letter-spacing:-.02em;
+}
+.eyebrow{
+  font-size:10px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.32em;color:var(--bone-faint);margin-bottom:20px;
+}
+.display{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:400;font-style:italic;
+  font-size:clamp(34px,5vw,52px);
+  line-height:1.05;color:var(--bone);margin-bottom:10px;
+}
+.display em{font-style:normal;color:var(--gold)}
+.sub{
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  font-size:clamp(15px,2vw,17px);color:var(--bone-mute);
+  margin-bottom:clamp(22px,4vw,28px);font-weight:300;
+}
+.rule{width:40px;height:1px;background:var(--line);margin:0 auto clamp(22px,4vw,28px);}
+.lead{
+  font-size:14px;line-height:1.76;color:var(--bone-mute);
+  max-width:42ch;margin:0 auto clamp(28px,5vw,36px);font-weight:300;
+}
+.cta{
+  display:inline-block;padding:14px 36px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-deep) 100%);
+  color:#fffefb!important;border:none;border-radius:999px;
+  text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:600;
+  transition:filter .22s ease,transform .22s ease,box-shadow .22s ease;
+  text-decoration:none;font-family:"Manrope",sans-serif;
+  box-shadow:0 10px 32px rgba(160,120,69,.35);
+}
+.cta:hover{filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 14px 48px rgba(160,120,69,.45)}
+.links{
+  margin-top:20px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap;
+}
+.links a{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bone-faint);text-decoration:none;transition:color .2s;
+}
+.links a:hover{color:var(--gold-deep)}
+.foot{
+  margin-top:clamp(28px,5vw,40px);padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-faint);
+}
+.foot em{
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  text-transform:none;letter-spacing:.1em;color:var(--bone-mute);
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="seal">404</span>
+  <div class="eyebrow">Page not found</div>
+  <h1 class="display">This bottle has <em>moved</em>.</h1>
+  <p class="sub">The page you are looking for is no longer here.</p>
+  <span class="rule"></span>
+  <p class="lead">
+    Perhaps it was reserved by another collector, or the address has changed. 
+    Return to the cellar and we will find something worthy of your time.
+  </p>
+  <a class="cta" href="/">Return to the Cellar →</a>
+  <div class="links">
+    <a href="/#collection">Browse collection</a>
+    <a href="/#journal">Journal</a>
+  </div>
+  <div class="foot">
+    <em>Maison Han</em> · <span>A House of Rare Pours</span>
+  </div>
+</div>
+</body>
+</html>
