@@ -4,17 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maison Han - Sign in</title>
+  <script>window.__MAISON_API_BASE = "https://api.boozett.top";</script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
   <link rel="stylesheet" href="css/accounts.css">
 </head>
 <body>
 <div class="wrap">
   <div class="brand">Maison Han</div>
-  <div class="api-box">
-    <label for="apiBase">API base</label>
-    <input type="text" id="apiBase" placeholder="https://your-host/prod-api" autocomplete="off" />
-    <p class="muted">Same root as Pages <code style="opacity:.85">MAISON_HAN_API_BASE</code> (includes <code>/prod-api</code> when used).</p>
-  </div>
   <div class="msg err" id="err"></div>
   <div class="card">
     <form id="form">
@@ -34,11 +30,6 @@
 <script src="js/portal-api.js"></script>
 <script>
 (function () {
-  var apiEl = document.getElementById('apiBase');
-  try { apiEl.value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
-  apiEl.addEventListener('change', function () {
-    try { localStorage.setItem(HanPortal.API_KEY, apiEl.value.trim()); } catch (e) {}
-  });
   document.getElementById('form').onsubmit = function (ev) {
     ev.preventDefault();
     var err = document.getElementById('err');

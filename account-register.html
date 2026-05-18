@@ -4,16 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maison Han - Register</title>
+  <script>window.__MAISON_API_BASE = "https://api.boozett.top";</script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Manrope:wght@300;400;500;600&display=swap">
   <link rel="stylesheet" href="css/accounts.css">
 </head>
 <body>
 <div class="wrap">
   <div class="brand">Maison Han</div>
-  <div class="api-box">
-    <label for="apiBase">API base</label>
-    <input type="text" id="apiBase" placeholder="https://your-host/prod-api" />
-  </div>
   <div class="msg err" id="err"></div>
   <div class="card">
     <form id="form">
@@ -21,7 +18,7 @@
       <input id="email" type="email" required autocomplete="email" />
       <label for="nick">Nickname (optional)</label>
       <input id="nick" type="text" maxlength="64" autocomplete="nickname" />
-      <label for="password">Password (8–72 characters)</label>
+      <label for="password">Password (8â€“72 characters)</label>
       <input id="password" type="password" required autocomplete="new-password" minlength="8" />
       <button class="btn btn--solid" type="submit">Create account</button>
     </form>
@@ -34,11 +31,6 @@
 <script src="js/portal-api.js"></script>
 <script>
 (function () {
-  var apiEl = document.getElementById('apiBase');
-  try { apiEl.value = localStorage.getItem(HanPortal.API_KEY) || ''; } catch (e) {}
-  apiEl.addEventListener('change', function () {
-    try { localStorage.setItem(HanPortal.API_KEY, apiEl.value.trim()); } catch (e) {}
-  });
   document.getElementById('form').onsubmit = function (ev) {
     ev.preventDefault();
     var err = document.getElementById('err');
@@ -49,7 +41,7 @@
       password: password.value,
     })
       .then(function () {
-        alert('Please check email for verification link. USD-only checkout applies at payment time.');
+        alert('Please check your email for a verification link.');
         window.location.href = 'account.html';
       })
       .catch(function (e) {
