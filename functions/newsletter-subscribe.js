@@ -1,4 +1,4 @@
-// MAISON HAN ¡¤ Newsletter Subscribe
+// MAISON HAN ï¿½ï¿½ Newsletter Subscribe
 // Route: POST /newsletter-subscribe
 
 export async function onRequestPost(context) {
