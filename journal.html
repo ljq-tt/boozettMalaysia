@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="index,follow"/>
+<title>Journal · MAISON HAN</title>
+<link rel="canonical" href="https://www.boozett.top/journal.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --shell:#FAF8F5;--shell-mid:#F3EDE6;--shell-deep:#EDE6DD;
+  --paper:#EDE6DD;--card:#FFFFFF;
+  --cocoa:#292420;--cocoa-70:rgba(41,36,32,.70);
+  --cocoa-40:rgba(41,36,32,.40);--cocoa-12:rgba(41,36,32,.12);
+  --line:rgba(41,36,32,.10);
+  --gold:#A07845;--gold-deep:#7E5F38;--clay:#C45E42;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:"Manrope",system-ui,sans-serif;background:var(--paper);color:var(--cocoa-70);font-size:15px;line-height:1.7;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* nav */
+.nav{
+  background:rgba(250,248,245,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  padding:0 clamp(20px,4vw,56px);
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;position:sticky;top:0;z-index:50;
+}
+.nav__back{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cocoa-40);transition:color .2s;
+}
+.nav__back:hover{color:var(--cocoa)}
+.nav__logo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:20px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--cocoa);
+  position:absolute;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:10px;
+}
+.nav__logo-mark{
+  font-family:"Shippori Mincho",serif;
+  font-size:20px;color:var(--gold);
+}
+
+/* hero */
+.hero{
+  padding:clamp(56px,8vw,100px) clamp(20px,4vw,56px) clamp(32px,5vw,56px);
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:end;gap:24px;
+}
+.hero__left{}
+.hero__eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.hero__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(52px,7vw,96px);
+  font-weight:400;color:var(--cocoa);
+  line-height:.95;letter-spacing:-.015em;
+}
+.hero__title em{font-style:italic;color:var(--gold-deep)}
+.hero__rule{width:48px;height:1px;background:var(--gold);margin:24px 0 0}
+.hero__count{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:14px;color:var(--cocoa-40);
+  white-space:nowrap;padding-bottom:8px;
+}
+
+/* divider */
+.divider{
+  border:none;border-top:1px solid var(--cocoa-12);
+  margin:0 clamp(20px,4vw,56px);
+}
+
+/* articles grid */
+.articles{
+  max-width:1280px;margin:0 auto;
+  padding:clamp(40px,5vw,72px) clamp(20px,4vw,56px) clamp(56px,8vw,100px);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(40px,5vw,64px) clamp(24px,3vw,40px);
+}
+.article{cursor:pointer;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.article:hover{transform:translateY(-4px)}
+.article__no{
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  font-size:13px;letter-spacing:.2em;color:var(--gold-deep);
+  margin-bottom:18px;
+}
+.article__img{
+  aspect-ratio:4/3;
+  margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.article__img--1{background:linear-gradient(145deg,#fef6f0,#e8ddd4)}
+.article__img--2{background:linear-gradient(145deg,#eef3ef,#d8e0db)}
+.article__img--3{background:linear-gradient(145deg,#fdf4e8,#e6d8c8)}
+.article__img-label{
+  position:absolute;bottom:16px;left:16px;
+  font-size:9px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(41,36,32,.35);
+}
+.article__cat{
+  font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold-deep);margin-bottom:10px;
+}
+.article__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(22px,2.5vw,30px);font-weight:400;
+  line-height:1.15;letter-spacing:-.005em;
+  color:var(--cocoa);margin-bottom:12px;
+}
+.article__excerpt{
+  font-size:14px;line-height:1.7;
+  color:var(--cocoa-70);margin-bottom:18px;
+}
+.article__row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:16px;border-top:1px solid var(--cocoa-12);
+}
+.article__date{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cocoa-40);
+}
+.article__read{
+  font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--clay);transition:color .25s;
+}
+.article:hover .article__read{color:var(--gold-deep)}
+
+/* coming soon placeholder */
+.coming-soon{
+  grid-column:1/-1;
+  text-align:center;
+  padding:48px 20px;
+  border:1px dashed var(--cocoa-12);
+}
+.coming-soon__char{
+  font-family:"Shippori Mincho",serif;
+  font-size:48px;color:var(--gold);opacity:.25;
+  display:block;margin-bottom:16px;
+}
+.coming-soon__text{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:18px;color:var(--cocoa-40);
+}
+
+/* newsletter strip */
+.news-strip{
+  background:var(--cocoa);
+  padding:clamp(48px,6vw,72px) clamp(20px,4vw,56px);
+  text-align:center;
+}
+.news-strip__eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(184,153,104,.7);margin-bottom:16px;
+}
+.news-strip__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(28px,3.5vw,44px);font-weight:300;
+  color:#f0e8d8;line-height:1.1;margin-bottom:10px;
+}
+.news-strip__title em{font-style:italic;font-weight:400;color:#C4985E}
+.news-strip__sub{
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:16px;
+  color:rgba(232,220,192,.45);margin-bottom:32px;
+}
+.news-strip__form{
+  display:flex;gap:0;max-width:440px;margin:0 auto;
+  border-bottom:1px solid rgba(232,220,192,.18);
+}
+.news-strip__input{
+  flex:1;background:transparent;border:none;outline:none;
+  padding:12px 0;
+  font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px;
+  color:#e8dcc0;
+}
+.news-strip__input::placeholder{color:rgba(232,220,192,.3)}
+.news-strip__btn{
+  background:none;border:none;cursor:pointer;
+  font-family:"Manrope",sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:#C45E42;padding:12px 0 12px 16px;
+  transition:color .2s;white-space:nowrap;flex-shrink:0;
+}
+.news-strip__btn:hover{color:#C4985E}
+
+/* footer */
+.foot{
+  background:var(--shell-mid);
+  border-top:1px solid var(--line);
+  padding:clamp(24px,4vw,40px) clamp(20px,4vw,56px);
+  text-align:center;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cocoa-40);
+}
+.foot em{
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  text-transform:none;letter-spacing:.1em;color:var(--cocoa-70);
+}
+.foot-links{
+  display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:center;
+  margin-top:14px;font-size:12px;
+}
+.foot-links a{color:var(--cocoa-40);letter-spacing:.06em;text-transform:none;transition:color .2s}
+.foot-links a:hover{color:var(--gold)}
+
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(56px);
+  background:var(--cocoa);color:#fffefb;
+  padding:12px 24px;border-radius:999px;
+  font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  opacity:0;transition:transform .4s ease,opacity .4s ease;
+  pointer-events:none;z-index:999;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+@media(max-width:900px){
+  .articles{grid-template-columns:1fr 1fr;gap:40px 24px}
+  .hero{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .articles{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- nav -->
+<nav class="nav">
+  <a href="/" class="nav__back">← Back to Maison Han</a>
+  <a href="/" class="nav__logo">
+    <span class="nav__logo-mark">漢</span>
+    Maison Han
+  </a>
+  <span></span>
+</nav>
+
+<!-- hero -->
+<div class="hero">
+  <div class="hero__left">
+    <p class="hero__eyebrow">From the cellar · 酒志</p>
+    <h1 class="hero__title">The <em>Journal</em></h1>
+    <span class="hero__rule"></span>
+  </div>
+  <div class="hero__count">3 dispatches</div>
+</div>
+
+<hr class="divider"/>
+
+<!-- articles -->
+<div class="articles">
+
+  <article class="article">
+    <div class="article__no">№ 014</div>
+    <div class="article__img article__img--1">
+      <span class="article__img-label">Provenance</span>
+    </div>
+    <div class="article__cat">— Provenance · 溯源</div>
+    <h2 class="article__title">How to read the seal of a 1988 Moutai</h2>
+    <p class="article__excerpt">Three details separate a genuine pre-merger bottling from the seventy percent of fakes circulating in Asia. Not all are visible to the eye.</p>
+    <div class="article__row">
+      <span class="article__date">March 2026</span>
+      <span class="article__read">Read →</span>
+    </div>
+  </article>
+
+  <article class="article">
+    <div class="article__no">№ 013</div>
+    <div class="article__img article__img--2">
+      <span class="article__img-label">Tasting</span>
+    </div>
+    <div class="article__cat">— Tasting · 品鉴</div>
+    <h2 class="article__title">Mizunara, the wood that taught Japan to wait</h2>
+    <p class="article__excerpt">Why a single Japanese oak species turns honest barley into something the Scots, gracious as ever, simply concede they cannot make.</p>
+    <div class="article__row">
+      <span class="article__date">February 2026</span>
+      <span class="article__read">Read →</span>
+    </div>
+  </article>
+
+  <article class="article">
+    <div class="article__no">№ 012</div>
+    <div class="article__img article__img--3">
+      <span class="article__img-label">Cellar</span>
+    </div>
+    <div class="article__cat">— Cellar · 私窖</div>
+    <h2 class="article__title">A short defense of the unopened bottle</h2>
+    <p class="article__excerpt">Some pours are meant to be drunk. Some are meant to outlive their owners. We make the case for both, and the geometry between them.</p>
+    <div class="article__row">
+      <span class="article__date">January 2026</span>
+      <span class="article__read">Read →</span>
+    </div>
+  </article>
+
+  <div class="coming-soon">
+    <span class="coming-soon__char">筆</span>
+    <p class="coming-soon__text">More dispatches from the cellar — coming soon.</p>
+  </div>
+
+</div>
+
+<!-- newsletter strip -->
+<div class="news-strip">
+  <p class="news-strip__eyebrow">Cellar Letter</p>
+  <h2 class="news-strip__title">A quarterly <em>letter,</em><br>from the cellar master.</h2>
+  <p class="news-strip__sub">New arrivals, vintage notes, the occasional glass-side correspondence.</p>
+  <form class="news-strip__form" onsubmit="handleNews(event)">
+    <input type="email" class="news-strip__input" id="newsInput" required placeholder="Your address" />
+    <button type="submit" class="news-strip__btn">Subscribe →</button>
+  </form>
+</div>
+
+<!-- footer -->
+<footer class="foot">
+  <em>Maison Han</em> · A House of Rare Pours
+  <div class="foot-links">
+    <a href="/">Home</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="shipping.html">Shipping</a>
+    <a href="returns.html">Returns</a>
+    <a href="cookies.html">Cookies</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function handleNews(e){
+  e.preventDefault();
+  var email = document.getElementById('newsInput').value.trim();
+  if(!email) return;
+  fetch('/newsletter-subscribe',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email})
+  })
+  .then(function(r){return r.json()})
+  .then(function(d){
+    document.getElementById('newsInput').value='';
+    showToast(d.success ? 'You are on the list.' : (d.error||'Something went wrong.'));
+  })
+  .catch(function(){ showToast('Connection error. Please try again.') });
+}
+var _tt;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent='— '+msg+' —';
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt=setTimeout(function(){t.classList.remove('show')},2400);
+}
+</script>
+</body>
+</html>

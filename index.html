@@ -2358,6 +2358,186 @@ body.nav-mob-open{overflow:hidden}
   to{opacity:1;transform:translateY(0) scale(1)}
 }
 #portalError:not(:empty){display:block!important}
+.footer__col li a {
+  font-family:"Cormorant Garamond",serif;
+  font-size:15px;
+  color:var(--bone-mute);
+  transition:color .3s;
+  text-decoration:none;
+  display:block;
+}
+.footer__col li a:hover { color:var(--bone) }
+/* Contact Modal */
+.contact-overlay{
+  position:fixed;inset:0;z-index:500;
+  display:none;align-items:center;justify-content:center;
+  padding:24px;
+  background:rgba(41,36,32,.52);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.contact-overlay.open{display:flex}
+.contact-modal{
+  position:relative;
+  max-width:520px;width:100%;
+  background:var(--shell);
+  border:1px solid var(--line);
+  box-shadow:0 32px 80px rgba(41,36,32,.18);
+  overflow:hidden;
+  animation:contactSlideUp .45s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes contactSlideUp{
+  from{opacity:0;transform:translateY(24px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.contact-modal__accent{
+  height:3px;
+  background:linear-gradient(90deg,var(--gold) 0%,#C4985E 50%,var(--gold) 100%);
+}
+.contact-modal__head{
+  padding:28px 32px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+}
+.contact-modal__eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.contact-modal__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:24px;font-weight:400;color:var(--bone);
+  line-height:1.1;margin:0;
+}
+.contact-modal__title em{font-style:italic;color:var(--gold)}
+.contact-modal__close{
+  flex-shrink:0;width:34px;height:34px;margin-top:-2px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:2px;
+  background:transparent;cursor:pointer;
+  color:var(--bone-faint);font-size:14px;
+  transition:color .2s,background .2s,border-color .2s;
+  font-family:"Manrope",sans-serif;
+}
+.contact-modal__close:hover{color:var(--bone);background:var(--shell-deep);border-color:var(--bone-hair)}
+.contact-modal__body{padding:24px 32px 32px}
+.contact-modal__msg{
+  font-size:12px;padding:10px 14px;border-radius:2px;
+  margin-bottom:16px;display:none;
+}
+.contact-modal__msg.err{
+  display:block;
+  background:rgba(196,94,66,.06);
+  border:1px solid rgba(196,94,66,.28);
+  color:var(--clay);
+}
+.contact-modal__msg.ok{
+  display:block;
+  background:rgba(91,113,103,.07);
+  border:1px solid rgba(91,113,103,.25);
+  color:var(--sage);
+  font-family:"Cormorant Garamond",serif;
+  font-style:italic;font-size:15px;text-align:center;
+  padding:20px;
+}
+.contact-field{margin-bottom:16px}
+.contact-field label{
+  display:block;
+  font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--bone-mute);margin-bottom:7px;
+}
+.contact-field input,
+.contact-field select,
+.contact-field textarea{
+  width:100%;padding:12px 14px;
+  border:1px solid var(--bone-hair);
+  background:var(--card);color:var(--bone);
+  font-family:"Manrope",sans-serif;font-size:14px;
+  border-radius:2px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus{
+  border-color:rgba(160,120,69,.55);
+  box-shadow:0 0 0 3px rgba(160,120,69,.11);
+}
+.contact-field input::placeholder,
+.contact-field textarea::placeholder{color:var(--bone-faint)}
+.contact-field select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237E5F38'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  cursor:pointer;
+}
+.contact-field textarea{resize:vertical;min-height:88px;line-height:1.55}
+.contact-field-row{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.contact-submit{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:14px 20px;margin-top:8px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-deep) 100%);
+  border:none;border-radius:2px;
+  color:#fffefb;
+  font-family:"Manrope",sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 8px 28px rgba(160,120,69,.26);
+  transition:filter .2s,box-shadow .2s,transform .15s;
+}
+.contact-submit:hover{
+  filter:brightness(1.07);
+  box-shadow:0 12px 36px rgba(160,120,69,.36);
+  transform:translateY(-1px);
+}
+.contact-submit:active{transform:translateY(0)}
+.contact-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+.contact-note{
+  margin-top:14px;text-align:center;
+  font-family:"Cormorant Garamond",serif;font-style:italic;
+  font-size:12px;color:var(--bone-faint);
+}
+@media(max-width:560px){
+  .contact-field-row{grid-template-columns:1fr}
+  .contact-modal__body{padding:20px 20px 28px}
+  .contact-modal__head{padding:22px 20px 16px}
+}
+/* Contact Modal */
+.contact-overlay{
+  position:fixed;inset:0;z-index:500;
+  display:none;align-items:center;justify-content:center;
+  padding:24px;
+  background:rgba(41,36,32,.52);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.contact-overlay.open{display:flex}
+.contact-modal{position:relative;max-width:520px;width:100%;background:var(--shell);border:1px solid var(--line);box-shadow:0 32px 80px rgba(41,36,32,.18);overflow:hidden;animation:contactSlideUp .45s cubic-bezier(.16,1,.3,1) both;}
+@keyframes contactSlideUp{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.contact-modal__accent{height:3px;background:linear-gradient(90deg,var(--gold) 0%,#C4985E 50%,var(--gold) 100%)}
+.contact-modal__head{padding:28px 32px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.contact-modal__eyebrow{font-size:10px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.contact-modal__title{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:400;color:var(--bone);line-height:1.1;margin:0}
+.contact-modal__title em{font-style:italic;color:var(--gold)}
+.contact-modal__close{flex-shrink:0;width:34px;height:34px;margin-top:-2px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:2px;background:transparent;cursor:pointer;color:var(--bone-faint);font-size:14px;transition:color .2s,background .2s,border-color .2s;font-family:"Manrope",sans-serif}
+.contact-modal__close:hover{color:var(--bone);background:var(--shell-deep);border-color:var(--bone-hair)}
+.contact-modal__body{padding:24px 32px 32px}
+.contact-modal__msg{font-size:12px;padding:10px 14px;border-radius:2px;margin-bottom:16px;display:none}
+.contact-modal__msg.err{display:block;background:rgba(196,94,66,.06);border:1px solid rgba(196,94,66,.28);color:var(--clay)}
+.contact-modal__msg.ok{display:block;background:rgba(91,113,103,.07);border:1px solid rgba(91,113,103,.25);color:var(--sage);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;text-align:center;padding:20px}
+.contact-field{margin-bottom:16px}
+.contact-field label{display:block;font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-mute);margin-bottom:7px}
+.contact-field input,.contact-field select,.contact-field textarea{width:100%;padding:12px 14px;border:1px solid var(--bone-hair);background:var(--card);color:var(--bone);font-family:"Manrope",sans-serif;font-size:14px;border-radius:2px;outline:none;transition:border-color .2s,box-shadow .2s}
+.contact-field input:focus,.contact-field select:focus,.contact-field textarea:focus{border-color:rgba(160,120,69,.55);box-shadow:0 0 0 3px rgba(160,120,69,.11)}
+.contact-field input::placeholder,.contact-field textarea::placeholder{color:var(--bone-faint)}
+.contact-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237E5F38'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.contact-field textarea{resize:vertical;min-height:88px;line-height:1.55}
+.contact-field-row{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.contact-submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 20px;margin-top:8px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-deep) 100%);border:none;border-radius:2px;color:#fffefb;font-family:"Manrope",sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 28px rgba(160,120,69,.26);transition:filter .2s,box-shadow .2s,transform .15s}
+.contact-submit:hover{filter:brightness(1.07);box-shadow:0 12px 36px rgba(160,120,69,.36);transform:translateY(-1px)}
+.contact-submit:active{transform:translateY(0)}
+.contact-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+.contact-note{margin-top:14px;text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:12px;color:var(--bone-faint)}
+@media(max-width:560px){.contact-field-row{grid-template-columns:1fr}.contact-modal__body{padding:20px 20px 28px}.contact-modal__head{padding:22px 20px 16px}}
 </style>
 </head>
 <body>
@@ -2930,7 +3110,7 @@ body.nav-mob-open{overflow:hidden}
         <span class="rule" style="background:var(--gold-deep)"></span>
         <h2 class="display provenance__title" data-i18n="prov.title">A bottle is only as<br>true as its journey.</h2>
         <p class="provenance__lead" data-i18n="prov.lead">Counterfeit Moutai outsells the real thing on the open market. We refuse the open market.</p>
-        <a href="#" class="btn btn--ink" data-i18n="prov.cta">Read the Provenance Standard <span class="arr">→</span></a>
+        <button type="button" class="btn btn--ink" onclick="openContact('Provenance · 溯源','了解 <em>溯源标准</em>')" data-i18n="prov.cta">阅读溯源标准 <span class="arr">→</span></button>
       </div>
       <div class="provenance__list reveal">
         <div class="prov-item">
@@ -3016,7 +3196,7 @@ body.nav-mob-open{overflow:hidden}
       </div>
     </div>
 
-    <a href="#" class="btn btn--gold" data-i18n="cellar.cta">Request Introduction <span class="arr">→</span></a>
+    <button type="button" class="btn btn--gold" onclick="openContact('Private Cellar','申请 <em>引荐</em>')" data-i18n="cellar.cta">申请引荐 <span class="arr">→</span></button>
   </div>
 </section>
 
@@ -3027,7 +3207,7 @@ body.nav-mob-open{overflow:hidden}
   <div class="container">
     <div class="journal__head reveal">
       <h2 class="display journal__title" data-i18n="journal.title">From the <em>Journal</em></h2>
-      <a href="#" class="btn btn--ink" data-i18n="journal.cta">Read All <span class="arr">→</span></a>
+      <a href="journal.html" class="btn btn--ink" data-i18n="journal.cta">Read All <span class="arr">→</span></a>
     </div>
     <div class="journal__grid">
       <article class="article reveal">
@@ -3091,38 +3271,38 @@ body.nav-mob-open{overflow:hidden}
       <div class="footer__col">
         <h4 data-i18n="footer.shop">Shop</h4>
         <ul>
-          <li data-i18n="filter.baijiu">Chinese baijiu</li>
-          <li data-i18n="filter.whisky">Whisky</li>
-          <li data-i18n="filter.wine">Wine</li>
-          <li data-i18n="filter.sparkling">Champagne</li>
-          <li data-i18n="filter.cognac">Cognac</li>
+          <li><a href="/#collection" data-cat-link="baijiu" data-i18n="filter.baijiu">Chinese baijiu</a></li>
+          <li><a href="/#collection" data-cat-link="whisky" data-i18n="filter.whisky">Whisky</a></li>
+          <li><a href="/#collection" data-cat-link="wine" data-i18n="filter.wine">Wine</a></li>
+          <li><a href="/#collection" data-cat-link="sparkling" data-i18n="filter.sparkling">Champagne</a></li>
+          <li><a href="/#collection" data-cat-link="others" data-i18n="filter.cognac">Cognac</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4 data-i18n="footer.house">The House</h4>
         <ul>
-          <li data-i18n="footer.story">Our Story</li>
-          <li data-i18n="footer.standard">Provenance Standard</li>
-          <li data-i18n="footer.cellar">Private Cellar</li>
-          <li data-i18n="footer.journal">Journal</li>
+          <li><a href="/#provenance" data-i18n="footer.story">Our Story</a></li>
+          <li><a href="/#provenance" data-i18n="footer.standard">Provenance Standard</a></li>
+          <li><a href="/#cellar" data-i18n="footer.cellar">Private Cellar</a></li>
+          <li><a href="journal.html" data-i18n="footer.journal">Journal</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4 data-i18n="footer.help">Service</h4>
         <ul>
-          <li data-i18n="footer.shipping">Shipping &amp; Customs</li>
-          <li data-i18n="footer.payment">Payment &amp; Escrow</li>
-          <li data-i18n="footer.returns">Returns Policy</li>
-          <li data-i18n="footer.contact">Concierge</li>
+          <li><a href="shipping.html" data-i18n="footer.shipping">Shipping &amp; Customs</a></li>
+          <li><a href="payment.html" data-i18n="footer.payment">Payment &amp; Escrow</a></li>
+          <li><a href="returns.html" data-i18n="footer.returns">Returns Policy</a></li>
+          <li data-i18n="footer.contact" style="cursor:pointer" onclick="openContact('Concierge · 管家联络','联系 <em>管家</em>')">Concierge</li>
         </ul>
       </div>
       <div class="footer__col">
         <h4 data-i18n="footer.legal">Legal</h4>
         <ul>
-          <li data-i18n="footer.terms">Terms</li>
-          <li data-i18n="footer.privacy">Privacy</li>
-          <li data-i18n="footer.compliance">Import Compliance</li>
-          <li data-i18n="footer.cookies">Cookies</li>
+          <li><a href="terms.html" data-i18n="footer.terms">Terms</a></li>
+          <li><a href="privacy.html" data-i18n="footer.privacy">Privacy</a></li>
+          <li><a href="compliance.html" data-i18n="footer.compliance">Import Compliance</a></li>
+          <li><a href="cookies.html" data-i18n="footer.cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
@@ -3280,6 +3460,7 @@ en:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"RARE POURS · SEALED TO PROVENANCE","age.sub":"This house serves only those of legal drinking age in their country of residence.","age.yearPrompt":"Please enter your year of birth:","age.remember":"Remember this device","age.disclaimer":"You confirm that you meet the minimum age to purchase alcohol where you live (this site requires 21+). Purchases are for personal use only. Selecting Remember stores only a confirmation flag in this browser so we may skip this step later — never your birth year.","age.privacyLink":"Privacy summary ·","age.privacyBody":"We collect only what is necessary to operate the storefront and Stripe checkout (for example cart state and anonymous age confirmation preferences). Messages you send via concierge flows are governed by applicable law. Replace this text with your final policy URL or counsel-approved copy when launching.","age.continue":"Continue","age.no":"Decline","age.footer":"DRINK WITH INTENTION · WE DO NOT SELL TO MINORS","age.errorYear":"Please enter a valid four-digit birth year.","age.errorYoung":"You must be at least 21 to enter Maison Han.",
   "top.1":"Hand-Verified Provenance","top.2":"Insured Worldwide Delivery","top.3":"Private Cellar Concierge",
   "nav.collection":"Collection","nav.discover":"Discover","nav.baijiu":"Baijiu","nav.whisky":"Whisky","nav.cellar":"Cellar","nav.journal":"Journal","nav.orders":"Orders","nav.account":"Account","nav.search":"Search","nav.cart":"Cart","nav.menu_aria":"Open navigation menu","nav.menu_title":"Navigate","nav.menu_close":"Close",
+  "contact.name":"Name","contact.email":"Email","contact.phone":"Phone (optional)","contact.service":"Interested service","contact.service.placeholder":"Please select","contact.service.cellar":"Private Cellar","contact.service.sourcing":"Rare Sourcing","contact.service.tasting":"House Tasting","contact.service.gift":"Gift Concierge","contact.service.other":"Other","contact.message":"Message","contact.submit":"Submit request →","contact.note":"Our concierge team will contact you within 1–2 business days"
   "hero.no":"Living well · Drinking better","hero.l1":"Pour better","hero.l2":"moments, <em>not just</em>","hero.l3":"better bottles.",
   "hero.tick1":"Dinner-party Burgundy","hero.tick2":"Gift-grade Japanese whisky","hero.tick3":"Celebration Champagne","hero.tick4":"Vintage baijiu finds","hero.tick5":"Chilled sake Fridays","hero.tick6":"Late-night Cognac","hero.sub":"Curated baijiu, whisky, Champagne &amp; wine with traceable provenance — presented in a lighter, sunnier Maison Han tone.","hero.cta1":"Shop the cellar","hero.cta2":"Explore moods",
   "guides.eyebrow":"Curated moods","guides.title":"Shop by <em>story,</em><br />not showroom.","guides.lead":"Choose a doorway into flavour — everything here is something we pour at our own table.","guides.shop":"Browse lane →",
@@ -3330,6 +3511,7 @@ en:{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本馆仅服务于所在国家或地区已达法定饮酒年龄者。","age.yearPrompt":"请输入出生年份（四位）：","age.remember":"在本设备记住「已通过」确认","age.disclaimer":"您确认在您所在地已达可合法购买酒类之年龄（本站要求年满 21 周岁）。所选商品仅供个人合理使用。勾选「记住」时，我们仅在该浏览器写入匿名通关标记，恕不储存您的出生年份。","age.privacyLink":"隐私说明摘要 ·","age.privacyBody":"本前台仅留存运营独立站所需之最少数据（匿名年龄确认偏好、购物车与 Stripe 结算流程相关）。正式上线前请以法务审定的隐私政策替换本段示意文案。","age.continue":"继续","age.no":"离开","age.footer":"有意识地饮酒 · 绝不向未成年人销售","age.errorYear":"请输入有效的四位出生年份。","age.errorYoung":"须年满 21 周岁方可进入本馆线上橱窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保送达","top.3":"私人酒窖管家",
   "nav.collection":"典藏","nav.discover":"主题导购","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒志","nav.orders":"我的订单","nav.account":"账户","nav.search":"搜寻","nav.cart":"酒篮","nav.menu_aria":"打开主导航菜单","nav.menu_title":"导航","nav.menu_close":"关闭",
+  "contact.name":"姓名","contact.email":"邮箱","contact.phone":"电话（选填）","contact.service":"感兴趣的服务","contact.service.placeholder":"请选择","contact.service.cellar":"私人酒窖","contact.service.sourcing":"稀有定制采购","contact.service.tasting":"私厅品鉴","contact.service.gift":"礼赠管家","contact.service.other":"其他","contact.message":"留言","contact.submit":"提交申请 →","contact.note":"管家团队将在 1–2 个工作日内与您联系"
   "hero.no":"认真对待生活 · 也认真对待酒杯","hero.l1":"倒出更好的","hero.l2":"时光，而不只是","hero.l3":"更贵的酒瓶。","hero.tick1":"晚宴上的勃艮第","hero.tick2":"可当礼物的日系威士忌","hero.tick3":"值得开瓶的香槟","hero.tick4":"家族窖藏陈年白酒","hero.tick5":"冰爽清酒的周五","hero.tick6":"深夜的干邑对白","hero.sub":"茅台、威士忌、香槟与红葡萄酒——仍可溯源甄选，以更轻盈明快的方式摆上你的餐桌。","hero.cta1":"进店选酒",  "hero.cta2":"按心情逛逛",
   "guides.eyebrow":"主题甄选","guides.title":"先听 <em>故事，</em><br />再逛酒柜。","guides.lead":"六个入口六种心情——都是我们会倒给挚友尝的那条路。","guides.shop":"进店看看 →",
   "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"苏格兰到九州，波本到塔斯马尼亚——慢酌小酌与豪气礼赠都能兼顾。","guides.w.brands":"代表之选 · Yamazaki · Macallan · Hibiki · Karuizawa 气质限量",
@@ -3379,6 +3561,7 @@ en:{
   "age.region":"全球","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀世甄选 · 封藏溯源","age.sub":"本館僅服務所在國家或地區已達法定飲酒年齡者。","age.yearPrompt":"請輸入出生年份（四位）：","age.remember":"在此裝置記住「已通過」確認","age.disclaimer":"您確認在您所在地已達可合法購買酒類之年齡（本站要求年滿 21 周歲）。所選商品僅供個人合理使用。勾選「記住」時，我們僅在瀏覽器寫入匿名通關標記，恕不儲存您的出生年份。","age.privacyLink":"隱私說明摘要 ·","age.privacyBody":"此前台僅留存營運獨立站所需之最少數據（匿名年齡確認偏好、購物車與 Stripe 結算流程）。正式上線前請以法務核定之私隱政策替換本段示意文案。","age.continue":"繼續","age.no":"離開","age.footer":"有意識地飲酒 · 絕不向未成年人銷售","age.errorYear":"請輸入有效的四位出生年份。","age.errorYoung":"須年滿 21 周歲方可進入本館線上櫥窗。",
   "top.1":"逐瓶溯源","top.2":"全球承保遞送","top.3":"私人酒窖管家",
   "nav.collection":"典藏","nav.discover":"主題導購","nav.baijiu":"白酒","nav.whisky":"威士忌","nav.cellar":"私窖","nav.journal":"酒誌","nav.orders":"我的訂單","nav.account":"帳戶","nav.search":"搜尋","nav.cart":"酒籃","nav.menu_aria":"開啟主選單","nav.menu_title":"導覽","nav.menu_close":"關閉",
+  "contact.name":"姓名","contact.email":"電子郵件","contact.phone":"電話（選填）","contact.service":"感興趣的服務","contact.service.placeholder":"請選擇","contact.service.cellar":"私人酒窖","contact.service.sourcing":"稀有定制採購","contact.service.tasting":"私廳品鑑","contact.service.gift":"禮贈管家","contact.service.other":"其他","contact.message":"留言","contact.submit":"提交申請 →","contact.note":"管家團隊將在 1–2 個工作日內與您聯繫"
   "hero.no":"好好生活 · 也好好舉杯","hero.l1":"倒出更好的","hero.l2":"片刻，而不只是","hero.l3":"更昂貴的酒標。","hero.tick1":"晚宴上的布根地","hero.tick2":"當禮物也體面的日系威士忌","hero.tick3":"值得一開的香檳","hero.tick4":"家族窖藏的陳年白酒","hero.tick5":"冰鎮清酒的星期五","hero.tick6":"深夜對坐干邑","hero.sub":"茅台、威士忌、香檳與葡萄酒——仍然逐瓶溯源，但用更輕快溫暖的漢館口吻介紹給你。","hero.cta1":"進店選酒","hero.cta2":"依心情逛逛",
   "guides.eyebrow":"主題精選","guides.title":"先選 <em>故事，</em><br />再逛酒櫃。","guides.lead":"六道入口、六種心境——也都是我們會倒給挚友的那條路。","guides.shop":"進店看看 →",
   "guides.w.cat":"威士忌世界","guides.w.title":"探索世界威士忌","guides.w.body":"蘇格蘭到九州，波本島到塔斯馬尼亞——慢飲與送禮都能找到落點。","guides.w.brands":"代表線索 · Yamazaki · Macallan · Hibiki · Karuizawa 叙事",
@@ -3429,6 +3612,7 @@ ja:{
   "age.region":"WORLDWIDE","age.wordmark":"Maison Han","age.wordmarkHan":"漢館","age.tagline":"稀少な一杯 · 来歴を封じる館","age.sub":"当館は、お客様の居住国における法定飲酒年齢に達した方のみにお仕えいたします。","age.yearPrompt":"生まれ年を4桁でご入力ください。","age.remember":"この端末では次回から入力を省略","age.disclaimer":"お客様の地域で酒類購入に必要な年齢（当サイトでは21歳以上）を満たすこと、および個人利用のみを確認します。「記憶される」選択時、このブラウザには通過確認フラグのみを保存します。出生年そのものは保存しません。","age.privacyLink":"プライバシー概要 ·","age.privacyBody":"本方針文言はひな型です。本番運用時は適用法令に準拠した確定ポリシーに差し替えてください。","age.continue":"続ける","age.no":"辞退する","age.footer":"心意を持って飲むこと · 未成年への提供なし","age.errorYear":"4桁の妥当な出生年をご入力ください。","age.errorYoung":"21歳未満の方はご入館いただけません。",
   "top.1":"一瓶ごとの来歴確認","top.2":"全世界保険付き配送","top.3":"プライベート·コンシェルジュ",
   "nav.collection":"コレクション","nav.discover":"テーマ","nav.baijiu":"白酒","nav.whisky":"ウイスキー","nav.cellar":"私蔵庫","nav.journal":"酒誌","nav.orders":"注文履歴","nav.account":"アカウント","nav.search":"検索","nav.cart":"酒籠","nav.menu_aria":"ナビゲーションメニューを開く","nav.menu_title":"ナビ","nav.menu_close":"閉じる",
+  "contact.name":"お名前","contact.email":"メール","contact.phone":"電話（任意）","contact.service":"ご希望のサービス","contact.service.placeholder":"選択してください","contact.service.cellar":"プライベートセラー","contact.service.sourcing":"レア仕入れ","contact.service.tasting":"ハウステイスティング","contact.service.gift":"ギフトコンシェルジュ","contact.service.other":"その他","contact.message":"メッセージ","contact.submit":"申請を送信 →","contact.note":"コンシェルジュチームが 1〜2 営業日以内にご連絡します"
   "hero.no":"暮らしと、乾杯の両方に誠実に","hero.l1":"もっと心地よい","hero.l2":"瞬間のために、単に","hero.l3":"高いボトルだけでなく。","hero.tick1":"晩餐のブルゴーニュ","hero.tick2":"ギフトに似合う日本ウイスキー","hero.tick3":"理由のあるシャンパーニュ","hero.tick4":"家族セラーの貴州老酒","hero.tick5":"冷やした日本酒の金曜","hero.tick6":"深夜のコニャック","hero.sub":"茅台、ウイスキー、シャンパン、ワインまで——来歴は明確に、トーンはより明るくライフスタイル寄りに。","hero.cta1":"セラーを見る","hero.cta2":"ムードで探す",
   "guides.eyebrow":"テーマ別","guides.title":"<em>ストーリー</em>から入る<br />買い物。","guides.lead":"扉を六つ用意しました。すべて、私たちも自宅で友人に注ぎたいレーンです。","guides.shop":"レーンを見る →",
   "guides.w.cat":"麦芽の旅","guides.w.title":"世界のウイスキーを探る","guides.w.body":"アイラから九州、ケンタッキーまで。夜更かし用から贈答まで。","guides.w.brands":"代表ネーム · Yamazaki · Macallan · Hibiki · Karuizawa級",
