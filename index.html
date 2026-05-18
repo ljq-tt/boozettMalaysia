@@ -1099,8 +1099,8 @@ body.nav-mob-open{overflow:hidden}
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:48px 32px;
+  grid-template-columns:repeat(4,1fr);
+  gap:28px 18px;
 }
 .grid-loading{
   grid-column:1/-1;
@@ -1168,7 +1168,7 @@ body.nav-mob-open{overflow:hidden}
 .product:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover)}
 .product__visual{
   position:relative;
-  aspect-ratio:4/5;
+  aspect-ratio:3/4;
   overflow:hidden;
   margin-bottom:20px;
   background:var(--ink-2);
@@ -1238,7 +1238,7 @@ body.nav-mob-open{overflow:hidden}
 .product__name{
   font-family:"Cormorant Garamond",serif;
   font-weight:400;
-  font-size:24px;
+  font-size:18px;
   line-height:1.15;
   letter-spacing:-.005em;
   margin-bottom:6px;
@@ -2125,7 +2125,7 @@ body.nav-mob-open{overflow:hidden}
   .nav__center{display:none}
 }
 @media(max-width:980px){
-  .grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:20px 14px}
   .section-head{grid-template-columns:1fr;gap:24px}
   .provenance__inner{grid-template-columns:1fr;gap:48px}
   .guides__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -3497,7 +3497,7 @@ let PRODUCTS = [];
 /** true after /list-products returned HTTP 200 + JSON（含空数组 []）*/
 let catalogFetchSucceeded = false;
 
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 16;
 
 function normalizeStorefrontProducts(rows){
   if(!Array.isArray(rows))return rows;
