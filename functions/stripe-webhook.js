@@ -93,6 +93,12 @@ export async function onRequestPost(context) {
     const lang = session.metadata?.lang || 'en';
     const metadata = session.metadata || {};
 
+    // 收货信息
+    const shipping = session.shipping_details || session.customer_details || {};
+    const recipientName = shipping.name || name || '';
+    const recipientPhone = session.customer_details?.phone || '';
+    const shippingAddress = shipping.address ? JSON.stringify(shipping.address) : null;
+
     // 1. 建档逻辑
     if (email && !existingCustomerId) {
       try {
@@ -139,7 +145,28 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 2. 写入 TaTa 订单记录
+    // 2. 获取商品列表
+    let lineItemsJson = null;
+    try {
+      const liRes = await fetch(
+        `https://api.stripe.com/v1/checkout/sessions/${sessionId}/line_items?limit=100`,
+        { headers: { Authorization: `Bearer ${secretKey}` } }
+      );
+      const liData = await liRes.json();
+      if (liData.data) {
+        const items = liData.data.map(item => ({
+          name: item.description,
+          qty: item.quantity,
+          amount: item.amount_total,
+          currency: item.currency,
+        }));
+        lineItemsJson = JSON.stringify(items);
+      }
+    } catch (err) {
+      console.error('Line items fetch failed:', err);
+    }
+
+    // 3. 写入 TaTa 订单记录
     if (apiBase) {
       try {
         const mhMemberId = metadata.mh_member_id ? Number(metadata.mh_member_id) : null;
@@ -151,6 +178,12 @@ export async function onRequestPost(context) {
           currency: (session.currency || 'usd').toLowerCase(),
           paymentStatus: session.payment_status || 'paid',
           metadata: metadata,
+          recipientName: recipientName,
+          recipientPhone: recipientPhone,
+          shippingAddress: shippingAddress,
+          lineItemsJson: lineItemsJson,
+          lang: lang,
+          buyerEmail: email || '',
         };
         const orderRes = await fetch(`${apiBase}/storefront/webhook/order`, {
           method: 'POST',
@@ -164,28 +197,17 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 3. 发确认邮件
+    // 4. 发确认邮件
     if (email && resendKey) {
       try {
         const amount = amountTotal
-          ? (amountTotal / 100).toLocaleString('en-US', {
-              style: 'currency',
-              currency,
-            })
+          ? (amountTotal / 100).toLocaleString('en-US', { style: 'currency', currency })
           : '-';
 
         const firstName = name ? name.split(/\s+/)[0] : 'Valued Guest';
         const copy = EMAIL_COPY[lang] || EMAIL_COPY.en;
 
-        const html = buildEmailHtml({
-          firstName,
-          email,
-          sessionId,
-          amount,
-          currency,
-          lang,
-          copy,
-        });
+        const html = buildEmailHtml({ firstName, email, sessionId, amount, currency, lang, copy });
 
         const emailRes = await fetch('https://api.resend.com/emails', {
           method: 'POST',
@@ -226,94 +248,43 @@ function buildEmailHtml({ firstName, email, sessionId, amount, currency, lang, c
 </head>
 <body style="margin:0;padding:0;background:#FAF8F5;font-family:'Helvetica Neue',Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF8F5;padding:48px 0;">
-  <tr>
-    <td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
-
-        <!-- Header -->
-        <tr>
-          <td align="center" style="padding-bottom:40px;">
-            <p style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:400;letter-spacing:0.2em;color:#292420;">MAISON HAN</p>
-            <p style="margin:6px 0 0;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#A07845;">${copy.tagline}</p>
-          </td>
-        </tr>
-
-        <!-- Card -->
-        <tr>
-          <td style="background:#FFFFFF;border:1px solid rgba(41,36,36,0.09);border-radius:16px;padding:48px 40px;">
-
-            <!-- Check icon -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td align="center" style="padding-bottom:28px;">
-                  <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(160,120,69,0.35);background:rgba(160,120,69,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:56px;color:#A07845;">&#10003;</div>
-                </td>
-              </tr>
-            </table>
-
-            <!-- Title -->
-            <p style="margin:0 0 8px;text-align:center;font-family:Georgia,serif;font-size:36px;font-weight:400;color:#292420;letter-spacing:-0.01em;">${copy.title(firstName)}</p>
-            <p style="margin:0 0 32px;text-align:center;font-family:Georgia,serif;font-style:italic;font-size:17px;color:rgba(41,36,36,0.72);">${copy.sub}</p>
-
-            <!-- Divider -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="padding-bottom:32px;">
-                  <div style="width:48px;height:1px;background:#A07845;margin:0 auto;"></div>
-                </td>
-              </tr>
-            </table>
-
-            <!-- Body -->
-            <p style="margin:0 0 32px;text-align:center;font-size:14px;line-height:1.8;color:rgba(41,36,36,0.72);">${copy.body}</p>
-
-            <!-- Order details -->
-            <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(41,36,36,0.09);border-radius:10px;background:#FAF8F5;margin-bottom:32px;">
-              <tr>
-                <td style="padding:20px 24px;">
-                  <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#A07845;">${copy.orderRef}</p>
-                  <p style="margin:0;font-family:Georgia,serif;font-size:14px;color:rgba(41,36,36,0.72);word-break:break-all;">${sessionId}</p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:0 24px 20px;">
-                  <div style="height:1px;background:rgba(41,36,36,0.09);margin-bottom:20px;"></div>
-                  <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#A07845;">${copy.amountCharged}</p>
-                  <p style="margin:0;font-family:Georgia,serif;font-size:20px;color:#292420;">${amount} ${currency}</p>
-                </td>
-              </tr>
-            </table>
-
-            <!-- CTA -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td align="center" style="padding-bottom:32px;">
-                  <a href="https://www.boozett.top"
-                     style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#A07845,#7E5F38);color:#fffefb;text-decoration:none;border-radius:999px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;">
-                    ${copy.cta}
-                  </a>
-                </td>
-              </tr>
-            </table>
-
-            <!-- Footer note -->
-            <p style="margin:0;text-align:center;font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(41,36,36,0.4);line-height:1.7;">${copy.footer(email)}</p>
-
-          </td>
-        </tr>
-
-        <!-- Bottom -->
-        <tr>
-          <td align="center" style="padding-top:32px;">
-            <p style="margin:0;font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(41,36,36,0.35);">
-              &copy; MMXXVI MAISON HAN &middot; Drink with intention
-            </p>
-          </td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
+  <tr><td align="center">
+    <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+      <tr><td align="center" style="padding-bottom:40px;">
+        <p style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:400;letter-spacing:0.2em;color:#292420;">MAISON HAN</p>
+        <p style="margin:6px 0 0;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#A07845;">${copy.tagline}</p>
+      </td></tr>
+      <tr><td style="background:#FFFFFF;border:1px solid rgba(41,36,36,0.09);border-radius:16px;padding:48px 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td align="center" style="padding-bottom:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(160,120,69,0.35);background:rgba(160,120,69,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:56px;color:#A07845;">&#10003;</div>
+          </td></tr>
+        </table>
+        <p style="margin:0 0 8px;text-align:center;font-family:Georgia,serif;font-size:36px;font-weight:400;color:#292420;">${copy.title(firstName)}</p>
+        <p style="margin:0 0 32px;text-align:center;font-family:Georgia,serif;font-style:italic;font-size:17px;color:rgba(41,36,36,0.72);">${copy.sub}</p>
+        <table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding-bottom:32px;"><div style="width:48px;height:1px;background:#A07845;margin:0 auto;"></div></td></tr></table>
+        <p style="margin:0 0 32px;text-align:center;font-size:14px;line-height:1.8;color:rgba(41,36,36,0.72);">${copy.body}</p>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(41,36,36,0.09);border-radius:10px;background:#FAF8F5;margin-bottom:32px;">
+          <tr><td style="padding:20px 24px;">
+            <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#A07845;">${copy.orderRef}</p>
+            <p style="margin:0;font-family:Georgia,serif;font-size:14px;color:rgba(41,36,36,0.72);word-break:break-all;">${sessionId}</p>
+          </td></tr>
+          <tr><td style="padding:0 24px 20px;">
+            <div style="height:1px;background:rgba(41,36,36,0.09);margin-bottom:20px;"></div>
+            <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:#A07845;">${copy.amountCharged}</p>
+            <p style="margin:0;font-family:Georgia,serif;font-size:20px;color:#292420;">${amount} ${currency}</p>
+          </td></tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding-bottom:32px;">
+          <a href="https://www.boozett.top" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#A07845,#7E5F38);color:#fffefb;text-decoration:none;border-radius:999px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;">${copy.cta}</a>
+        </td></tr></table>
+        <p style="margin:0;text-align:center;font-family:Georgia,serif;font-style:italic;font-size:13px;color:rgba(41,36,36,0.4);line-height:1.7;">${copy.footer(email)}</p>
+      </td></tr>
+      <tr><td align="center" style="padding-top:32px;">
+        <p style="margin:0;font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(41,36,36,0.35);">&copy; MMXXVI MAISON HAN &middot; Drink with intention</p>
+      </td></tr>
+    </table>
+  </td></tr>
 </table>
 </body>
 </html>`;
@@ -349,11 +320,7 @@ async function verifyStripeSignature(payload, signature, secret) {
       false,
       ['sign']
     );
-    const computed = await crypto.subtle.sign(
-      'HMAC',
-      key,
-      new TextEncoder().encode(signedPayload)
-    );
+    const computed = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(signedPayload));
     const computedHex = Array.from(new Uint8Array(computed))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
