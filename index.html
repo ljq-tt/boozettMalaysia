@@ -5040,9 +5040,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     vis.innerHTML=bottleSVG(p.bottle)+`<img class="pdp-visual-img" src="${p.image}" alt="${p.name.replace(/<[^>]+>/g,'')}" onerror="this.style.display='none'" loading="eager"/>`;
     document.getElementById("pdpAdd").onclick=()=>{addToCart(id);showToast((dict["prod.added"]||I18N.en["prod.added"]));};
     document.getElementById("pdpShare").onclick=()=>{
-      const url=location.origin+"/#/product/"+id;
-      if(navigator.share){navigator.share({title:p.name.replace(/<[^>]+>/g,""),url});}
-      else{navigator.clipboard?.writeText(url);showToast("Link copied");}
+      const shareUrl=location.origin+"/?pid="+id;
+      const title=p.name.replace(/<[^>]+>/g,"");
+      const text=(p.sub||"")+(p.price?" · USD "+p.price:"");
+      if(navigator.share){
+        navigator.share({title:title,text:text,url:shareUrl});
+      }else{
+        navigator.clipboard?.writeText(shareUrl);
+        showToast("Link copied");
+      }
     };
     syncPDPCartCount();
     location.hash="/product/"+id;
