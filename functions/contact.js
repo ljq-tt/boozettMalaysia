@@ -3,8 +3,36 @@
 // 环境变量需要在 Cloudflare Pages 设置：RESEND_API_KEY
 
 export async function onRequestPost(context) {
+  // 简单速率限制：同一 IP 每60秒最多3次
+  const ip = context.request.headers.get('cf-connecting-ip') || 
+             context.request.headers.get('x-forwarded-for') || 
+             'unknown';
+  const rateLimitKey = `contact_rl_${ip}`;
+  try {
+    const now = Date.now();
+    const windowMs = 60_000;
+    const maxRequests = 3;
+    const stored = await context.env.RATE_LIMIT?.get(rateLimitKey);
+    const record = stored ? JSON.parse(stored) : { count: 0, start: now };
+    if (now - record.start > windowMs) {
+      record.count = 0;
+      record.start = now;
+    }
+    record.count++;
+    await context.env.RATE_LIMIT?.put(rateLimitKey, JSON.stringify(record), { expirationTtl: 60 });
+    if (record.count > maxRequests) {
+      return new Response(JSON.stringify({ error: 'Too many requests. Please wait a moment.' }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+  } catch (e) {
+    // KV 未配置时跳过速率限制，不影响主流程
+  }
+  const allowedOrigins = ['https://www.boozett.top', 'https://boozett.top'];
+  const origin = context.request.headers.get('Origin') || '';
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : allowedOrigins[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
@@ -12,7 +40,21 @@ export async function onRequestPost(context) {
   try {
     const body = await context.request.json();
     const { name, email, phone, service, message, lang } = body;
+    // HTML 转义，防止注入
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
+const safeName    = escapeHtml(name);
+const safeEmail   = escapeHtml(email);
+const safePhone   = escapeHtml(phone);
+const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+const safeService = escapeHtml(serviceLabels[service] || service || '—');
     // 基本校验
     if (!name || !email || !email.includes('@')) {
       return new Response(JSON.stringify({ error: 'Invalid input.' }), {
