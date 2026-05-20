@@ -5083,6 +5083,21 @@ document.addEventListener("DOMContentLoaded",()=>{
       },100);
     }
   }
+  // 处理分享链接 ?pid=xxx，自动打开商品详情
+  const _pidParam = new URLSearchParams(location.search).get('pid');
+  if(_pidParam){
+    const _pidId = parseInt(_pidParam, 10);
+    if(!isNaN(_pidId)){
+      const waitAndOpenPid = setInterval(()=>{
+        if(PRODUCTS.length > 0){
+          clearInterval(waitAndOpenPid);
+          openPDP(_pidId);
+          // 清掉 URL 里的 ?pid= 参数，保持地址栏干净
+          history.replaceState(null,'',location.pathname + location.hash);
+        }
+      }, 100);
+    }
+  }
   document.getElementById("pdpBack").onclick=closePDP;
   document.getElementById("pdpCartOpen").onclick=()=>{
     closePDP();
