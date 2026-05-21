@@ -56,7 +56,6 @@ a{color:inherit;text-decoration:none}
   display:grid;grid-template-columns:1fr auto;
   align-items:end;gap:24px;
 }
-.hero__left{}
 .hero__eyebrow{
   font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
   color:var(--gold);margin-bottom:16px;
@@ -136,6 +135,62 @@ a{color:inherit;text-decoration:none}
   color:var(--clay);transition:color .25s;
 }
 .article:hover .article__read{color:var(--gold-deep)}
+
+/* article body overlay */
+.article-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:200;
+  background:rgba(41,36,32,.55);
+  backdrop-filter:blur(4px);
+  overflow-y:auto;
+  padding:clamp(24px,5vw,56px) clamp(16px,4vw,40px);
+}
+.article-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.article-modal{
+  background:var(--shell);
+  max-width:740px;width:100%;
+  padding:clamp(40px,5vw,72px) clamp(28px,4vw,64px);
+  position:relative;
+}
+.article-modal__close{
+  position:absolute;top:24px;right:24px;
+  background:none;border:none;cursor:pointer;
+  font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cocoa-40);transition:color .2s;padding:4px;
+}
+.article-modal__close:hover{color:var(--cocoa)}
+.article-modal__eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.article-modal__title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(28px,4vw,44px);font-weight:400;
+  line-height:1.1;color:var(--cocoa);
+  margin-bottom:8px;
+}
+.article-modal__date{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cocoa-40);margin-bottom:32px;
+}
+.article-modal__rule{
+  width:40px;height:1px;background:var(--gold);margin-bottom:32px;
+}
+.article-modal__body{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(17px,1.8vw,20px);
+  line-height:1.8;color:var(--cocoa-70);
+}
+.article-modal__body p{margin-bottom:1.4em}
+.article-modal__body h3{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(18px,2vw,22px);font-weight:500;
+  font-style:italic;color:var(--cocoa);
+  margin:2em 0 .7em;
+}
+.article-modal__body strong{
+  font-weight:600;color:var(--cocoa);
+}
 
 /* coming soon placeholder */
 .coming-soon{
@@ -262,7 +317,7 @@ a{color:inherit;text-decoration:none}
 <!-- articles -->
 <div class="articles">
 
-  <article class="article">
+  <article class="article" onclick="openArticle('a1')">
     <div class="article__no">№ 014</div>
     <div class="article__img article__img--1">
       <img src="images/b33732f84e0a69fc8729cb669a8b6298.jpg" alt="Moutai provenance" style="width:100%;height:100%;object-fit:cover;display:block;">
@@ -276,7 +331,7 @@ a{color:inherit;text-decoration:none}
     </div>
   </article>
 
-  <article class="article">
+  <article class="article" onclick="openArticle('a2')">
     <div class="article__no">№ 013</div>
     <div class="article__img article__img--2">
       <img src="images/v2-fb27739a5a553712789b0a30876528b7_1440w.jpg" alt="Mizunara oak whisky" style="width:100%;height:100%;object-fit:cover;display:block;">
@@ -290,7 +345,7 @@ a{color:inherit;text-decoration:none}
     </div>
   </article>
 
-  <article class="article">
+  <article class="article" onclick="openArticle('a3')">
     <div class="article__no">№ 012</div>
     <div class="article__img article__img--3">
       <img src="images/61306359f9251ef48bb8d477fb3053f1.jpg" alt="Wine cellar bottles" style="width:100%;height:100%;object-fit:cover;display:block;">
@@ -309,6 +364,116 @@ a{color:inherit;text-decoration:none}
     <p class="coming-soon__text">More dispatches from the cellar — coming soon.</p>
   </div>
 
+</div>
+
+<!-- Article overlays -->
+<div class="article-overlay" id="overlay-a1" onclick="closeOnBg(event,'a1')">
+  <div class="article-modal">
+    <button class="article-modal__close" onclick="closeArticle('a1')">Close ✕</button>
+    <p class="article-modal__eyebrow">Provenance · 溯源</p>
+    <h2 class="article-modal__title">How to Read the Seal of a 1988 Moutai</h2>
+    <p class="article-modal__date">March 2026 &nbsp;·&nbsp; № 014</p>
+    <div class="article-modal__rule"></div>
+    <div class="article-modal__body">
+      <p>The bottle arrives wrapped in tissue paper, nested in a box that smells faintly of camphor and old lacquer. Before you uncork it — before you even think about uncorking it — there is the seal to consider. For a 1988 Moutai, the seal is not decoration. It is a document. Learn to read it and you will know more about the bottle's history than most people who have handled it.</p>
+
+      <h3>The Wax and What It Tells You</h3>
+      <p>Moutai began using red wax seals in the early 1980s, replacing the older paper cap system that had dominated production through the 1970s. A 1988 bottle should show a deep, matte red wax — not glossy, not cracked along a perfect seam, not suspiciously uniform. Authentic wax from this period was applied by hand and shows the irregularities of that process: slight drips, uneven thickness at the base, the occasional small air bubble caught in the pour.</p>
+      <p>Run your finger around the join where the wax meets the neck. If the seal has never been disturbed, you will feel a continuous ridge with no breaks. Any gap, however small, is worth examining. A gap does not automatically mean tampering, but it does mean the bottle has experienced something — temperature shock, a hard impact, or age-related shrinkage in a poorly stored environment.</p>
+      <p>The colour itself ages. A 1988 seal kept in stable conditions darkens slightly over decades, moving from a bright post office red toward something closer to dried blood or old brick. If the wax looks fresh and vivid, ask questions. If it looks appropriately tired, that is not a flaw — it is biography.</p>
+
+      <h3>The Label: Paper, Print, and Placement</h3>
+      <p>The front label of a 1988 Moutai is printed on a cream-toned paper that has yellowed with time. The gold ink used for the Guizhou Moutai lettering should show some fading or patina — not complete degradation, but evidence of thirty-five years of light exposure. Labels that look pristine on bottles of this age are almost always replacements.</p>
+      <p>Check the placement. Authentic labels from this period were applied by hand on the production line, which means minor misalignments are normal. A label that is geometrically perfect, centred to the millimetre, is more suspicious than one that sits two or three millimetres off-axis.</p>
+      <p>The back label carries the production information, the alcohol content (typically 53% ABV for standard expression), and in some editions, a batch code that corresponds to factory records. Serious collectors cross-reference these codes, though access to the records themselves requires connections in Maotai Town or to established auction houses with deep provenance databases.</p>
+
+      <h3>The Bottle Shape and Glass</h3>
+      <p>Moutai bottles from 1988 are made from a distinctive cream-white ceramic or, in some export editions, a heavy glass with a slight green tint. The ceramic bottles have a characteristic weight — denser than modern reproductions — and the foot of the bottle should show kiln marks or slight variation in the glaze, not the uniform smoothness of mass-produced contemporary ceramics.</p>
+      <p>Glass bottles from this period carry seams from the moulding process that run vertically up the body. These seams are tactile; you can feel them with your thumb. Modern reproductions sometimes omit these seams or place them inconsistently.</p>
+
+      <h3>Provenance and Storage</h3>
+      <p>Even a perfect seal on a perfectly labelled bottle means little without a chain of custody. Where has this bottle spent its decades? Ideal storage for aged baijiu is cool, dark, and stable — a wine cellar, a professional warehouse, a consistently air-conditioned private collection. Bottles that have cycled through temperature extremes, sat in direct sunlight, or been moved frequently show it: the spirit can evaporate slightly through the ceramic, concentrate in odd ways, or — in the worst cases — develop off-notes that a trained palate will catch immediately.</p>
+      <p>Ask the seller for documentation. Auction records, purchase receipts, storage certificates. The absence of documentation does not disqualify a bottle, but its presence adds value in every sense.</p>
+
+      <h3>When in Doubt, Smell the Seal</h3>
+      <p>This sounds eccentric. Do it anyway. A genuine 1988 Moutai seal, when pressed close to the nose, carries a faint echo of the spirit within — the sorghum and qu culture that defines the sauce-aroma style, the years of cellar time, the particular funk that baijiu enthusiasts chase across decades and continents. A bottle that smells of nothing, or of synthetic materials, or of fresh wax, is telling you something.</p>
+      <p>Reading a Moutai seal is a skill that develops through exposure. Handle enough bottles — at auction previews, in collector cellars, at specialist retailers — and the knowledge becomes tactile and intuitive rather than intellectual. Until then, use these markers as a starting framework, approach every bottle with respectful scepticism, and never rush the moment before the cork.</p>
+      <p>The seal is the bottle's first sentence. Read it slowly.</p>
+    </div>
+  </div>
+</div>
+
+<div class="article-overlay" id="overlay-a2" onclick="closeOnBg(event,'a2')">
+  <div class="article-modal">
+    <button class="article-modal__close" onclick="closeArticle('a2')">Close ✕</button>
+    <p class="article-modal__eyebrow">Tasting · 品鉴</p>
+    <h2 class="article-modal__title">Mizunara, the Wood That Taught Japan to Wait</h2>
+    <p class="article-modal__date">February 2026 &nbsp;·&nbsp; № 013</p>
+    <div class="article-modal__rule"></div>
+    <div class="article-modal__body">
+      <p>There is a tree in Japan that requires a century before it becomes useful to a distiller. This is not metaphor. Quercus mongolica — mizunara oak — grows slowly on the volcanic slopes of Hokkaido and the mountain ranges of Honshu, and it cannot be reliably cooperaged until it reaches approximately one hundred years of age. Younger than that, the wood is too porous, too prone to leaking, too structurally inconsistent for barrel-making. The Japanese whisky industry discovered this the hard way.</p>
+
+      <h3>A Wood Born of Necessity</h3>
+      <p>Mizunara did not begin as a luxury. It began as a wartime compromise. During the Second World War, Scotland's exports to Japan effectively ceased, and the Japanese whisky industry — then barely two decades old — found itself without the European oak barrels that formed the foundation of its maturation program. Distillers turned to what was available: domestic timber, including the mizunara that grew in abundance on Japanese hillsides.</p>
+      <p>The results were initially considered problematic. Mizunara barrels leaked. They were difficult to fashion, requiring coopers with unusual skill and patience. The flavours they imparted were strange — incense-like, almost religious, qualities that fell outside the familiar vocabulary of Scotch maturation. Sandalwood. Coconut. Exotic spice. A particular note that Japanese tasters called "aloeswood" after the incense used in Buddhist ceremony.</p>
+      <p>For decades, these characteristics were managed rather than celebrated. Mizunara barrels were used sparingly, blended carefully, their influence diluted into expressions that leaned on more familiar European oak. The wood's eccentricities were tolerated, not prized.</p>
+
+      <h3>The Revaluation</h3>
+      <p>The transformation of mizunara from inconvenience to icon happened gradually, accelerated by the global whisky boom of the early 2000s and the sudden international appetite for Japanese expressions. As collectors and critics began paying serious attention to Japanese whisky, the unique flavour signatures of mizunara-matured spirit became distinguishing characteristics rather than aberrations.</p>
+      <p>A whisky aged in mizunara for twenty or thirty years develops a complexity that European oak cannot replicate. The initial incense notes soften and integrate. The coconut becomes subtler. A deep, almost medicinal quality — camphor, clove, cardamom — emerges and weaves through the fruit and grain character of the base spirit. The mouthfeel changes too: mizunara tends to produce a denser, more viscous texture than American or European oak, a quality that demands slow attention.</p>
+
+      <h3>Why Scarcity Is Structural</h3>
+      <p>The rarity of genuinely mizunara-influenced whisky is not a marketing construction. It is a function of time and biology. Old-growth mizunara is protected in Japan; what is available for cooperage comes from managed forests, and the trees suitable for barrel-making require a century of growth. The coopers who work with mizunara are a small community — perhaps a handful of specialist craftsmen — and the skills involved are not easily transferred or scaled.</p>
+      <p>A fully compliant mizunara barrel, built to proper cooperage standards, represents an enormous investment before a single drop of spirit is placed inside it. The barrel itself may cost five to ten times what a comparable American white oak cask would. And then the distiller must wait. Mizunara's influence is slow-releasing; the wood gives up its character reluctantly, across years and decades. A whisky that has spent fewer than fifteen years in mizunara will show only hints of the wood's signature. The full expression requires patience measured in human timescales.</p>
+
+      <h3>Drinking Mizunara</h3>
+      <p>When you encounter a whisky that has spent meaningful time in mizunara — either fully matured or finished in the wood — approach it as you would a piece of music you have never heard before. The familiar references will not serve you as well as they do with other whiskies. The incense note is not a fault; it is the point. The camphor is not an aberration; it is the wood speaking.</p>
+      <p>Drink it slowly. Add a small amount of still water and watch the texture change. Return to the glass after ten minutes and notice what has developed in the air above the spirit. Mizunara whisky rewards patience from the drinker as much as it demands it from the distiller.</p>
+      <p>The Japanese have a concept — ma — that describes the meaningful pause between notes in music, the space between objects in a room, the silence that gives sound its shape. Mizunara whisky is, in a sense, the liquid expression of ma. The waiting is not incidental to the quality. The waiting is the quality.</p>
+
+      <h3>A Final Thought</h3>
+      <p>The tree that will become a mizunara barrel for a whisky distilled today is already growing somewhere in Hokkaido. It is perhaps thirty or forty years old. It will not be ready for another sixty years. The whisky it eventually matures will not be drunk until the people currently making decisions about it are gone.</p>
+      <p>There are very few industries left in the world that operate on this timescale. Japanese whisky, at its most authentic, is one of them. That is worth knowing when you hold the glass.</p>
+    </div>
+  </div>
+</div>
+
+<div class="article-overlay" id="overlay-a3" onclick="closeOnBg(event,'a3')">
+  <div class="article-modal">
+    <button class="article-modal__close" onclick="closeArticle('a3')">Close ✕</button>
+    <p class="article-modal__eyebrow">Cellar · 私窖</p>
+    <h2 class="article-modal__title">A Short Defence of the Unopened Bottle</h2>
+    <p class="article-modal__date">January 2026 &nbsp;·&nbsp; № 012</p>
+    <div class="article-modal__rule"></div>
+    <div class="article-modal__body">
+      <p>Let me say something that the drinking world does not say often enough: there is nothing wrong with not opening the bottle.</p>
+      <p>This is considered a mild heresy in certain circles. Wine writers speak of wine as a living thing that must be drunk, that to hoard it is to misunderstand it, that the unopened cellar is a monument to anxiety rather than appreciation. Whisky commentators make similar arguments: the spirit was made to be tasted, not collected, and the person who buys a rare expression and never opens it has somehow failed to participate correctly in the culture.</p>
+      <p>I find these arguments less convincing every year.</p>
+
+      <h3>The Bottle as Object</h3>
+      <p>Before it is a drink, a bottle of exceptional spirits is an object with its own integrity. The 1980 Bowmore sitting on a collector's shelf is not simply a vessel for liquid waiting to be liberated. It is a record of a particular year's barley harvest, a specific warehouse, a set of decisions made by people who are now retired or dead. The seal on that bottle is part of the object. The label, the glass, the closure — these are not packaging to be discarded on the way to the contents. They are the thing itself.</p>
+      <p>We do not criticise people who own first-edition books for not cutting the pages. We do not fault the collector of vintage film posters for not projecting them. Objects of cultural and historical significance are allowed to exist as objects without being consumed. Exceptional old spirits occupy the same category.</p>
+
+      <h3>The Experience of Anticipation</h3>
+      <p>There is a particular pleasure in owning a bottle that you have not yet opened. This sounds like rationalisation, but it is not. Anticipation is a genuine component of experience — the bottle on the shelf represents possibility, a future moment of perfect context: the right occasion, the right company, the right mood.</p>
+      <p>The unopened bottle is also an act of faith. Faith that the occasion will come. Faith that the spirit inside is improving, or at least holding, within its sealed environment. Faith that you are the kind of person who can wait.</p>
+      <p>Waiting is undervalued in a culture that optimises for immediate experience. The ability to defer consumption — to know that something is there, to let that knowledge be enough for now — is a form of pleasure that tends to deepen with practice.</p>
+
+      <h3>Practical Considerations</h3>
+      <p>There are also purely practical arguments for leaving certain bottles unopened. Old spirits, once opened, change. Oxidation begins the moment air enters the bottle. This is not uniformly negative — many whiskies and brandies improve with a day or two of air — but it is irreversible. The particular state of a 1960s cognac or a pre-war armagnac at the moment of opening cannot be recovered once the cork is pulled.</p>
+      <p>Furthermore, the resale or gifting value of a significant bottle is entirely contingent on its condition. An unopened bottle of rare aged baijiu, authenticated and provenance-documented, represents something that can be passed on — to a future occasion, to another collector, to an institution, to a family member who will understand its significance in twenty years. Once opened, even partially consumed, that capacity disappears.</p>
+      <p>None of this is to say that bottles should never be opened. Of course they should. Some bottles find their moment and are gloriously drunk, and that is right and good. But the decision to open should be active and considered, not driven by social pressure or the vague guilt of ownership.</p>
+
+      <h3>Against the Tyranny of Consumption</h3>
+      <p>There is a particular kind of enthusiast who views any bottle left unopened as evidence of psychological dysfunction — hoarding, anxiety, a confused relationship with material things. This view mistakes activity for engagement. The person who opens everything immediately is not necessarily more enlightened than the person who waits. They are just choosing a different relationship with time.</p>
+      <p>The collector who lives with a bottle for years, who thinks about it, who researches its history and the circumstances of its production, who occasionally takes it down from the shelf and holds it in both hands and replaces it carefully — this person has had a rich experience of that bottle. The experience is different from drinking it, but it is not lesser.</p>
+
+      <h3>When to Open</h3>
+      <p>Since this is a defence of not opening rather than a manifesto against opening, it seems fair to say something about when the moment is right.</p>
+      <p>Open the bottle when the occasion genuinely calls for it rather than when you feel you should. Open it when the person you want to share it with is present and in the right state to pay attention. Open it when you have the time and quiet to drink it properly, not quickly, not as an afterthought. Open it when you have a second bottle you love almost as much, so that the opening is an addition rather than a subtraction.</p>
+      <p>And if none of those conditions are currently met — keep it. The bottle will wait. That, after all, is what remarkable spirits do best.</p>
+    </div>
+  </div>
 </div>
 
 <!-- newsletter strip -->
@@ -338,6 +503,24 @@ a{color:inherit;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script>
+function openArticle(id){
+  var el = document.getElementById('overlay-'+id);
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+  el.scrollTop=0;
+}
+function closeArticle(id){
+  document.getElementById('overlay-'+id).classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeOnBg(e,id){
+  if(e.target===document.getElementById('overlay-'+id)) closeArticle(id);
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    ['a1','a2','a3'].forEach(function(id){closeArticle(id)});
+  }
+});
 function handleNews(e){
   e.preventDefault();
   var email = document.getElementById('newsInput').value.trim();
