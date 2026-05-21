@@ -3021,7 +3021,7 @@ body.nav-mob-open{overflow:hidden}
       <p class="guides__lead" data-i18n="guides.lead">Pick a doorway into flavour — each lane opens onto bottles we would actually serve at our own tables.</p>
     </header>
     <div class="guides__grid">
-      <a href="#collection" class="guides__card reveal" data-collection-cat="cognac">
+      <a href="#collection" class="guides__card reveal" data-collection-cat="spirits">
         <div class="guides__media guides__media--g" role="presentation"><img src="images/6ee92f3d0723e47db3a8078545514163.jpg" alt="Cognac and gift bottles" loading="lazy" /></div>
         <div class="guides__body">
           <span class="guides__cat" data-i18n="guides.g.cat">Liquid gifts</span>
@@ -3290,7 +3290,7 @@ body.nav-mob-open{overflow:hidden}
           <li><a href="/#collection" data-cat-link="whisky" data-i18n="filter.whisky">Whisky</a></li>
           <li><a href="/#collection" data-cat-link="wine" data-i18n="filter.wine">Wine</a></li>
           <li><a href="/#collection" data-cat-link="sparkling" data-i18n="filter.sparkling">Champagne</a></li>
-          <li><a href="/#collection" data-cat-link="others" data-i18n="filter.cognac">Cognac</a></li>
+          <li><a href="/#collection" data-cat-link="spirits" data-i18n="filter.cognac">Cognac</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -3915,11 +3915,14 @@ function getCollectionFiltered(){
     "wine":     ["redwine", "wine"],
     "sparkling":["sparkling", "champagne"],
     "others":   ["others"],
+    "cognac":   ["cognac"],
   };
+  const NAV_CAT = { cognac: "spirits", scotch: "spirits" };
+  const navCat = NAV_CAT[state.cat] || state.cat;
 
-  const allowed = CAT_MAP[state.cat];
+  const allowed = CAT_MAP[navCat];
   let items;
-  if (state.cat === "new") {
+  if (navCat === "new") {
     items = PRODUCTS.filter(p => p.badge && p.badge.trim());
   } else if (allowed === null) {
     items = PRODUCTS;
@@ -3934,18 +3937,20 @@ function getCollectionFiltered(){
 }
 
 function syncNavCategoryLinks(){
+  const NAV_CAT = { cognac: "spirits", scotch: "spirits" };
+  const activeCat = NAV_CAT[state.cat] || state.cat;
   document.querySelectorAll(".nav__link[data-cat-link]").forEach(link=>{
     const cat=link.dataset.catLink||"all";
-    const active=cat===state.cat;
+    const active=cat===activeCat;
     link.classList.toggle("is-active",active);
     if(active) link.setAttribute("aria-current","page");
     else link.removeAttribute("aria-current");
   });
   document.querySelectorAll(".collection-nav__chip").forEach(chip=>{
-    chip.classList.toggle("is-active",(chip.dataset.cat||"all")===state.cat);
+    chip.classList.toggle("is-active",(chip.dataset.cat||"all")===activeCat);
   });
   document.querySelectorAll(".nav__mega [data-cat-link]").forEach(link=>{
-    link.classList.toggle("is-active",(link.dataset.catLink||"all")===state.cat);
+    link.classList.toggle("is-active",(link.dataset.catLink||"all")===activeCat);
   });
 }
 
@@ -4712,17 +4717,22 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(_ls)_ls.onchange=e=>applyLangOption(e.target.value);
   if(_cs)_cs.onchange=e=>applyCurrOption(e.target.value);
 
-  // Category navigation
+  // Category navigation (guides / feature CTAs → collection chips)
+  const COLLECTION_CAT_NAV = { cognac: "spirits", scotch: "spirits" };
   document.querySelectorAll('a[data-collection-cat]').forEach(a=>{
-    a.addEventListener("click",()=>{
-      const c=a.getAttribute("data-collection-cat");
-      if(!c)return;
+    a.addEventListener("click",e=>{
+      e.preventDefault();
+      const raw=a.getAttribute("data-collection-cat");
+      if(!raw)return;
+      const c=COLLECTION_CAT_NAV[raw]||raw;
       state.cat=c;
       document.querySelectorAll(".collection-nav__chip").forEach(b=>{
-        b.classList.toggle("is-active",(b.dataset.cat||"")===c);
+        b.classList.toggle("is-active",(b.dataset.cat||"all")===c);
       });
       state.page=1;
-      queueMicrotask(()=>{renderGrid();syncNavCategoryLinks();});
+      renderGrid();
+      syncNavCategoryLinks();
+      scrollToCollectionTop();
     });
   });
 
