@@ -6,7 +6,7 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const ua = request.headers.get('user-agent') || '';
 
-  const isCrawler = /facebookexternalhit|twitterbot|whatsapp|telegrambot|linkedinbot|slackbot|discordbot|googlebot|bingbot|curl|wget|python|yandex|baidu|duckduck/i.test(ua);
+  const isCrawler = /facebookexternalhit|twitterbot|whatsapp|telegrambot|linkedinbot|slackbot|discordbot|googlebot|bingbot|curl|wget|python|yandex|baidu|duckduck|google-inspectiontool|chrome-lighthouse|googleother|apis-google/i.test(ua);
   const isHome = url.pathname === '/' || url.pathname === '/index.html';
 
   // 非首页直接放行
