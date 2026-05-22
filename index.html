@@ -4124,6 +4124,16 @@ function renderGrid(){
 
 /* ============ CART ============ */
 function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  if(p){
+    gtag('event', 'add_to_cart', {
+      item_id: id,
+      item_name: p.name.replace(/<[^>]+>/g,''),
+      item_category: p.catLabel,
+      price: p.price,
+      currency: 'USD'
+    });
+  }
   const existing=state.cart.find(x=>x.id===id);
   if(existing){existing.qty++}else{state.cart.push({id,qty:1})}
   updateCart();
@@ -5056,6 +5066,13 @@ document.addEventListener("DOMContentLoaded",()=>{
   function openPDP(id){
     const p=PRODUCTS.find(x=>x.id===id);
     if(!p)return;
+    gtag('event', 'product_view', {
+      item_id: id,
+      item_name: p.name.replace(/<[^>]+>/g,''),
+      item_category: p.catLabel,
+      price: p.price,
+      currency: 'USD'
+    });
     const dict=I18N[state.lang]||I18N.en;
     document.getElementById("pdpCat").textContent=p.catLabel;
     document.getElementById("pdpName").innerHTML=p.name;
@@ -5218,5 +5235,79 @@ document.addEventListener("DOMContentLoaded",()=>{
     </div>
   </div>
 </div>
+
+<script>
+// ============ Maison Han 自定义埋点 ============
+
+// 1. 年龄验证通过
+document.getElementById('ageContinue')?.addEventListener('click', function() {
+  gtag('event', 'age_gate_pass');
+});
+
+// 2. 年龄验证拒绝
+document.getElementById('ageDecline')?.addEventListener('click', function() {
+  gtag('event', 'age_gate_decline');
+});
+
+// 3. 分类筛选点击
+document.querySelectorAll('.collection-nav__chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    gtag('event', 'category_filter', {
+      category: chip.dataset.cat
+    });
+  });
+});
+
+// 4. 购物车打开
+document.getElementById('cartOpen')?.addEventListener('click', function() {
+  gtag('event', 'cart_open');
+});
+
+// 5. 发起结账
+document.getElementById('cartCheckout')?.addEventListener('click', function() {
+  gtag('event', 'checkout_start', {
+    value: state.cart.reduce((s, x) => {
+      const p = PRODUCTS.find(pr => pr.id === x.id);
+      return s + (p ? p.price * x.qty : 0);
+    }, 0),
+    currency: 'USD'
+  });
+});
+
+// 6. 邮件订阅
+document.querySelector('.news__form')?.addEventListener('submit', function() {
+  gtag('event', 'newsletter_submit');
+});
+
+// 7. 语言切换
+document.querySelectorAll('.lang-option').forEach(el => {
+  el.addEventListener('click', function() {
+    gtag('event', 'language_change', {
+      language: el.dataset.lang
+    });
+  });
+});
+
+// 8. 货币切换
+document.querySelectorAll('.curr-pill').forEach(el => {
+  el.addEventListener('click', function() {
+    gtag('event', 'currency_change', {
+      currency: el.dataset.curr
+    });
+  });
+});
+
+// 9. 滚动深度
+let scrollMarks = {25: false, 50: false, 75: false, 100: false};
+window.addEventListener('scroll', function() {
+  const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+  [25, 50, 75, 100].forEach(mark => {
+    if (pct >= mark && !scrollMarks[mark]) {
+      scrollMarks[mark] = true;
+      gtag('event', 'scroll_depth', { depth: mark });
+    }
+  });
+});
+</script>
 </body>
 </html>
