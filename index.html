@@ -4963,6 +4963,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       checkBtn.classList.remove("is-loading");
       checkBtn.innerHTML=origLabel;
       showToast(dict["cart.error"]||I18N.en["cart.error"]);
+      window.dispatchEvent(new CustomEvent('hanCheckoutError', { detail: err.message || 'unknown' }));
     }
   });
 
@@ -5307,6 +5308,55 @@ window.addEventListener('scroll', function() {
       gtag('event', 'scroll_depth', { depth: mark });
     }
   });
+});
+
+// 10. 删除购物车商品
+document.getElementById('drawerBody')?.addEventListener('click', function(e) {
+  const r = e.target.closest('[data-remove]');
+  if(r) {
+    const id = +r.dataset.remove;
+    const p = PRODUCTS.find(x => x.id === id);
+    gtag('event', 'cart_remove', {
+      item_id: id,
+      item_name: p ? p.name.replace(/<[^>]+>/g,'') : '',
+      currency: 'USD'
+    });
+  }
+});
+
+// 11. 搜索关键词
+document.getElementById('collectionSearch')?.addEventListener('input', function() {
+  if(this.value.trim().length > 2) {
+    gtag('event', 'search_query', {
+      search_term: this.value.trim()
+    });
+  }
+});
+
+// 12. 结账失败
+document.getElementById('cartCheckout')?.addEventListener('click', function() {
+  window.addEventListener('hanCheckoutError', function(e) {
+    gtag('event', 'checkout_error', {
+      error_message: e.detail || 'unknown'
+    });
+  }, {once: true});
+});
+
+// 13. 关闭商品弹窗记录停留时长
+let _pdpOpenTime = 0;
+document.addEventListener('hashchange', function() {
+  if(location.hash.startsWith('#/product/')) {
+    _pdpOpenTime = Date.now();
+  }
+});
+document.getElementById('pdpBack')?.addEventListener('click', function() {
+  if(_pdpOpenTime > 0) {
+    const seconds = Math.round((Date.now() - _pdpOpenTime) / 1000);
+    gtag('event', 'product_modal_close', {
+      time_on_product: seconds
+    });
+    _pdpOpenTime = 0;
+  }
 });
 </script>
 </body>

@@ -197,6 +197,31 @@ export async function onRequestPost(context) {
       }
     }
 
+    // 5. 上报 GA4 支付成功
+    try {
+      await fetch(
+        'https://www.google-analytics.com/mp/collect?measurement_id=G-Q3GWTX0Z29&api_secret=vBQ1pOM4SZCM3qAThFKKmw',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            client_id: session.client_reference_id || session.customer || 'server',
+            events: [{
+              name: 'payment_success',
+              params: {
+                transaction_id: sessionId,
+                value: amountTotal ? amountTotal / 100 : 0,
+                currency: currency,
+              }
+            }]
+          })
+        }
+      );
+      console.log('GA4 payment_success reported');
+    } catch (err) {
+      console.error('GA4 report failed:', err);
+    }
+
     // 4. 发确认邮件
     if (email && resendKey) {
       try {
