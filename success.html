@@ -182,8 +182,10 @@ body::before{
 <script>
   const params = new URLSearchParams(location.search);
   const sessionId = params.get('session_id');
-  if (sessionId) {
-    document.getElementById('orderId').textContent = sessionId;
+  const paypalOrder = params.get('order_id') || params.get('token'); // PayPal returns ?token=...
+  const ref = sessionId || paypalOrder;
+  if (ref) {
+    document.getElementById('orderId').textContent = ref;
     document.getElementById('orderRef').style.display = 'inline-block';
     try { localStorage.removeItem('han_cart'); } catch(e) {}
   }

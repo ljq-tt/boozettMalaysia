@@ -1855,6 +1855,11 @@ body.nav-mob-open{overflow:hidden}
 }
 .drawer__check[disabled]{opacity:.4;cursor:not-allowed;pointer-events:none}
 .drawer__check.is-loading{opacity:.6;cursor:wait;pointer-events:none}
+.paypal-or{display:flex;align-items:center;gap:12px;margin:6px 0 4px;color:rgba(41,36,32,.45);font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+.paypal-or__line{flex:1;height:1px;background:var(--line)}
+.paypal-or__text{white-space:nowrap}
+.paypal-wrap[aria-disabled="true"]{opacity:.45;pointer-events:none;filter:grayscale(.4)}
+#paypalButtonContainer{position:relative}
 .drawer__usd{
   margin-top:18px;
   font-family:"Cormorant Garamond",serif;
@@ -3428,6 +3433,15 @@ body.nav-mob-open{overflow:hidden}
       <span data-i18n="cart.age">I confirm I am 21+ and may legally purchase alcohol where I live.</span>
     </label>
     <button class="btn btn--solid drawer__check" id="cartCheckout" data-i18n="cart.check" disabled>Proceed to Checkout <span class="arr">→</span></button>
+    <div class="paypal-wrap" id="paypalWrap" style="display:none;margin-top:14px">
+      <div class="paypal-or" aria-hidden="true">
+        <span class="paypal-or__line"></span>
+        <span class="paypal-or__text" data-i18n="cart.or">or pay with</span>
+        <span class="paypal-or__line"></span>
+      </div>
+      <div id="paypalButtonContainer" style="margin-top:10px;min-height:48px"></div>
+      <p class="paypal-hint" id="paypalHint" data-i18n="cart.paypal.hint" style="font-size:11px;letter-spacing:.05em;color:rgba(41,36,32,.45);margin-top:8px;text-align:center">PayPal balance, cards & local methods · age confirmation required</p>
+    </div>
   </div>
 </aside>
 
@@ -3518,7 +3532,7 @@ en:{
   "news.title":"A quarterly <em>letter,</em><br>from the cellar master.","news.sub":"New arrivals, vintage notes, the occasional glass-side correspondence. Sent four times a year. Never to be forwarded.","news.btn":"Subscribe →","news.thanks":"You are on the list.",
   "footer.tagline":"A house of rare pours. Sourced direct, sealed to provenance, brought to a single table — wherever in the world that table happens to stand.",
   "footer.shop":"Shop","footer.house":"The House","footer.help":"Service","footer.legal":"Legal","footer.story":"Our Story","footer.standard":"Provenance Standard","footer.cellar":"Private Cellar","footer.journal":"Journal","footer.shipping":"Shipping &amp; Customs","footer.payment":"Payment &amp; Escrow","footer.returns":"Returns Policy","footer.contact":"Concierge","footer.terms":"Terms","footer.privacy":"Privacy","footer.compliance":"Import Compliance","footer.cookies":"Cookies","footer.rights":"All rights reserved","footer.responsible":"Drink with intention",
-  "cart.title":"Your Cart","cart.close":"Close","cart.continue":"Continue Shopping","cart.empty":"The cellar is quiet.","cart.empty.sub":"Reserve a bottle to begin.","cart.subtotal":"Subtotal","cart.shipping":"Shipping &amp; insurance","cart.calc":"At checkout","cart.total":"Total","cart.check":"Proceed to Checkout","cart.remove":"Remove","curr.top.usd":"Prices in USD · shipping & customs settled at Stripe checkout.","curr.top.fx":"{code} is for browsing only (illustrative FX from USD) · charged in USD at checkout.","cart.check.usd":"All amounts are in USD · shipping & insurance added at Stripe checkout.","cart.check.fx":"Totals show in {code} using a fixed illustrative rate from USD, not a live bank quote · your card is charged in USD at Stripe. Shipping & insurance at checkout.","curr.modal.fx":"Reference conversion from USD · billed in USD at checkout.","cart.age":"I confirm I am 21+ and may legally purchase alcohol where I live.","cart.processing":"Connecting to secure checkout&hellip;","cart.error":"Could not start checkout. Please try again or contact concierge.","pager.prev":"Previous page","pager.next":"Next page","pdp.back":"← Back to collection","pdp.share":"Share this bottle", 
+  "cart.title":"Your Cart","cart.close":"Close","cart.continue":"Continue Shopping","cart.empty":"The cellar is quiet.","cart.empty.sub":"Reserve a bottle to begin.","cart.subtotal":"Subtotal","cart.shipping":"Shipping &amp; insurance","cart.calc":"At checkout","cart.total":"Total","cart.check":"Proceed to Checkout","cart.remove":"Remove","curr.top.usd":"Prices in USD · shipping & customs settled at Stripe checkout.","curr.top.fx":"{code} is for browsing only (illustrative FX from USD) · charged in USD at checkout.","cart.check.usd":"All amounts are in USD · shipping & insurance added at Stripe checkout.","cart.check.fx":"Totals show in {code} using a fixed illustrative rate from USD, not a live bank quote · your card is charged in USD at Stripe. Shipping & insurance at checkout.","curr.modal.fx":"Reference conversion from USD · billed in USD at checkout.","cart.age":"I confirm I am 21+ and may legally purchase alcohol where I live.","cart.processing":"Connecting to secure checkout&hellip;","cart.error":"Could not start checkout. Please try again or contact concierge.","cart.or":"or pay with","cart.paypal.hint":"PayPal balance, cards &amp; local methods · age confirmation required","cart.paypal.error":"PayPal could not complete this payment. Please try again or use card checkout.","pager.prev":"Previous page","pager.next":"Next page","pdp.back":"← Back to collection","pdp.share":"Share this bottle", 
   "prod.add":"Reserve Bottle","prod.added":"Added to cellar","prod.cta":"Reserve","modal.close":"Close ✕",
   "nav.cat":"Categories","nav.cat.col1":"Spirits & Baijiu","nav.cat.link1":"Baijiu / Spirits","nav.cat.link2":"Sake / Premix / Others","nav.cat.link3":"All Collection","nav.cat.col2":"Whisky & Wine","nav.cat.link4":"Japanese Whisky","nav.cat.link5":"Red Wine","nav.cat.link6":"Champagne","nav.cat.col3":"Browse by","nav.cat.link7":"By category","nav.cat.link8":"By occasion","nav.cat.link9":"Special editions",
   "nav.scene":"By Occasion","nav.scene.col1":"Gift","nav.scene.link1":"Business gifts","nav.scene.link2":"Holiday gifts","nav.scene.link3":"Celebration gifts","nav.scene.col2":"Personal","nav.scene.link4":"Dinner pairings","nav.scene.link5":"Solo whisky nights","nav.scene.link6":"Easy sipping","nav.scene.col3":"Collect","nav.scene.link7":"Vintage baijiu","nav.scene.link8":"Rare whisky","nav.scene.link9":"Special casks",
@@ -3568,7 +3582,7 @@ en:{
   "news.title":"窖藏总监的<br>季度<em>来信。</em>","news.sub":"新到酒款、年份札记，偶尔的杯边只言片语。一年四封。请勿转寄。","news.btn":"订阅 →","news.thanks":"您已在名单之上。",
   "footer.tagline":"稀世佳酿之馆。直采、封藏、亲手送达——无论那张餐桌，停在世界的哪一角。",
   "footer.shop":"购藏","footer.house":"本馆","footer.help":"服务","footer.legal":"法务","footer.story":"我们的故事","footer.standard":"溯源标准","footer.cellar":"私人酒窖","footer.journal":"酒志","footer.shipping":"运输与清关","footer.payment":"付款与托管","footer.returns":"退换政策","footer.contact":"管家联络","footer.terms":"条款","footer.privacy":"隐私","footer.compliance":"进口合规","footer.cookies":"Cookies","footer.rights":"版权所有","footer.responsible":"有意识地饮酒",
-  "cart.title":"您的酒篮","cart.close":"关闭","cart.continue":"继续选酒","cart.empty":"酒窖一时寂静。","cart.empty.sub":"请先认领一瓶。","cart.subtotal":"小计","cart.shipping":"运输与保险","cart.calc":"结算时计算","cart.total":"合计","cart.check":"前往结算","cart.remove":"移除","curr.top.usd":"标价均以美元为准；运费及报关相关费用于 Stripe 结算页处理。","curr.top.fx":"便于浏览已将美元折算为 {code}（示意汇率）· 结账仍以美元通过 Stripe 扣款。","cart.check.usd":"购物车金额均以美元计；运费与保险费在 Stripe 结账时计入。","cart.check.fx":"小计以固定示意汇率从美元换算为 {code}，非银行实时牌价 · 银行卡仍以美元扣款（Stripe）。运费与保险费于结账时计入。","curr.modal.fx":"由美元换算仅供参考 · 最终以美元结账。","cart.age":"我确认已年满 21 周岁，且所在地区允许合法购买酒类。","cart.processing":"正在连接安全支付&hellip;","cart.error":"结算暂时无法连接，请稍后重试或联系管家。","pager.prev":"上一页","pager.next":"下一页","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
+  "cart.title":"您的酒篮","cart.close":"关闭","cart.continue":"继续选酒","cart.empty":"酒窖一时寂静。","cart.empty.sub":"请先认领一瓶。","cart.subtotal":"小计","cart.shipping":"运输与保险","cart.calc":"结算时计算","cart.total":"合计","cart.check":"前往结算","cart.remove":"移除","curr.top.usd":"标价均以美元为准；运费及报关相关费用于 Stripe 结算页处理。","curr.top.fx":"便于浏览已将美元折算为 {code}（示意汇率）· 结账仍以美元通过 Stripe 扣款。","cart.check.usd":"购物车金额均以美元计；运费与保险费在 Stripe 结账时计入。","cart.check.fx":"小计以固定示意汇率从美元换算为 {code}，非银行实时牌价 · 银行卡仍以美元扣款（Stripe）。运费与保险费于结账时计入。","curr.modal.fx":"由美元换算仅供参考 · 最终以美元结账。","cart.age":"我确认已年满 21 周岁，且所在地区允许合法购买酒类。","cart.processing":"正在连接安全支付&hellip;","cart.error":"结算暂时无法连接，请稍后重试或联系管家。","cart.or":"或使用以下方式支付","cart.paypal.hint":"PayPal 余额、银行卡及当地支付方式 · 须先勾选年龄确认","cart.paypal.error":"PayPal 支付未能完成，请稍后重试或改用信用卡结账。","pager.prev":"上一页","pager.next":"下一页","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
   "prod.add":"认领此瓶","prod.added":"已存入您的酒窖","prod.cta":"认领","modal.close":"关闭 ✕",
   "nav.cat":"酒水分类","nav.cat.col1":"中国与烈酒","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獭祭 / 预调 / 其他","nav.cat.link3":"全部典藏","nav.cat.col2":"威士忌与葡萄酒","nav.cat.link4":"日本威士忌 / Whisky","nav.cat.link5":"红酒 / Wine","nav.cat.link6":"香槟 / Sparkling","nav.cat.col3":"筛选思路","nav.cat.link7":"按大类浏览","nav.cat.link8":"按节庆场景","nav.cat.link9":"按特殊款式",
   "nav.scene":"场景选酒","nav.scene.col1":"送礼","nav.scene.link1":"商务送礼","nav.scene.link2":"节日送礼","nav.scene.link3":"庆祝送礼","nav.scene.col2":"自饮","nav.scene.link4":"晚餐佐餐","nav.scene.link5":"独酌威士忌","nav.scene.link6":"轻松微醺","nav.scene.col3":"收藏","nav.scene.link7":"年份白酒","nav.scene.link8":"稀有威士忌","nav.scene.link9":"特别收录",
@@ -3619,7 +3633,7 @@ en:{
   "news.title":"窖藏總監的<br>季度<em>來信。</em>","news.sub":"新到酒款、年份札記，偶爾的杯邊隻言片語。一年四封。請勿轉寄。","news.btn":"訂閱 →","news.thanks":"您已在名單之上。",
   "footer.tagline":"稀世佳釀之館。直採、封藏、親手送達——無論那張餐桌，停在世界的哪一角。",
   "footer.shop":"購藏","footer.house":"本館","footer.help":"服務","footer.legal":"法務","footer.story":"我們的故事","footer.standard":"溯源標準","footer.cellar":"私人酒窖","footer.journal":"酒誌","footer.shipping":"運輸與清關","footer.payment":"付款與託管","footer.returns":"退換政策","footer.contact":"管家聯絡","footer.terms":"條款","footer.privacy":"隱私","footer.compliance":"進口合規","footer.cookies":"Cookies","footer.rights":"版權所有","footer.responsible":"有意識地飲酒",
-  "cart.title":"您的酒籃","cart.close":"關閉","cart.continue":"繼續選酒","cart.empty":"酒窖一時寂靜。","cart.empty.sub":"請先認領一瓶。","cart.subtotal":"小計","cart.shipping":"運輸與保險","cart.calc":"結算時計算","cart.total":"合計","cart.check":"前往結算","cart.remove":"移除","curr.top.usd":"標價均以美元為準；運費及報關相關費用於 Stripe 結算頁處理。","curr.top.fx":"僅為便於閱覽將美元折算為 {code}（示意匯率）· 結帳以美元於 Stripe 扣款。","cart.check.usd":"金額均以美元計；運費與保險於 Stripe 結帳時一併計入。","cart.check.fx":"小計係以固定示意匯率自美元換算為 {code}，並非銀行即時牌價 · 信用卡仍以美元於 Stripe 扣款。運費與保險於結帳時計入。","curr.modal.fx":"美元換算僅供參考 · 最終仍以美元結帳。","cart.age":"本人確認已達法定購買酒精年齡，且居住地允許網購酒類。","cart.processing":"正在連線至安全結帳&hellip;","cart.error":"結帳暫時無法連線，請稍後再試或聯絡管家。","pager.prev":"上一頁","pager.next":"下一頁","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
+  "cart.title":"您的酒籃","cart.close":"關閉","cart.continue":"繼續選酒","cart.empty":"酒窖一時寂靜。","cart.empty.sub":"請先認領一瓶。","cart.subtotal":"小計","cart.shipping":"運輸與保險","cart.calc":"結算時計算","cart.total":"合計","cart.check":"前往結算","cart.remove":"移除","curr.top.usd":"標價均以美元為準；運費及報關相關費用於 Stripe 結算頁處理。","curr.top.fx":"僅為便於閱覽將美元折算為 {code}（示意匯率）· 結帳以美元於 Stripe 扣款。","cart.check.usd":"金額均以美元計；運費與保險於 Stripe 結帳時一併計入。","cart.check.fx":"小計係以固定示意匯率自美元換算為 {code}，並非銀行即時牌價 · 信用卡仍以美元於 Stripe 扣款。運費與保險於結帳時計入。","curr.modal.fx":"美元換算僅供參考 · 最終仍以美元結帳。","cart.age":"本人確認已達法定購買酒精年齡，且居住地允許網購酒類。","cart.processing":"正在連線至安全結帳&hellip;","cart.error":"結帳暫時無法連線，請稍後再試或聯絡管家。","cart.or":"或使用以下方式付款","cart.paypal.hint":"PayPal 餘額、信用卡及當地支付方式 · 須先勾選年齡確認","cart.paypal.error":"PayPal 付款未能完成，請稍後再試或改以信用卡結帳。","pager.prev":"上一頁","pager.next":"下一頁","pdp.back":"← 返回典藏","pdp.share":"分享此酒款", 
   "prod.add":"認領此瓶","prod.added":"已存入您的酒窖","prod.cta":"認領","modal.close":"關閉 ✕",
   "nav.cat":"酒水分類","nav.cat.col1":"中國與烈酒","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獺祭 / 預調 / 其他","nav.cat.link3":"全部典藏","nav.cat.col2":"威士忌與葡萄酒","nav.cat.link4":"日本威士忌 / Whisky","nav.cat.link5":"紅酒 / Wine","nav.cat.link6":"香檳 / Sparkling","nav.cat.col3":"篩選思路","nav.cat.link7":"按大類瀏覽","nav.cat.link8":"按節慶場景","nav.cat.link9":"按特殊款式",
   "nav.scene":"場景選酒","nav.scene.col1":"送禮","nav.scene.link1":"商務送禮","nav.scene.link2":"節日送禮","nav.scene.link3":"慶祝送禮","nav.scene.col2":"自飲","nav.scene.link4":"晚餐佐餐","nav.scene.link5":"獨酌威士忌","nav.scene.link6":"輕鬆微醺","nav.scene.col3":"收藏","nav.scene.link7":"年份白酒","nav.scene.link8":"稀有威士忌","nav.scene.link9":"特別收錄",
@@ -3670,7 +3684,7 @@ ja:{
   "news.title":"セラーマスターからの<br>四半期 <em>書信。</em>","news.sub":"新着、ヴィンテージのメモ、時折のグラス越しの便り。年に四度。転送はご遠慮ください。","news.btn":"購読 →","news.thanks":"名簿にお加えしました。",
   "footer.tagline":"稀少な一本の家。直接仕入れ、来歴を封じ、ただ一卓へ — その卓が世界のどこにあろうとも。",
   "footer.shop":"ショップ","footer.house":"当館","footer.help":"サービス","footer.legal":"法務","footer.story":"私たちの物語","footer.standard":"来歴基準","footer.cellar":"プライベートセラー","footer.journal":"酒誌","footer.shipping":"配送·通関","footer.payment":"決済·エスクロー","footer.returns":"返品ポリシー","footer.contact":"コンシェルジュ","footer.terms":"利用規約","footer.privacy":"プライバシー","footer.compliance":"輸入コンプライアンス","footer.cookies":"Cookies","footer.rights":"All rights reserved","footer.responsible":"心して飲み給え",
-  "cart.title":"お籠","cart.close":"閉じる","cart.continue":"買い物を続ける","cart.empty":"酒蔵は静か。","cart.empty.sub":"一本予約することから。","cart.subtotal":"小計","cart.shipping":"配送 & 保険","cart.calc":"決済時に計算","cart.total":"合計","cart.check":"決済へ進む","cart.remove":"削除","curr.top.usd":"表示の基準は米ドルです。配送・関税等は Stripe のチェックアウトで確定します。","curr.top.fx":"参照用に USD から {code} へ換算表示（固定の目安レート）。お支払いは米ドルで Stripe にて請求されます。","cart.check.usd":"合計は米ドル表示です。配送・保険はチェックアウトで加算されます。","cart.check.fx":"{code} 表示は USD からの固定レート換算（参考）· カードの請求は米ドル（Stripe）。配送・保険はチェックアウトで。","curr.modal.fx":"USD からの換算は目安です。請求は米ドル。","cart.age":"居住国の法令上、酒類を合法的に購入できる年齢であることを確認します。","cart.processing":"安全な決済へ接続中&hellip;","cart.error":"決済を開始できませんでした。しばらくしてからお試しになるか、コンシェルジュへご連絡ください。","pager.prev":"前へ","pager.next":"次へ","pdp.back":"← コレクションに戻る","pdp.share":"このボトルをシェア", 
+  "cart.title":"お籠","cart.close":"閉じる","cart.continue":"買い物を続ける","cart.empty":"酒蔵は静か。","cart.empty.sub":"一本予約することから。","cart.subtotal":"小計","cart.shipping":"配送 & 保険","cart.calc":"決済時に計算","cart.total":"合計","cart.check":"決済へ進む","cart.remove":"削除","curr.top.usd":"表示の基準は米ドルです。配送・関税等は Stripe のチェックアウトで確定します。","curr.top.fx":"参照用に USD から {code} へ換算表示（固定の目安レート）。お支払いは米ドルで Stripe にて請求されます。","cart.check.usd":"合計は米ドル表示です。配送・保険はチェックアウトで加算されます。","cart.check.fx":"{code} 表示は USD からの固定レート換算（参考）· カードの請求は米ドル（Stripe）。配送・保険はチェックアウトで。","curr.modal.fx":"USD からの換算は目安です。請求は米ドル。","cart.age":"居住国の法令上、酒類を合法的に購入できる年齢であることを確認します。","cart.processing":"安全な決済へ接続中&hellip;","cart.error":"決済を開始できませんでした。しばらくしてからお試しになるか、コンシェルジュへご連絡ください。","cart.or":"または以下でお支払い","cart.paypal.hint":"PayPal 残高・カード・現地決済 · 年齢確認のチェックが必要です","cart.paypal.error":"PayPal でのお支払いを完了できませんでした。再度お試しいただくか、カード決済をご利用ください。","pager.prev":"前へ","pager.next":"次へ","pdp.back":"← コレクションに戻る","pdp.share":"このボトルをシェア", 
   "prod.add":"この瓶を予約","prod.added":"あなたのセラーへ加えました","prod.cta":"予約","modal.close":"閉じる ✕",
   "nav.cat":"カテゴリー","nav.cat.col1":"中国酒・スピリッツ","nav.cat.link1":"白酒 / Spirits","nav.cat.link2":"獺祭 / プレミックス / その他","nav.cat.link3":"全コレクション","nav.cat.col2":"ウイスキー・ワイン","nav.cat.link4":"日本ウイスキー / Whisky","nav.cat.link5":"赤ワイン / Wine","nav.cat.link6":"シャンパーニュ / Sparkling","nav.cat.col3":"絞り込み","nav.cat.link7":"カテゴリー別","nav.cat.link8":"シーン別","nav.cat.link9":"スペシャル版",
   "nav.scene":"シーン別","nav.scene.col1":"ギフト","nav.scene.link1":"ビジネスギフト","nav.scene.link2":"季節ギフト","nav.scene.link3":"お祝いギフト","nav.scene.col2":"自分用","nav.scene.link4":"ディナーペアリング","nav.scene.link5":"一人ウイスキー","nav.scene.link6":"軽飲み","nav.scene.col3":"コレクション","nav.scene.link7":"ヴィンテージ白酒","nav.scene.link8":"レアウイスキー","nav.scene.link9":"スペシャルカスク",
@@ -4150,6 +4164,7 @@ function persistCart(){
 }
 function updateCart(){
   persistCart();
+  try{ window.dispatchEvent(new CustomEvent("hanCartChange",{detail:{count:state.cart.length}})); }catch(_){}
   const count=state.cart.reduce((s,x)=>s+x.qty,0);
   document.getElementById("cartCount").textContent=count;
   const body=document.getElementById("drawerBody");
@@ -4966,6 +4981,178 @@ document.addEventListener("DOMContentLoaded",()=>{
       window.dispatchEvent(new CustomEvent('hanCheckoutError', { detail: err.message || 'unknown' }));
     }
   });
+
+  // ── PayPal Smart Buttons ──
+  // 仅在购物车非空 + 已勾选年龄确认时启用，与 Stripe 按钮并列展示。
+  (function setupPayPal(){
+    const wrap = document.getElementById("paypalWrap");
+    const container = document.getElementById("paypalButtonContainer");
+    if(!wrap || !container) return;
+
+    let paypalReady = false;
+    let paypalLoading = null;
+    let buttonsInstance = null;
+    let cfg = null;
+
+    function syncPayPalAvailability(){
+      if(!paypalReady) return;
+      const enabled = ageBox.checked && state.cart.length > 0;
+      wrap.setAttribute("aria-disabled", enabled ? "false" : "true");
+    }
+
+    function syncPayPalVisibility(){
+      const visible = state.cart.length > 0;
+      wrap.style.display = visible ? "block" : "none";
+      if(visible) loadPayPal();
+      syncPayPalAvailability();
+    }
+
+    async function loadPayPal(){
+      if(paypalReady || paypalLoading) return paypalLoading;
+      paypalLoading = (async () => {
+        try{
+          const r = await fetch("/paypal-config", { headers: { Accept: "application/json" } });
+          const j = await r.json();
+          if(!j || !j.enabled || !j.clientId){
+            wrap.style.display = "none";
+            return;
+          }
+          cfg = j;
+          await new Promise((resolve, reject) => {
+            if(window.paypal){ resolve(); return; }
+            const s = document.createElement("script");
+            const params = new URLSearchParams({
+              "client-id": cfg.clientId,
+              currency: cfg.currency || "USD",
+              intent: "capture",
+              components: "buttons",
+            });
+            s.src = `https://www.paypal.com/sdk/js?${params.toString()}`;
+            s.async = true;
+            s.onload = () => resolve();
+            s.onerror = () => reject(new Error("PayPal SDK failed to load"));
+            document.head.appendChild(s);
+          });
+          renderButtons();
+          paypalReady = true;
+          syncPayPalAvailability();
+        }catch(err){
+          console.warn("[PayPal] init failed:", err);
+          wrap.style.display = "none";
+        }
+      })();
+      return paypalLoading;
+    }
+
+    function buildItems(){
+      return state.cart
+        .map(x => {
+          const p = PRODUCTS.find(p => p.id === x.id);
+          if(!p) return null;
+          return {
+            name: p.name.replace(/<[^>]+>/g, ""),
+            sub: p.sub || "",
+            priceUsd: p.price,
+            image: p.image || "",
+            qty: x.qty,
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function renderButtons(){
+      if(!window.paypal || !container) return;
+      container.innerHTML = "";
+      buttonsInstance = window.paypal.Buttons({
+        style: { layout: "vertical", color: "gold", shape: "rect", label: "paypal", height: 44 },
+
+        onInit: (data, actions) => {
+          actions.disable();
+          const tick = () => {
+            const ok = ageBox.checked && state.cart.length > 0;
+            ok ? actions.enable() : actions.disable();
+          };
+          ageBox.addEventListener("change", tick);
+          window.addEventListener("hanCartChange", tick);
+          tick();
+        },
+
+        onClick: (data, actions) => {
+          if(!ageBox.checked || state.cart.length === 0) return actions.reject();
+          return actions.resolve();
+        },
+
+        createOrder: async () => {
+          const items = buildItems();
+          if(items.length === 0) throw new Error("Cart is empty");
+          const r = await fetch("/create-paypal-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              items,
+              ageConfirmed: true,
+              email: document.getElementById("checkoutEmail")?.value?.trim() || undefined,
+              lang: state.lang || "en",
+            }),
+          });
+          const j = await r.json();
+          if(!r.ok || !j.id) throw new Error(j.error || "Failed to create PayPal order");
+          return j.id;
+        },
+
+        onApprove: async (data) => {
+          try{
+            const r = await fetch("/capture-paypal-order", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ orderID: data.orderID }),
+            });
+            const j = await r.json();
+            if(!r.ok || (j.status !== "COMPLETED" && j.status !== "APPROVED")){
+              throw new Error(j.error || "Capture failed");
+            }
+            try{ localStorage.removeItem("han_cart"); }catch(_){}
+            try{
+              if(typeof gtag === "function"){
+                gtag("event", "purchase", {
+                  transaction_id: j.captureId || j.id,
+                  value: Number(j.amount?.value || 0),
+                  currency: j.amount?.currency_code || "USD",
+                  payment_type: "paypal",
+                });
+              }
+            }catch(_){}
+            window.location.href = `/success.html?provider=paypal&order_id=${encodeURIComponent(j.id || data.orderID)}`;
+          }catch(err){
+            console.error("[PayPal] capture error:", err);
+            const dict = I18N[state.lang] || I18N.en;
+            showToast(dict["cart.paypal.error"] || I18N.en["cart.paypal.error"]);
+          }
+        },
+
+        onCancel: () => { /* user cancelled; keep cart open */ },
+
+        onError: (err) => {
+          console.error("[PayPal] error:", err);
+          const dict = I18N[state.lang] || I18N.en;
+          showToast(dict["cart.paypal.error"] || I18N.en["cart.paypal.error"]);
+        },
+      });
+      if(buttonsInstance.isEligible()){
+        buttonsInstance.render("#paypalButtonContainer").catch(err => {
+          console.warn("[PayPal] render failed:", err);
+          wrap.style.display = "none";
+        });
+      }else{
+        wrap.style.display = "none";
+      }
+    }
+
+    ageBox.addEventListener("change", syncPayPalAvailability);
+    window.addEventListener("hanCartChange", syncPayPalVisibility);
+    // 首次：如果购物车已有商品（例如刷新后从 localStorage 恢复）就直接加载
+    syncPayPalVisibility();
+  })();
 
   // Modal
   document.getElementById("modalClose").onclick=closeModal;
